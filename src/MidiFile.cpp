@@ -213,7 +213,6 @@ int MidiFile::_create_mikrotik_script_file( int chunk_number, string track_text,
     out_data += "# Number of notes: " + ost_notes_cnt.str() + "\n";
     out_data += "# Track text: " + track_text + "\n";
     out_data += "# Track comment: " + track_name_comment + "\n";
-    out_data += "# Author of the program: ALTUCOR\n";
     out_data += "#-------------------------------------------------#\n\n";
 
     //out_data += ":delay " + ost_st_dly.str() + "ms;\n\n";
