@@ -1,0 +1,2197 @@
+#Track comment: 
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=0ms; # F# 3
+:delay 88.2353ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 94.1176ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 147.059ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=0ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=0ms; # F# 3
+:delay 0ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=0ms; # F# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=0ms; # F# 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=0ms; # F# 3
+:delay 0ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=174.61 length=0ms; # F 4
+:delay 0ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=92.5 length=5.88235ms; # F# 3
+:delay 5.88235ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=196 length=0ms; # G 4
+:delay 0ms;
+
+:beep frequency=92.5 length=58.8235ms; # F# 3
+:delay 58.8235ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=92.5 length=58.8235ms; # F# 3
+:delay 58.8235ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=58.8235ms; # F# 3
+:delay 58.8235ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 64.7059ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=58.8235ms; # F# 3
+:delay 58.8235ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=92.5 length=29.4118ms; # F# 3
+:delay 29.4118ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=35.2941ms; # F# 3
+:delay 35.2941ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=61.74 length=0ms; # B 2
+:delay 0ms;
+
+:beep frequency=65.41 length=0ms; # C 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 176.471ms;
+
+:beep frequency=277.18 length=0ms; # C# 5
+:delay 0ms;
+
+:beep frequency=69.3 length=0ms; # C# 3
+:delay 0ms;
+
+:beep frequency=92.5 length=88.2353ms; # F# 3
+:delay 88.2353ms;
+

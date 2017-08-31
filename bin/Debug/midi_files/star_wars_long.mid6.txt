@@ -1,0 +1,1467 @@
+#----------------File Description-----------------#
+# This file created by Midi To Mikrotik Converter
+# Original midi file name/path: star_wars_long.mid
+# Track BPM: 105
+# MIDI Channel: 5
+# Number of notes: 485
+# Track text: Trumpets
+# Track comment: 
+#-------------------------------------------------#
+
+:delay 0ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 270.238ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 270.238ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 269.048ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 273.81ms;
+
+:beep frequency=466.16 length=55.9524ms; # Bb 5
+:delay 147.619ms;
+
+:beep frequency=392 length=170.238ms; # G 5
+:delay 271.429ms;
+
+:beep frequency=311.13 length=177.381ms; # Eb 5
+:delay 277.381ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 138.095ms;
+
+:beep frequency=392 length=288.095ms; # G 5
+:delay 394.048ms;
+
+:beep frequency=587.33 length=167.857ms; # D 6
+:delay 270.238ms;
+
+:beep frequency=587.33 length=167.857ms; # D 6
+:delay 269.048ms;
+
+:beep frequency=587.33 length=167.857ms; # D 6
+:delay 267.857ms;
+
+:beep frequency=622.25 length=177.381ms; # Eb 6
+:delay 282.143ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 140.476ms;
+
+:beep frequency=369.99 length=169.048ms; # F# 5
+:delay 272.619ms;
+
+:beep frequency=311.13 length=178.571ms; # Eb 5
+:delay 278.571ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 138.095ms;
+
+:beep frequency=392 length=285.714ms; # G 5
+:delay 385.714ms;
+
+:beep frequency=783.99 length=169.048ms; # G 6
+:delay 273.81ms;
+
+:beep frequency=392 length=177.381ms; # G 5
+:delay 279.762ms;
+
+:beep frequency=392 length=54.7619ms; # G 5
+:delay 136.905ms;
+
+:beep frequency=783.99 length=196.429ms; # G 6
+:delay 269.048ms;
+
+:beep frequency=739.99 length=177.381ms; # F# 6
+:delay 284.524ms;
+
+:beep frequency=698.46 length=54.7619ms; # F 6
+:delay 142.857ms;
+
+:beep frequency=659.25 length=54.7619ms; # E 6
+:delay 142.857ms;
+
+:beep frequency=622.25 length=40.4762ms; # Eb 6
+:delay 141.667ms;
+
+:beep frequency=659.25 length=83.3333ms; # E 6
+:delay 273.81ms;
+
+:beep frequency=415.3 length=70.2381ms; # G# 5
+:delay 286.905ms;
+
+:beep frequency=554.37 length=196.429ms; # C# 6
+:delay 269.048ms;
+
+:beep frequency=523.25 length=176.19ms; # C 6
+:delay 276.19ms;
+
+:beep frequency=493.88 length=54.7619ms; # B 5
+:delay 142.857ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 145.238ms;
+
+:beep frequency=440 length=40.4762ms; # A 5
+:delay 142.857ms;
+
+:beep frequency=466.16 length=84.5238ms; # Bb 5
+:delay 272.619ms;
+
+:beep frequency=311.13 length=69.0476ms; # Eb 5
+:delay 282.143ms;
+
+:beep frequency=369.99 length=197.619ms; # F# 5
+:delay 275ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 271.429ms;
+
+:beep frequency=392 length=54.7619ms; # G 5
+:delay 150ms;
+
+:beep frequency=466.16 length=167.857ms; # Bb 5
+:delay 265.476ms;
+
+:beep frequency=392 length=176.19ms; # G 5
+:delay 283.333ms;
+
+:beep frequency=466.16 length=55.9524ms; # Bb 5
+:delay 142.857ms;
+
+:beep frequency=587.33 length=285.714ms; # D 6
+:delay 384.524ms;
+
+:beep frequency=783.99 length=167.857ms; # G 6
+:delay 272.619ms;
+
+:beep frequency=392 length=176.19ms; # G 5
+:delay 279.762ms;
+
+:beep frequency=392 length=54.7619ms; # G 5
+:delay 133.333ms;
+
+:beep frequency=783.99 length=198.81ms; # G 6
+:delay 278.571ms;
+
+:beep frequency=739.99 length=176.19ms; # F# 6
+:delay 278.571ms;
+
+:beep frequency=698.46 length=54.7619ms; # F 6
+:delay 144.048ms;
+
+:beep frequency=659.25 length=54.7619ms; # E 6
+:delay 140.476ms;
+
+:beep frequency=622.25 length=42.8571ms; # Eb 6
+:delay 135.714ms;
+
+:beep frequency=659.25 length=84.5238ms; # E 6
+:delay 275ms;
+
+:beep frequency=415.3 length=70.2381ms; # G# 5
+:delay 280.952ms;
+
+:beep frequency=329.63 length=972.619ms; # E 5
+:delay 1690.48ms;
+
+:beep frequency=554.37 length=563.095ms; # C# 6
+:delay 957.143ms;
+
+:beep frequency=415.3 length=188.095ms; # G# 5
+:delay 260.714ms;
+
+:beep frequency=329.63 length=970.238ms; # E 5
+:delay 1701.19ms;
+
+:beep frequency=415.3 length=585.714ms; # G# 5
+:delay 998.81ms;
+
+:beep frequency=523.25 length=173.81ms; # C 6
+:delay 265.476ms;
+
+:beep frequency=493.88 length=811.905ms; # B 5
+:delay 1532.14ms;
+
+:beep frequency=415.3 length=421.429ms; # G# 5
+:delay 816.667ms;
+
+:beep frequency=329.63 length=46.4286ms; # E 5
+:delay 129.762ms;
+
+:beep frequency=369.99 length=844.048ms; # F# 5
+:delay 1560.71ms;
+
+:beep frequency=311.13 length=466.667ms; # Eb 5
+:delay 863.095ms;
+
+:beep frequency=466.16 length=52.381ms; # Bb 5
+:delay 139.286ms;
+
+:beep frequency=311.13 length=826.19ms; # Eb 5
+:delay 1558.33ms;
+
+:beep frequency=440 length=416.667ms; # A 5
+:delay 830.952ms;
+
+:beep frequency=369.99 length=38.0952ms; # F# 5
+:delay 134.524ms;
+
+:beep frequency=311.13 length=871.429ms; # Eb 5
+:delay 1686.9ms;
+
+:beep frequency=369.99 length=492.857ms; # F# 5
+:delay 994.048ms;
+
+:beep frequency=466.16 length=82.1429ms; # Bb 5
+:delay 264.286ms;
+
+:beep frequency=311.13 length=70.2381ms; # Eb 5
+:delay 285.714ms;
+
+:beep frequency=233.08 length=960.714ms; # Bb 4
+:delay 1658.33ms;
+
+:beep frequency=311.13 length=588.095ms; # Eb 5
+:delay 967.857ms;
+
+:beep frequency=369.99 length=191.667ms; # F# 5
+:delay 261.905ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 279.762ms;
+
+:beep frequency=466.16 length=58.3333ms; # Bb 5
+:delay 144.048ms;
+
+:beep frequency=392 length=264.286ms; # G 5
+:delay 422.619ms;
+
+:beep frequency=311.13 length=177.381ms; # Eb 5
+:delay 271.429ms;
+
+:beep frequency=466.16 length=55.9524ms; # Bb 5
+:delay 529.762ms;
+
+:beep frequency=392 length=7177.38ms; # G 5
+:delay 7847.62ms;
+
+:beep frequency=392 length=251.19ms; # G 5
+:delay 423.81ms;
+
+:beep frequency=392 length=69.0476ms; # G 5
+:delay 286.905ms;
+
+:beep frequency=392 length=50ms; # G 5
+:delay 95.2381ms;
+
+:beep frequency=392 length=50ms; # G 5
+:delay 90.4762ms;
+
+:beep frequency=392 length=51.1905ms; # G 5
+:delay 96.4286ms;
+
+:beep frequency=392 length=71.4286ms; # G 5
+:delay 289.286ms;
+
+:beep frequency=392 length=51.1905ms; # G 5
+:delay 90.4762ms;
+
+:beep frequency=392 length=50ms; # G 5
+:delay 101.19ms;
+
+:beep frequency=392 length=52.381ms; # G 5
+:delay 90.4762ms;
+
+:beep frequency=739.99 length=860.714ms; # F# 6
+:delay 1538.1ms;
+
+:beep frequency=622.25 length=451.19ms; # Eb 6
+:delay 809.524ms;
+
+:beep frequency=466.16 length=48.8095ms; # Bb 5
+:delay 80.9524ms;
+
+:beep frequency=466.16 length=871.429ms; # Bb 5
+:delay 1566.67ms;
+
+:beep frequency=622.25 length=457.143ms; # Eb 6
+:delay 813.095ms;
+
+:beep frequency=739.99 length=39.2857ms; # F# 6
+:delay 71.4286ms;
+
+:beep frequency=466.16 length=855.952ms; # Bb 5
+:delay 1558.33ms;
+
+:beep frequency=622.25 length=450ms; # Eb 6
+:delay 820.238ms;
+
+:beep frequency=739.99 length=36.9048ms; # F# 6
+:delay 72.619ms;
+
+:beep frequency=739.99 length=855.952ms; # F# 6
+:delay 1720.24ms;
+
+:beep frequency=622.25 length=452.381ms; # Eb 6
+:delay 991.667ms;
+
+:beep frequency=466.16 length=61.9048ms; # Bb 5
+:delay 275ms;
+
+:beep frequency=466.16 length=484.524ms; # Bb 5
+:delay 1019.05ms;
+
+:beep frequency=587.33 length=70.2381ms; # D 6
+:delay 280.952ms;
+
+:beep frequency=466.16 length=461.905ms; # Bb 5
+:delay 830.952ms;
+
+:beep frequency=587.33 length=44.0476ms; # D 6
+:delay 83.3333ms;
+
+:beep frequency=587.33 length=440.476ms; # D 6
+:delay 800ms;
+
+:beep frequency=466.16 length=45.2381ms; # Bb 5
+:delay 79.7619ms;
+
+:beep frequency=587.33 length=434.524ms; # D 6
+:delay 802.381ms;
+
+:beep frequency=466.16 length=45.2381ms; # Bb 5
+:delay 88.0952ms;
+
+:beep frequency=622.25 length=853.571ms; # Eb 6
+:delay 1534.52ms;
+
+:beep frequency=493.88 length=450ms; # B 5
+:delay 805.952ms;
+
+:beep frequency=415.3 length=46.4286ms; # G# 5
+:delay 83.3333ms;
+
+:beep frequency=493.88 length=848.81ms; # B 5
+:delay 1530.95ms;
+
+:beep frequency=415.3 length=460.714ms; # G# 5
+:delay 813.095ms;
+
+:beep frequency=622.25 length=44.0476ms; # Eb 6
+:delay 79.7619ms;
+
+:beep frequency=493.88 length=861.905ms; # B 5
+:delay 1550ms;
+
+:beep frequency=415.3 length=460.714ms; # G# 5
+:delay 819.048ms;
+
+:beep frequency=622.25 length=44.0476ms; # Eb 6
+:delay 86.9048ms;
+
+:beep frequency=698.46 length=872.619ms; # F 6
+:delay 1733.33ms;
+
+:beep frequency=554.37 length=466.667ms; # C# 6
+:delay 1002.38ms;
+
+:beep frequency=466.16 length=63.0952ms; # Bb 5
+:delay 277.381ms;
+
+:beep frequency=523.25 length=896.429ms; # C 6
+:delay 1763.1ms;
+
+:beep frequency=622.25 length=488.095ms; # Eb 6
+:delay 1025ms;
+
+:beep frequency=783.99 length=67.8571ms; # G 6
+:delay 280.952ms;
+
+:beep frequency=783.99 length=859.524ms; # G 6
+:delay 1544.05ms;
+
+:beep frequency=622.25 length=451.19ms; # Eb 6
+:delay 811.905ms;
+
+:beep frequency=523.25 length=46.4286ms; # C 6
+:delay 83.3333ms;
+
+:beep frequency=622.25 length=875ms; # Eb 6
+:delay 1573.81ms;
+
+:beep frequency=783.99 length=446.429ms; # G 6
+:delay 808.333ms;
+
+:beep frequency=523.25 length=40.4762ms; # C 6
+:delay 80.9524ms;
+
+:beep frequency=783.99 length=847.619ms; # G 6
+:delay 1540.48ms;
+
+:beep frequency=622.25 length=446.429ms; # Eb 6
+:delay 813.095ms;
+
+:beep frequency=523.25 length=46.4286ms; # C 6
+:delay 91.6667ms;
+
+:beep frequency=830.61 length=873.81ms; # G# 6
+:delay 1561.9ms;
+
+:beep frequency=659.25 length=463.095ms; # E 6
+:delay 828.571ms;
+
+:beep frequency=554.37 length=48.8095ms; # C# 6
+:delay 84.5238ms;
+
+:beep frequency=659.25 length=875ms; # E 6
+:delay 1576.19ms;
+
+:beep frequency=830.61 length=451.19ms; # G# 6
+:delay 819.048ms;
+
+:beep frequency=554.37 length=42.8571ms; # C# 6
+:delay 85.7143ms;
+
+:beep frequency=659.25 length=871.429ms; # E 6
+:delay 1566.67ms;
+
+:beep frequency=554.37 length=470.238ms; # C# 6
+:delay 832.143ms;
+
+:beep frequency=830.61 length=46.4286ms; # G# 6
+:delay 85.7143ms;
+
+:beep frequency=622.25 length=907.143ms; # Eb 6
+:delay 2055.95ms;
+
+:beep frequency=932.33 length=479.762ms; # Bb 6
+:delay 1297.62ms;
+
+:beep frequency=739.99 length=65.4762ms; # F# 6
+:delay 550ms;
+
+:beep frequency=466.16 length=171.429ms; # Bb 5
+:delay 269.048ms;
+
+:beep frequency=233.08 length=140.476ms; # Bb 4
+:delay 430.952ms;
+
+:beep frequency=233.08 length=57.1429ms; # Bb 4
+:delay 144.048ms;
+
+:beep frequency=466.16 length=196.429ms; # Bb 5
+:delay 265.476ms;
+
+:beep frequency=440 length=176.19ms; # A 5
+:delay 278.571ms;
+
+:beep frequency=415.3 length=54.7619ms; # G# 5
+:delay 141.667ms;
+
+:beep frequency=392 length=54.7619ms; # G 5
+:delay 147.619ms;
+
+:beep frequency=369.99 length=41.6667ms; # F# 5
+:delay 140.476ms;
+
+:beep frequency=392 length=83.3333ms; # G 5
+:delay 273.81ms;
+
+:beep frequency=246.94 length=69.0476ms; # B 4
+:delay 285.714ms;
+
+:beep frequency=329.63 length=11411.9ms; # E 5
+:delay 12644ms;
+
+:beep frequency=311.13 length=177.381ms; # Eb 5
+:delay 289.286ms;
+
+:beep frequency=293.66 length=54.7619ms; # D 5
+:delay 142.857ms;
+
+:beep frequency=277.18 length=54.7619ms; # C# 5
+:delay 145.238ms;
+
+:beep frequency=261.63 length=40.4762ms; # C 5
+:delay 142.857ms;
+
+:beep frequency=277.18 length=85.7143ms; # C# 5
+:delay 266.667ms;
+
+:beep frequency=185 length=69.0476ms; # F# 4
+:delay 289.286ms;
+
+:beep frequency=220 length=9541.67ms; # A 4
+:delay 10908.3ms;
+
+:beep frequency=185 length=728.571ms; # F# 4
+:delay 1157.14ms;
+
+:beep frequency=277.18 length=2408.33ms; # C# 5
+:delay 2439.29ms;
+
+:beep frequency=233.08 length=276.19ms; # Bb 4
+:delay 421.429ms;
+
+:beep frequency=185 length=176.19ms; # F# 4
+:delay 273.81ms;
+
+:beep frequency=277.18 length=98.8095ms; # C# 5
+:delay 144.048ms;
+
+:beep frequency=233.08 length=11378.6ms; # Bb 4
+:delay 12842.9ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 276.19ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 266.667ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 269.048ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 282.143ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 144.048ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 265.476ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 283.333ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 141.667ms;
+
+:beep frequency=392 length=286.905ms; # G 5
+:delay 384.524ms;
+
+:beep frequency=587.33 length=169.048ms; # D 6
+:delay 269.048ms;
+
+:beep frequency=587.33 length=170.238ms; # D 6
+:delay 273.81ms;
+
+:beep frequency=587.33 length=169.048ms; # D 6
+:delay 270.238ms;
+
+:beep frequency=622.25 length=179.762ms; # Eb 6
+:delay 277.381ms;
+
+:beep frequency=466.16 length=57.1429ms; # Bb 5
+:delay 140.476ms;
+
+:beep frequency=369.99 length=167.857ms; # F# 5
+:delay 270.238ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 280.952ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 141.667ms;
+
+:beep frequency=392 length=286.905ms; # G 5
+:delay 392.857ms;
+
+:beep frequency=783.99 length=167.857ms; # G 6
+:delay 265.476ms;
+
+:beep frequency=392 length=177.381ms; # G 5
+:delay 283.333ms;
+
+:beep frequency=392 length=54.7619ms; # G 5
+:delay 141.667ms;
+
+:beep frequency=783.99 length=196.429ms; # G 6
+:delay 271.429ms;
+
+:beep frequency=739.99 length=176.19ms; # F# 6
+:delay 273.81ms;
+
+:beep frequency=698.46 length=54.7619ms; # F 6
+:delay 145.238ms;
+
+:beep frequency=659.25 length=54.7619ms; # E 6
+:delay 145.238ms;
+
+:beep frequency=622.25 length=41.6667ms; # Eb 6
+:delay 134.524ms;
+
+:beep frequency=659.25 length=83.3333ms; # E 6
+:delay 273.81ms;
+
+:beep frequency=415.3 length=69.0476ms; # G# 5
+:delay 288.095ms;
+
+:beep frequency=554.37 length=935.714ms; # C# 6
+:delay 1644.05ms;
+
+:beep frequency=415.3 length=564.286ms; # G# 5
+:delay 961.905ms;
+
+:beep frequency=329.63 length=196.429ms; # E 5
+:delay 270.238ms;
+
+:beep frequency=415.3 length=954.762ms; # G# 5
+:delay 1684.52ms;
+
+:beep frequency=329.63 length=583.333ms; # E 5
+:delay 992.857ms;
+
+:beep frequency=523.25 length=176.19ms; # C 6
+:delay 269.048ms;
+
+:beep frequency=329.63 length=845.238ms; # E 5
+:delay 1573.81ms;
+
+:beep frequency=493.88 length=429.762ms; # B 5
+:delay 833.333ms;
+
+:beep frequency=415.3 length=46.4286ms; # G# 5
+:delay 132.143ms;
+
+:beep frequency=369.99 length=848.81ms; # F# 5
+:delay 1560.71ms;
+
+:beep frequency=311.13 length=466.667ms; # Eb 5
+:delay 864.286ms;
+
+:beep frequency=466.16 length=52.381ms; # Bb 5
+:delay 129.762ms;
+
+:beep frequency=440 length=790.476ms; # A 5
+:delay 1519.05ms;
+
+:beep frequency=369.99 length=404.762ms; # F# 5
+:delay 814.286ms;
+
+:beep frequency=311.13 length=30.9524ms; # Eb 5
+:delay 127.381ms;
+
+:beep frequency=466.16 length=830.952ms; # Bb 5
+:delay 1646.43ms;
+
+:beep frequency=311.13 length=459.524ms; # Eb 5
+:delay 960.714ms;
+
+:beep frequency=369.99 length=77.381ms; # F# 5
+:delay 264.286ms;
+
+:beep frequency=311.13 length=69.0476ms; # Eb 5
+:delay 282.143ms;
+
+:beep frequency=369.99 length=898.81ms; # F# 5
+:delay 1613.1ms;
+
+:beep frequency=311.13 length=526.19ms; # Eb 5
+:delay 932.143ms;
+
+:beep frequency=233.08 length=164.286ms; # Bb 4
+:delay 259.524ms;
+
+:beep frequency=311.13 length=177.381ms; # Eb 5
+:delay 277.381ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 140.476ms;
+
+:beep frequency=466.16 length=934.524ms; # Bb 5
+:delay 1664.29ms;
+
+:beep frequency=293.66 length=551.19ms; # D 5
+:delay 971.429ms;
+
+:beep frequency=392 length=164.286ms; # G 5
+:delay 267.857ms;
+
+:beep frequency=392 length=178.571ms; # G 5
+:delay 280.952ms;
+
+:beep frequency=466.16 length=57.1429ms; # Bb 5
+:delay 513.095ms;
+
+:beep frequency=587.33 length=7230.95ms; # D 6
+:delay 8727.38ms;
+
+:beep frequency=392 length=6840.48ms; # G 5
+:delay 8013.1ms;
+
+:beep frequency=466.16 length=6453.57ms; # Bb 5
+:delay 7309.52ms;
+
+:beep frequency=783.99 length=169.048ms; # G 6
+:delay 271.429ms;
+
+:beep frequency=392 length=176.19ms; # G 5
+:delay 270.238ms;
+
+:beep frequency=392 length=55.9524ms; # G 5
+:delay 150ms;
+
+:beep frequency=783.99 length=196.429ms; # G 6
+:delay 272.619ms;
+
+:beep frequency=739.99 length=176.19ms; # F# 6
+:delay 278.571ms;
+
+:beep frequency=698.46 length=54.7619ms; # F 6
+:delay 139.286ms;
+
+:beep frequency=659.25 length=55.9524ms; # E 6
+:delay 146.429ms;
+
+:beep frequency=622.25 length=40.4762ms; # Eb 6
+:delay 142.857ms;
+
+:beep frequency=659.25 length=84.5238ms; # E 6
+:delay 270.238ms;
+
+:beep frequency=415.3 length=70.2381ms; # G# 5
+:delay 285.714ms;
+
+:beep frequency=415.3 length=966.667ms; # G# 5
+:delay 1669.05ms;
+
+:beep frequency=329.63 length=602.381ms; # E 5
+:delay 994.048ms;
+
+:beep frequency=554.37 length=195.238ms; # C# 6
+:delay 264.286ms;
+
+:beep frequency=329.63 length=969.048ms; # E 5
+:delay 1698.81ms;
+
+:beep frequency=415.3 length=585.714ms; # G# 5
+:delay 992.857ms;
+
+:beep frequency=523.25 length=173.81ms; # C 6
+:delay 265.476ms;
+
+:beep frequency=329.63 length=845.238ms; # E 5
+:delay 1576.19ms;
+
+:beep frequency=415.3 length=460.714ms; # G# 5
+:delay 871.429ms;
+
+:beep frequency=493.88 length=42.8571ms; # B 5
+:delay 127.381ms;
+
+:beep frequency=311.13 length=851.19ms; # Eb 5
+:delay 1566.67ms;
+
+:beep frequency=466.16 length=438.095ms; # Bb 5
+:delay 834.524ms;
+
+:beep frequency=369.99 length=52.381ms; # F# 5
+:delay 133.333ms;
+
+:beep frequency=311.13 length=828.571ms; # Eb 5
+:delay 1555.95ms;
+
+:beep frequency=369.99 length=445.238ms; # F# 5
+:delay 857.143ms;
+
+:beep frequency=440 length=36.9048ms; # A 5
+:delay 130.952ms;
+
+:beep frequency=369.99 length=865.476ms; # F# 5
+:delay 1689.29ms;
+
+:beep frequency=466.16 length=451.19ms; # Bb 5
+:delay 957.143ms;
+
+:beep frequency=311.13 length=75ms; # Eb 5
+:delay 263.095ms;
+
+:beep frequency=311.13 length=69.0476ms; # Eb 5
+:delay 285.714ms;
+
+:beep frequency=369.99 length=529.762ms; # F# 5
+:delay 938.095ms;
+
+:beep frequency=311.13 length=167.857ms; # Eb 5
+:delay 266.667ms;
+
+:beep frequency=311.13 length=177.381ms; # Eb 5
+:delay 283.333ms;
+
+:beep frequency=466.16 length=55.9524ms; # Bb 5
+:delay 138.095ms;
+
+:beep frequency=392 length=169.048ms; # G 5
+:delay 275ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 276.19ms;
+
+:beep frequency=466.16 length=55.9524ms; # Bb 5
+:delay 144.048ms;
+
+:beep frequency=392 length=286.905ms; # G 5
+:delay 385.714ms;
+
+:beep frequency=392 length=169.048ms; # G 5
+:delay 270.238ms;
+
+:beep frequency=392 length=170.238ms; # G 5
+:delay 273.81ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 267.857ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 275ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 144.048ms;
+
+:beep frequency=392 length=169.048ms; # G 5
+:delay 273.81ms;
+
+:beep frequency=311.13 length=177.381ms; # Eb 5
+:delay 278.571ms;
+
+:beep frequency=466.16 length=55.9524ms; # Bb 5
+:delay 138.095ms;
+
+:beep frequency=392 length=285.714ms; # G 5
+:delay 389.286ms;
+
+:beep frequency=587.33 length=167.857ms; # D 6
+:delay 273.81ms;
+
+:beep frequency=587.33 length=167.857ms; # D 6
+:delay 270.238ms;
+
+:beep frequency=587.33 length=167.857ms; # D 6
+:delay 271.429ms;
+
+:beep frequency=622.25 length=176.19ms; # Eb 6
+:delay 278.571ms;
+
+:beep frequency=466.16 length=55.9524ms; # Bb 5
+:delay 138.095ms;
+
+:beep frequency=369.99 length=169.048ms; # F# 5
+:delay 273.81ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 279.762ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 516.667ms;
+
+:beep frequency=392 length=6459.52ms; # G 5
+:delay 7322.62ms;
+
+:beep frequency=783.99 length=169.048ms; # G 6
+:delay 267.857ms;
+
+:beep frequency=392 length=177.381ms; # G 5
+:delay 278.571ms;
+
+:beep frequency=392 length=54.7619ms; # G 5
+:delay 140.476ms;
+
+:beep frequency=783.99 length=196.429ms; # G 6
+:delay 275ms;
+
+:beep frequency=739.99 length=176.19ms; # F# 6
+:delay 279.762ms;
+
+:beep frequency=698.46 length=55.9524ms; # F 6
+:delay 141.667ms;
+
+:beep frequency=659.25 length=55.9524ms; # E 6
+:delay 141.667ms;
+
+:beep frequency=622.25 length=42.8571ms; # Eb 6
+:delay 140.476ms;
+
+:beep frequency=659.25 length=84.5238ms; # E 6
+:delay 272.619ms;
+
+:beep frequency=415.3 length=70.2381ms; # G# 5
+:delay 285.714ms;
+
+:beep frequency=554.37 length=936.905ms; # C# 6
+:delay 1645.24ms;
+
+:beep frequency=329.63 length=570.238ms; # E 5
+:delay 960.714ms;
+
+:beep frequency=415.3 length=194.048ms; # G# 5
+:delay 263.095ms;
+
+:beep frequency=415.3 length=965.476ms; # G# 5
+:delay 1703.57ms;
+
+:beep frequency=523.25 length=550ms; # C 6
+:delay 964.286ms;
+
+:beep frequency=329.63 length=171.429ms; # E 5
+:delay 273.81ms;
+
+:beep frequency=415.3 length=839.286ms; # G# 5
+:delay 1555.95ms;
+
+:beep frequency=329.63 length=465.476ms; # E 5
+:delay 871.429ms;
+
+:beep frequency=493.88 length=53.5714ms; # B 5
+:delay 139.286ms;
+
+:beep frequency=466.16 length=821.429ms; # Bb 5
+:delay 1532.14ms;
+
+:beep frequency=311.13 length=439.286ms; # Eb 5
+:delay 835.714ms;
+
+:beep frequency=369.99 length=53.5714ms; # F# 5
+:delay 139.286ms;
+
+:beep frequency=369.99 length=820.238ms; # F# 5
+:delay 1539.29ms;
+
+:beep frequency=311.13 length=446.429ms; # Eb 5
+:delay 847.619ms;
+
+:beep frequency=440 length=39.2857ms; # A 5
+:delay 130.952ms;
+
+:beep frequency=311.13 length=870.238ms; # Eb 5
+:delay 1694.05ms;
+
+:beep frequency=369.99 length=484.524ms; # F# 5
+:delay 986.905ms;
+
+:beep frequency=466.16 length=75ms; # Bb 5
+:delay 258.333ms;
+
+:beep frequency=311.13 length=69.0476ms; # Eb 5
+:delay 288.095ms;
+
+:beep frequency=233.08 length=932.143ms; # Bb 4
+:delay 1654.76ms;
+
+:beep frequency=369.99 length=535.714ms; # F# 5
+:delay 947.619ms;
+
+:beep frequency=311.13 length=166.667ms; # Eb 5
+:delay 265.476ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 279.762ms;
+
+:beep frequency=466.16 length=55.9524ms; # Bb 5
+:delay 142.857ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 271.429ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 279.762ms;
+
+:beep frequency=466.16 length=54.7619ms; # Bb 5
+:delay 142.857ms;
+
+:beep frequency=392 length=7475ms; # G 5
+:delay 8700ms;
+
+:beep frequency=783.99 length=554.762ms; # G 6
+:delay 969.048ms;
+
+:beep frequency=392 length=165.476ms; # G 5
+:delay 261.905ms;
+
+:beep frequency=783.99 length=554.762ms; # G 6
+:delay 977.381ms;
+
+:beep frequency=392 length=164.286ms; # G 5
+:delay 267.857ms;
+
+:beep frequency=783.99 length=551.19ms; # G 6
+:delay 965.476ms;
+
+:beep frequency=392 length=167.857ms; # G 5
+:delay 267.857ms;
+
+:beep frequency=311.13 length=586.905ms; # Eb 5
+:delay 1013.1ms;
+
+:beep frequency=622.25 length=177.381ms; # Eb 6
+:delay 279.762ms;
+
+:beep frequency=466.16 length=480.952ms; # Bb 5
+:delay 885.714ms;
+
+:beep frequency=932.33 length=67.8571ms; # Bb 6
+:delay 138.095ms;
+
+:beep frequency=392 length=579.762ms; # G 5
+:delay 996.429ms;
+
+:beep frequency=783.99 length=167.857ms; # G 6
+:delay 269.048ms;
+
+:beep frequency=622.25 length=572.619ms; # Eb 6
+:delay 982.143ms;
+
+:beep frequency=311.13 length=176.19ms; # Eb 5
+:delay 276.19ms;
+
+:beep frequency=466.16 length=485.714ms; # Bb 5
+:delay 886.905ms;
+
+:beep frequency=932.33 length=67.8571ms; # Bb 6
+:delay 133.333ms;
+
+:beep frequency=392 length=582.143ms; # G 5
+:delay 1009.52ms;
+
+:beep frequency=783.99 length=161.905ms; # G 6
+:delay 253.571ms;
+
+:beep frequency=622.25 length=570.238ms; # Eb 6
+:delay 986.905ms;
+
+:beep frequency=311.13 length=171.429ms; # Eb 5
+:delay 273.81ms;
+
+:beep frequency=932.33 length=471.429ms; # Bb 6
+:delay 866.667ms;
+
+:beep frequency=466.16 length=67.8571ms; # Bb 5
+:delay 142.857ms;
+
+:beep frequency=392 length=534.524ms; # G 5
+:delay 1160.71ms;
+
+:beep frequency=783.99 length=111.905ms; # G 6
+:delay 409.524ms;
+
+:beep frequency=783.99 length=476.19ms; # G 6
+:delay 1013.1ms;
+
+:beep frequency=392 length=64.2857ms; # G 5
+:delay 282.143ms;
+
+:beep frequency=783.99 length=454.762ms; # G 6
+:delay 830.952ms;
+
+:beep frequency=392 length=50ms; # G 5
+:delay 96.4286ms;
+
+:beep frequency=783.99 length=455.952ms; # G 6
+:delay 815.476ms;
+
+:beep frequency=392 length=48.8095ms; # G 5
+:delay 92.8571ms;
+
+:beep frequency=783.99 length=447.619ms; # G 6
+:delay 801.19ms;
+
+:beep frequency=392 length=48.8095ms; # G 5
+:delay 84.5238ms;
+
+:beep frequency=415.3 length=890.476ms; # G# 5
+:delay 1763.1ms;
+
+:beep frequency=523.25 length=479.762ms; # C 6
+:delay 1026.19ms;
+
+:beep frequency=783.99 length=61.9048ms; # G 6
+:delay 278.571ms;
+
+:beep frequency=415.3 length=873.81ms; # G# 5
+:delay 1563.1ms;
+
+:beep frequency=523.25 length=470.238ms; # C 6
+:delay 830.952ms;
+
+:beep frequency=783.99 length=50ms; # G 6
+:delay 90.4762ms;
+
+:beep frequency=523.25 length=871.429ms; # C 6
+:delay 1560.71ms;
+
+:beep frequency=415.3 length=469.048ms; # G# 5
+:delay 839.286ms;
+
+:beep frequency=783.99 length=46.4286ms; # G 6
+:delay 86.9048ms;
+
+:beep frequency=415.3 length=857.143ms; # G# 5
+:delay 1542.86ms;
+
+:beep frequency=523.25 length=460.714ms; # C 6
+:delay 826.19ms;
+
+:beep frequency=783.99 length=46.4286ms; # G 6
+:delay 78.5714ms;
+
+:beep frequency=554.37 length=878.571ms; # C# 6
+:delay 1570.24ms;
+
+:beep frequency=783.99 length=448.81ms; # G 6
+:delay 804.762ms;
+
+:beep frequency=415.3 length=38.0952ms; # G# 5
+:delay 71.4286ms;
+
+:beep frequency=783.99 length=852.381ms; # G 6
+:delay 1535.71ms;
+
+:beep frequency=415.3 length=445.238ms; # G# 5
+:delay 805.952ms;
+
+:beep frequency=554.37 length=41.6667ms; # C# 6
+:delay 79.7619ms;
+
+:beep frequency=783.99 length=834.524ms; # G 6
+:delay 1520.24ms;
+
+:beep frequency=554.37 length=432.143ms; # C# 6
+:delay 790.476ms;
+
+:beep frequency=415.3 length=42.8571ms; # G# 5
+:delay 83.3333ms;
+
+:beep frequency=554.37 length=889.286ms; # C# 6
+:delay 1750ms;
+
+:beep frequency=415.3 length=485.714ms; # G# 5
+:delay 1014.29ms;
+
+:beep frequency=783.99 length=65.4762ms; # G 6
+:delay 278.571ms;
+
+:beep frequency=622.25 length=932.143ms; # Eb 6
+:delay 1885.71ms;
+
+:beep frequency=415.3 length=529.762ms; # G# 5
+:delay 1165.48ms;
+
+:beep frequency=783.99 length=108.333ms; # G 6
+:delay 414.286ms;
+
+:beep frequency=659.25 length=883.333ms; # E 6
+:delay 1745.24ms;
+
+:beep frequency=783.99 length=466.667ms; # G 6
+:delay 998.81ms;
+
+:beep frequency=415.3 length=64.2857ms; # G# 5
+:delay 276.19ms;
+
+:beep frequency=415.3 length=872.619ms; # G# 5
+:delay 1575ms;
+
+:beep frequency=659.25 length=459.524ms; # E 6
+:delay 833.333ms;
+
+:beep frequency=783.99 length=45.2381ms; # G 6
+:delay 89.2857ms;
+
+:beep frequency=659.25 length=865.476ms; # E 6
+:delay 1550ms;
+
+:beep frequency=783.99 length=447.619ms; # G 6
+:delay 815.476ms;
+
+:beep frequency=415.3 length=48.8095ms; # G# 5
+:delay 86.9048ms;
+
+:beep frequency=783.99 length=845.238ms; # G 6
+:delay 1534.52ms;
+
+:beep frequency=415.3 length=451.19ms; # G# 5
+:delay 814.286ms;
+
+:beep frequency=659.25 length=48.8095ms; # E 6
+:delay 96.4286ms;
+
+:beep frequency=415.3 length=896.429ms; # G# 5
+:delay 1765.48ms;
+
+:beep frequency=698.46 length=488.095ms; # F 6
+:delay 1030.95ms;
+
+:beep frequency=783.99 length=67.8571ms; # G 6
+:delay 280.952ms;
+
+:beep frequency=783.99 length=859.524ms; # G 6
+:delay 1546.43ms;
+
+:beep frequency=698.46 length=448.81ms; # F 6
+:delay 808.333ms;
+
+:beep frequency=415.3 length=47.619ms; # G# 5
+:delay 89.2857ms;
+
+:beep frequency=698.46 length=861.905ms; # F 6
+:delay 1551.19ms;
+
+:beep frequency=783.99 length=444.048ms; # G 6
+:delay 802.381ms;
+
+:beep frequency=415.3 length=46.4286ms; # G# 5
+:delay 86.9048ms;
+
+:beep frequency=415.3 length=866.667ms; # G# 5
+:delay 1555.95ms;
+
+:beep frequency=783.99 length=450ms; # G 6
+:delay 810.714ms;
+
+:beep frequency=698.46 length=47.619ms; # F 6
+:delay 79.7619ms;
+
+:beep frequency=739.99 length=882.143ms; # F# 6
+:delay 1579.76ms;
+
+:beep frequency=783.99 length=447.619ms; # G 6
+:delay 820.238ms;
+
+:beep frequency=415.3 length=40.4762ms; # G# 5
+:delay 84.5238ms;
+
+:beep frequency=415.3 length=879.762ms; # G# 5
+:delay 1573.81ms;
+
+:beep frequency=739.99 length=467.857ms; # F# 6
+:delay 830.952ms;
+
+:beep frequency=783.99 length=47.619ms; # G 6
+:delay 83.3333ms;
+
+:beep frequency=415.3 length=860.714ms; # G# 5
+:delay 1570.24ms;
+
+:beep frequency=783.99 length=439.286ms; # G 6
+:delay 810.714ms;
+
+:beep frequency=739.99 length=40.4762ms; # F# 6
+:delay 83.3333ms;
+
+:beep frequency=739.99 length=883.333ms; # F# 6
+:delay 1752.38ms;
+
+:beep frequency=415.3 length=486.905ms; # G# 5
+:delay 1026.19ms;
+
+:beep frequency=783.99 length=67.8571ms; # G 6
+:delay 279.762ms;
+
+:beep frequency=392 length=473.81ms; # G 5
+:delay 825ms;
+
+:beep frequency=783.99 length=50ms; # G 6
+:delay 84.5238ms;
+
+:beep frequency=392 length=466.667ms; # G 5
+:delay 842.857ms;
+
+:beep frequency=783.99 length=36.9048ms; # G 6
+:delay 70.2381ms;
+
+:beep frequency=783.99 length=441.667ms; # G 6
+:delay 810.714ms;
+
+:beep frequency=392 length=46.4286ms; # G 5
+:delay 97.619ms;
+
+:beep frequency=392 length=489.286ms; # G 5
+:delay 1098.81ms;
+
+:beep frequency=783.99 length=69.0476ms; # G 6
+:delay 347.619ms;
+
+:beep frequency=392 length=534.524ms; # G 5
+:delay 1026.19ms;
+
+:beep frequency=783.99 length=109.524ms; # G 6
+:delay 269.048ms;
+
+:beep frequency=392 length=492.857ms; # G 5
+:delay 1035.71ms;
+
+:beep frequency=783.99 length=69.0476ms; # G 6
+:delay 282.143ms;
+
+:beep frequency=392 length=473.81ms; # G 5
+:delay 832.143ms;
+
+:beep frequency=783.99 length=50ms; # G 6
+:delay 92.8571ms;
+
+:beep frequency=783.99 length=451.19ms; # G 6
+:delay 827.381ms;
+
+:beep frequency=392 length=50ms; # G 5
+:delay 95.2381ms;
+
+:beep frequency=783.99 length=450ms; # G 6
+:delay 820.238ms;
+
+:beep frequency=392 length=50ms; # G 5
+:delay 90.4762ms;
+
+:beep frequency=415.3 length=869.048ms; # G# 5
+:delay 1546.43ms;
+
+:beep frequency=622.25 length=453.571ms; # Eb 6
+:delay 813.095ms;
+
+:beep frequency=466.16 length=46.4286ms; # Bb 5
+:delay 86.9048ms;
+
+:beep frequency=415.3 length=867.857ms; # G# 5
+:delay 1545.24ms;
+
+:beep frequency=622.25 length=450ms; # Eb 6
+:delay 804.762ms;
+
+:beep frequency=466.16 length=45.2381ms; # Bb 5
+:delay 76.1905ms;
+
+:beep frequency=466.16 length=850ms; # Bb 5
+:delay 1539.29ms;
+
+:beep frequency=415.3 length=450ms; # G# 5
+:delay 815.476ms;
+
+:beep frequency=622.25 length=36.9048ms; # Eb 6
+:delay 73.8095ms;
+
+:beep frequency=783.99 length=473.81ms; # G 6
+:delay 986.905ms;
+
+:beep frequency=392 length=61.9048ms; # G 5
+:delay 253.571ms;
+
+:beep frequency=466.16 length=866.667ms; # Bb 5
+:delay 1552.38ms;
+
+:beep frequency=415.3 length=457.143ms; # G# 5
+:delay 819.048ms;
+
+:beep frequency=622.25 length=42.8571ms; # Eb 6
+:delay 79.7619ms;
+
+:beep frequency=415.3 length=866.667ms; # G# 5
+:delay 1547.62ms;
+
+:beep frequency=466.16 length=459.524ms; # Bb 5
+:delay 817.857ms;
+
+:beep frequency=622.25 length=44.0476ms; # Eb 6
+:delay 77.381ms;
+
+:beep frequency=415.3 length=851.19ms; # G# 5
+:delay 1544.05ms;
+
+:beep frequency=466.16 length=446.429ms; # Bb 5
+:delay 809.524ms;
+
+:beep frequency=622.25 length=36.9048ms; # Eb 6
+:delay 75ms;
+
+:beep frequency=622.25 length=850ms; # Eb 6
+:delay 1532.14ms;
+
+:beep frequency=415.3 length=446.429ms; # G# 5
+:delay 810.714ms;
+
+:beep frequency=466.16 length=45.2381ms; # Bb 5
+:delay 89.2857ms;
+
+:beep frequency=622.25 length=850ms; # Eb 6
+:delay 1529.76ms;
+
+:beep frequency=415.3 length=452.381ms; # G# 5
+:delay 813.095ms;
+
+:beep frequency=466.16 length=48.8095ms; # Bb 5
+:delay 92.8571ms;
+
+:beep frequency=415.3 length=847.619ms; # G# 5
+:delay 1530.95ms;
+
+:beep frequency=622.25 length=440.476ms; # Eb 6
+:delay 805.952ms;
+
+:beep frequency=466.16 length=50ms; # Bb 5
+:delay 90.4762ms;
+
+:beep frequency=392 length=494.048ms; # G 5
+:delay 1016.67ms;
+
+:beep frequency=783.99 length=67.8571ms; # G 6
+:delay 259.524ms;
+
+:beep frequency=415.3 length=864.286ms; # G# 5
+:delay 1557.14ms;
+
+:beep frequency=622.25 length=447.619ms; # Eb 6
+:delay 814.286ms;
+
+:beep frequency=466.16 length=41.6667ms; # Bb 5
+:delay 83.3333ms;
+
+:beep frequency=415.3 length=865.476ms; # G# 5
+:delay 1548.81ms;
+
+:beep frequency=622.25 length=450ms; # Eb 6
+:delay 809.524ms;
+
+:beep frequency=466.16 length=48.8095ms; # Bb 5
+:delay 89.2857ms;
+
+:beep frequency=466.16 length=852.381ms; # Bb 5
+:delay 1539.29ms;
+
+:beep frequency=622.25 length=440.476ms; # Eb 6
+:delay 809.524ms;
+
+:beep frequency=415.3 length=47.619ms; # G# 5
+:delay 92.8571ms;
+
+:beep frequency=392 length=491.667ms; # G 5
+:delay 1021.43ms;
+
+:beep frequency=783.99 length=69.0476ms; # G 6
+:delay 283.333ms;
+
+:beep frequency=392 length=472.619ms; # G 5
+:delay 845.238ms;
+
+:beep frequency=783.99 length=47.619ms; # G 6
+:delay 88.0952ms;
+
+:beep frequency=392 length=471.429ms; # G 5
+:delay 838.095ms;
+
+:beep frequency=783.99 length=47.619ms; # G 6
+:delay 83.3333ms;
+
+:beep frequency=392 length=467.857ms; # G 5
+:delay 848.81ms;
+
+:beep frequency=783.99 length=40.4762ms; # G 6
+:delay 82.1429ms;
+
+:beep frequency=783.99 length=478.571ms; # G 6
+:delay 1382.14ms;
+
+:beep frequency=392 length=67.8571ms; # G 5
+:delay 655.952ms;
+

@@ -1,0 +1,69 @@
+:beep frequency=1661.22 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 250ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 250ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 250ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 250ms;
+
+:beep frequency=1760 length=62.5ms;
+:delay 187.5ms;
+
+:beep frequency=1760 length=62.5ms;
+:delay 187.5ms;
+
+:beep frequency=1760 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 250ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 250ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 250ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1661.22 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=830.61 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1760 length=62.5ms;
+:delay 187.5ms;
+
+:beep frequency=1760 length=62.5ms;
+:delay 125ms;
+
+:beep frequency=1760 length=62.5ms;
+:delay 62.5ms;
+
