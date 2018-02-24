@@ -24,13 +24,13 @@
 #include "MidiFile.h"
 #include "MTrkChunk.h"
 
-using namespace std;
+//using namespace std;
 
 int main(int argc, char *argv[]){
     int res = 0;
     int octave_shift = 0;
     int note_shift = 0;
-    string file_name = "";
+    std::string file_name = "";
     int new_bpm = -1;
     bool enable_comments_flag = false;
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
     if( file_name != "" ){
         MidiFile midi_obj( file_name, (int)octave_shift, (int)note_shift, (int)new_bpm, enable_comments_flag );
     } else {
-        cout << "Error: No file specified" << endl;
+        std::cout << "Error: No file specified" << std::endl;
     }
 
     return 0;

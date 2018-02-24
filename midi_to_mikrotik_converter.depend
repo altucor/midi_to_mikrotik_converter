@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1503891648 source:h:\codeblocksprj\01.09.2017-01.07.2018\midi_to_mikrotik_converter\main.cpp
+1519509119 source:h:\codeblocksprj\01.09.2017-01.07.2018\midi_to_mikrotik_converter\main.cpp
 	<iostream>
 	<stdlib.h>
 	<fstream>
@@ -9,9 +9,9 @@
 	"MidiFile.h"
 	"MTrkChunk.h"
 
-1504204171 source:h:\codeblocksprj\01.09.2017-01.07.2018\midi_to_mikrotik_converter\src\midifile.cpp
+1519511135 source:h:\codeblocksprj\01.09.2017-01.07.2018\midi_to_mikrotik_converter\src\midifile.cpp
 	"MidiFile.h"
 
-1504109865 source:h:\codeblocksprj\01.09.2017-01.07.2018\midi_to_mikrotik_converter\src\mtrkchunk.cpp
+1519510962 source:h:\codeblocksprj\01.09.2017-01.07.2018\midi_to_mikrotik_converter\src\mtrkchunk.cpp
 	"MTrkChunk.h"
 

@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "MTrkChunk.h"
 
-using namespace std;
+//using namespace std;
 
 class MidiFile
 {
@@ -17,12 +17,11 @@ class MidiFile
         // Persists
 
         // Functions
-        MidiFile(void);
-        MidiFile( string _fp, int _octave_shift, int _note_shift, int _new_bpm, bool _comments_flag );
+        MidiFile( const std::string &_fp, const int &_octave_shift, const int &_note_shift, const int &_new_bpm, const bool &_comments_flag );
         virtual ~MidiFile();
-        string getPath();
+        std::string getPath();
         int getFileSize();
-        vector<unsigned char> getFileData();
+        std::vector<unsigned char> getFileData();
 
         double getFullTrackLength();
 
@@ -37,7 +36,7 @@ class MidiFile
         bool comments_flag = false;
         int file_size = 0;
         int fptr = 0; //file pointer
-        vector<unsigned char> file_data;
+        std::vector<unsigned char> file_data;
         //vector<struct> mtrk_chunks_arr;
         //int mtrk_chunk_length = 0;
         bool is_file_success_readed = false;
@@ -51,16 +50,16 @@ class MidiFile
         int ftl_h = 0; //ftl - full_track_length in hours
         int ftl_m = 0; //ftl - full_track_length in minutes
         int ftl_s = 0; //ftl - full_track_length in secondss
-        vector<double> freq_notes_arr;
-        vector<vector<int>> length_notes_on_arr;
-        vector<vector<int>> length_notes_off_arr;
-        vector<string> symbolic_notes_arr;
-        vector<int> first_dly;
+        std::vector<double> freq_notes_arr;
+        std::vector<std::vector<int>> length_notes_on_arr;
+        std::vector<std::vector<int>> length_notes_off_arr;
+        std::vector<std::string> symbolic_notes_arr;
+        std::vector<int> first_dly;
 
         // Functions
-        int _readfile( string path);
+        int _readfile( std::string path);
         int _find_chunks_and_decode();
-        int _create_mikrotik_script_file( int chunk_number, string track_text, string track_name_comment, int notes_cnt, int note_ch );
+        int _create_mikrotik_script_file( const int &chunk_number, const std::string &track_text, const std::string &track_name_comment, const int &notes_cnt, const int &note_ch );
         void _humanize_time();
 };
 

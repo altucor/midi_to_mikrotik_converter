@@ -10,30 +10,31 @@ MTrkChunk::~MTrkChunk()
     //dtor
 }
 
-int MTrkChunk::setInitData( int chunk_ptr, vector<unsigned char> chunk_data, int _mtrk_octave_shift, int _mtrk_note_shift ){
-    cptr = chunk_ptr;
+int MTrkChunk::setInitData( const int &chunk_ptr, const std::vector<unsigned char> &chunk_data, const int &_mtrk_octave_shift, const int &_mtrk_note_shift )
+{
+    m_chunkPtr = chunk_ptr;
 
-    cdata = chunk_data;
-    this->mtrk_start_pos = chunk_ptr;
-    this->mtrk_octave_shift = _mtrk_octave_shift * 12;
-    this->mtrk_note_shift = _mtrk_note_shift;
+    m_chunkData = chunk_data;
+    m_mtrkStartPos = chunk_ptr;
+    m_mtrkOctaveShift = _mtrk_octave_shift * 12;
+    m_mtrkNoteShift = _mtrk_note_shift;
 
 
-    if( this->_work() == 1 ){
-        this->_detect_events_note_on();
-        this->_detect_events_note_off();
-        this->_detectTempo();
-        this->_detectTrackName();
-        this->_detect_text();
-        this->_found_note_channel();
-        //this->_detect_first_delay(); // -- not working, in process
+    if( _work() == 1 ){
+        _detect_events_note_on();
+        _detect_events_note_off();
+        _detectTempo();
+        _detectTrackName();
+        _detect_text();
+        _found_note_channel();
+        //_detect_first_delay(); // -- not working, in process
 
-        if(this->note_channel >=0 && this->note_channel <=16){
-            cout << "Founded notes channel: " << this->note_channel << endl;
+        if(m_noteChannel >=0 && m_noteChannel <=16){
+            std::cout << "Founded notes channel: " << m_noteChannel << std::endl;
         }
 
-        //cout << "   dbg on note_ch: " << 144 + this->note_channel << endl;
-        //cout << "   dbg off note_ch: " << 128 + this->note_channel << endl;
+        //cout << "   dbg on note_ch: " << 144 + m_noteChannel << endl;
+        //cout << "   dbg off note_ch: " << 128 + m_noteChannel << endl;
 
         return 1;
     } else {
@@ -43,24 +44,24 @@ int MTrkChunk::setInitData( int chunk_ptr, vector<unsigned char> chunk_data, int
 
 int MTrkChunk::_work(){
 
-    if( this->cdata[this->cptr++] == 77 &&
-        this->cdata[this->cptr++] == 84 &&
-        this->cdata[this->cptr++] == 114 &&
-        this->cdata[this->cptr++] == 107 ){
+    if( m_chunkData[m_chunkPtr++] == 77 &&
+        m_chunkData[m_chunkPtr++] == 84 &&
+        m_chunkData[m_chunkPtr++] == 114 &&
+        m_chunkData[m_chunkPtr++] == 107 ){
 
         //cout << "  DBG: MTrk chunk found" << endl;
 
-        this->mtrk_sz  = (unsigned char)this->cdata[this->cptr++] << 24;
-        this->mtrk_sz |= (unsigned char)this->cdata[this->cptr++] << 16;
-        this->mtrk_sz |= (unsigned char)this->cdata[this->cptr++] << 8;
-        this->mtrk_sz |= (unsigned char)this->cdata[this->cptr++];
+        m_mtrkSize  = (unsigned char)m_chunkData[m_chunkPtr++] << 24;
+        m_mtrkSize |= (unsigned char)m_chunkData[m_chunkPtr++] << 16;
+        m_mtrkSize |= (unsigned char)m_chunkData[m_chunkPtr++] << 8;
+        m_mtrkSize |= (unsigned char)m_chunkData[m_chunkPtr++];
 
-        cout << "MTrk chunk length: " << std::dec << static_cast<int>(this->mtrk_sz) << endl;
-        this->mtrk_end_pos = this->mtrk_start_pos + this->mtrk_sz + 8;
+        std::cout << "MTrk chunk length: " << std::dec << static_cast<int>(m_mtrkSize) << std::endl;
+        m_mtrkEndPos = m_mtrkStartPos + m_mtrkSize + 8;
 
 
-        for( int i=this->cptr; i<this->cptr + static_cast<int>(this->mtrk_sz); i++){
-            this->chunk_body.push_back(this->cdata[i]);
+        for( int i=m_chunkPtr; i<m_chunkPtr + static_cast<int>(m_mtrkSize); i++){
+            m_chunkBody.push_back(m_chunkData[i]);
         }
         return 1;
     } else {
@@ -69,35 +70,35 @@ int MTrkChunk::_work(){
 }
 
 int MTrkChunk::getStartPos(){
-    return this->mtrk_start_pos;
+    return m_mtrkStartPos;
 }
 
 int MTrkChunk::getEndPos(){
-    return this->mtrk_end_pos;
+    return m_mtrkEndPos;
 }
 
 int MTrkChunk::getSize(){
-    return this->mtrk_sz;
+    return m_mtrkSize;
 }
 
 void MTrkChunk::dbg_printBody(){
     int iter = 1;
-    for( int i=0; i<this->chunk_body.size(); i++){
-        cout << static_cast<int>(this->chunk_body[i]) << "\t";
-        //cout << std::hex << this->chunk_body[i] << "\t";
+    for( uint64_t i=0; i<m_chunkBody.size(); i++){
+        std::cout << static_cast<int>(m_chunkBody[i]) << "\t";
+        //cout << std::hex << m_chunkBody[i] << "\t";
 
         if(iter == 4){
-            cout << endl;
+            std::cout << std::endl;
             iter = 0;
         }
         iter++;
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 /*
 void MTrkChunk::_detect_first_delay(){
-    //this->dbg_printBody();
+    //dbg_printBody();
 
     bool loop_flag = true;
     int i = 0;
@@ -106,22 +107,22 @@ void MTrkChunk::_detect_first_delay(){
 
 
 
-    for( i=0; i<this->chunk_body.size(); i++){
-        if( this->chunk_body[i] == 255 ){
+    for( i=0; i<chunk_body.size(); i++){
+        if( chunk_body[i] == 255 ){
             int header_shift = i + shift_1 + 2;
-            if(this->chunk_body[i+shift_1] == 1) {new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 2) {new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 3) {new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 4) {new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 5) {new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 6) {new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 7) {new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 32){new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 33){new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 81){new_shift = (unsigned char)this->chunk_body[i + shift_1 + 1] + header_shift;}
-            else if(this->chunk_body[i+shift_1] == 47){break;}
+            if(chunk_body[i+shift_1] == 1) {new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 2) {new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 3) {new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 4) {new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 5) {new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 6) {new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 7) {new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 32){new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 33){new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 81){new_shift = (unsigned char)chunk_body[i + shift_1 + 1] + header_shift;}
+            else if(chunk_body[i+shift_1] == 47){break;}
         }
-        else if( i >= this->first_note_on_byte_addr ){
+        else if( i >= first_note_on_byte_addr ){
             break;
         }
         //i++;
@@ -131,114 +132,114 @@ void MTrkChunk::_detect_first_delay(){
         cout << " I " << i << endl;
     }
 
-    cout << " First note byte addr: " << this->first_note_on_byte_addr << endl;
-    cout << " DBG: " << static_cast<int>(this->chunk_body[this->first_note_on_byte_addr]) << endl;
+    cout << " First note byte addr: " << first_note_on_byte_addr << endl;
+    cout << " DBG: " << static_cast<int>(chunk_body[first_note_on_byte_addr]) << endl;
     cout << " NEW SHIFT ADDR: " << new_shift << endl;
-    cout << " DBG BYTE BEFORE 0x90: "<< static_cast<int>(this->chunk_body[new_shift]) << endl;
+    cout << " DBG BYTE BEFORE 0x90: "<< static_cast<int>(chunk_body[new_shift]) << endl;
 
 
     int counter = 0;
-    int bytes_cnt = this->first_note_on_byte_addr - new_shift;
+    int bytes_cnt = first_note_on_byte_addr - new_shift;
 
-    for( int i=new_shift; i < this->first_note_on_byte_addr; i++){
-        this->first_delay.push_back(this->chunk_body[i]);
+    for( int i=new_shift; i < first_note_on_byte_addr; i++){
+        m_firstDelay.push_back(chunk_body[i]);
         counter++;
     }
-    //cout << " DLY: " << static_cast<int>(this->first_delay) << endl;
+    //cout << " DLY: " << static_cast<int>(m_firstDelay) << endl;
 }
 */
 
 /*
 vector<int> MTrkChunk::getFirstDelay(){
-    return this->first_delay;
+    return m_firstDelay;
 }
 */
 
 int MTrkChunk::_found_note_channel(){
-    this->note_channel = 0;
+    m_noteChannel = 0;
     for(int i=0; i<17; i++){
-        this->_detect_events_note_on();
-        this->_detect_events_note_off();
+        _detect_events_note_on();
+        _detect_events_note_off();
 
-        if( this->events_note_on.size() > 0 && this->events_note_off.size() > 0 && this->events_note_on.size() == this->events_note_off.size() ){
+        if( m_eventsNoteOn.size() > 0 && m_eventsNoteOff.size() > 0 && m_eventsNoteOn.size() == m_eventsNoteOff.size() ){
             //cout << "------------" << i << endl;
             return i;
         }
 
-        //this->note_channel = this->note_channel + 1;
-        this->note_channel++;
+        //m_noteChannel = m_noteChannel + 1;
+        m_noteChannel++;
     }
     return -1;
 }
 
 int MTrkChunk::getNoteChannel(){
-    if( this->note_channel > 16 ){
+    if( m_noteChannel > 16 ){
         return -1;
     } else {
-        return this->note_channel;
+        return m_noteChannel;
     }
 }
 
 int MTrkChunk::_detect_events_note_on(){
     int j=0;
 
-    this->events_note_on.clear();
-    this->chunk_length_notes_on.clear();
-    this->chunk_freq_notes.clear();
-    this->chunk_symbolic_notes.clear();
+    m_eventsNoteOn.clear();
+    m_chunkLengthNotesOn.clear();
+    m_chunkFreqNotes.clear();
+    m_chunkSymbolicNotes.clear();
 
-    for( int i=0; i<this->chunk_body.size(); i++){
-        if( this->chunk_body[i]   == (this->cmd_note_on + this->note_channel) && //144 - 0x90
-            this->chunk_body[i+1] >= 0 && this->chunk_body[i+1] <= 127 &&
-            this->chunk_body[i+2] >= 0 && this->chunk_body[i+2] <= 127 ){
+    for( uint64_t i=0; i<m_chunkBody.size(); i++){
+        if( m_chunkBody[i]   == (m_cmdNoteOn + m_noteChannel) && //144 - 0x90
+            m_chunkBody[i+1] >= 0 && m_chunkBody[i+1] <= 127 &&
+            m_chunkBody[i+2] >= 0 && m_chunkBody[i+2] <= 127 ){
 
             //find bytes before 0x8Y Y - channel number
 
-            int k=0;
+            uint64_t k=0;
             int ptr_shift = 3;
-            vector<int> note_on_len_multibyte_arr;
+            std::vector<int> note_on_len_multibyte_arr;
 
-            for( k=0; k<this->chunk_body.size(); k++){
-                if( this->chunk_body[i+ptr_shift+k] == (this->cmd_note_off + this->note_channel) ){
+            for( k=0; k<m_chunkBody.size(); k++){
+                if( m_chunkBody[i+ptr_shift+k] == (m_cmdNoteOff + m_noteChannel) ){
                     break;
                 } else {
-                    note_on_len_multibyte_arr.push_back( this->chunk_body[i+ptr_shift+k] );
-                    //cout << " Last added note: " << <this->chunk_body[i+ptr_shift+k] << endl;
+                    note_on_len_multibyte_arr.push_back( m_chunkBody[i+ptr_shift+k] );
+                    //std::cout << " Last added note: " << <m_chunkBody[i+ptr_shift+k] << endl;
                 }
             }
-            //cout << " NOTE CH: " << this->note_channel << endl;
-            //cout << " CNT BYTES: " << note_on_len_multibyte_arr.size() << endl;
+            //std::cout << " NOTE CH: " << m_noteChannel << endl;
+            //std::cout << " CNT BYTES: " << note_on_len_multibyte_arr.size() << endl;
 
 
 
 
 
-            vector<unsigned char> note;
+            std::vector<unsigned char> note;
 
-            note.push_back(this->chunk_body[i]);    //0x90 - note on channel #1
-            note.push_back(this->chunk_body[i+1]);  //note pitch
-            note.push_back(this->chunk_body[i+2]);  //note velocity
-            note.push_back(this->chunk_body[i+3]);  //note length
+            note.push_back(m_chunkBody[i]);    //0x90 - note on channel #1
+            note.push_back(m_chunkBody[i+1]);  //note pitch
+            note.push_back(m_chunkBody[i+2]);  //note velocity
+            note.push_back(m_chunkBody[i+3]);  //note length
 
 
-            this->events_note_on.push_back(note);
+            m_eventsNoteOn.push_back(note);
 
-            int note_index = this->chunk_body[i+1] + this->mtrk_octave_shift + this->mtrk_note_shift;
+            uint64_t note_index = m_chunkBody[i+1] + m_mtrkOctaveShift + m_mtrkNoteShift;
 
             if( note_index < 0 ){
                 while( note_index < 0) note_index += 12;
-            } else if( note_index > (this->freq_notes.size() -1) ){
-                while( note_index > (this->freq_notes.size() - 1) ) note_index -= 12;
+            } else if( note_index > (m_freqNotes.size() -1) ){
+                while( note_index > (m_freqNotes.size() - 1) ) note_index -= 12;
             }
 
-            this->chunk_freq_notes.push_back(this->freq_notes[note_index]);
-            this->chunk_symbolic_notes.push_back(this->symbolic_notes[note_index]);
-            //this->chunk_length_notes_on.push_back(this->chunk_body[i+3]);
-            this->chunk_length_notes_on.push_back(note_on_len_multibyte_arr);
+            m_chunkFreqNotes.push_back(m_freqNotes[note_index]);
+            m_chunkSymbolicNotes.push_back(m_symbolicNotes[note_index]);
+            //chunk_length_notes_on.push_back(m_chunkBody[i+3]);
+            m_chunkLengthNotesOn.push_back(note_on_len_multibyte_arr);
 
             //detecting addr of first note on event
-            if( this->chunk_freq_notes.size() == 1 ){
-                this->first_note_on_byte_addr = i;
+            if( m_chunkFreqNotes.size() == 1 ){
+                m_firstNoteOnByteAddr = i;
             }
 
             j++;
@@ -251,66 +252,66 @@ int MTrkChunk::_detect_events_note_on(){
         return 0;
     }
 
-    cout << endl;
+    std::cout << std::endl;
 }
 
-vector<double> MTrkChunk::getFreqNotes(){
-    return this->chunk_freq_notes;
+std::vector<double> MTrkChunk::getFreqNotes(){
+    return m_chunkFreqNotes;
 }
 
-vector<vector<int>> MTrkChunk::getLengthNotesON(){
-    return this->chunk_length_notes_on;
+std::vector<std::vector<int>> MTrkChunk::getLengthNotesON(){
+    return m_chunkLengthNotesOn;
 }
 
 int MTrkChunk::getEventsNoteONCount(){
-    return this->events_note_on.size();
+    return m_eventsNoteOn.size();
 }
 
-vector<string> MTrkChunk::getSymbolicNotes(){
-    return this->chunk_symbolic_notes;
+std::vector<std::string> MTrkChunk::getSymbolicNotes(){
+    return m_chunkSymbolicNotes;
 }
 
 int MTrkChunk::_detect_events_note_off(){
     int j=0;
 
-    this->events_note_off.clear();
-    this->chunk_length_notes_off.clear();
+    m_eventsNoteOff.clear();
+    m_chunkLengthNotesOff.clear();
 
 
-    for( int i=0; i<this->chunk_body.size(); i++){
-        if( this->chunk_body[i] == (this->cmd_note_off + this->note_channel) && // 128 - 0x80
-            this->chunk_body[i+1] >= 0 && this->chunk_body[i+1] <= 127 &&
-            this->chunk_body[i+2] >= 0 && this->chunk_body[i+2] <= 127 ){
+    for( uint64_t i=0; i<m_chunkBody.size(); i++){
+        if( m_chunkBody[i] == (m_cmdNoteOff + m_noteChannel) && // 128 - 0x80
+            m_chunkBody[i+1] >= 0 && m_chunkBody[i+1] <= 127 &&
+            m_chunkBody[i+2] >= 0 && m_chunkBody[i+2] <= 127 ){
 
 
             //find bytes before FF 2F 00
 
-            int k=0;
+            uint64_t k=0;
             int ptr_shift = 3;
-            vector<int> note_off_len_multibyte_arr;
+            std::vector<int> note_off_len_multibyte_arr;
 
-            for( k=0; k<this->chunk_body.size(); k++){
-                if( this->chunk_body[i+ptr_shift+k] == (this->cmd_note_on + this->note_channel) ||
-                    (this->chunk_body[i+ptr_shift+k] == 255 &&
-                     this->chunk_body[i+ptr_shift+k+1] == 47 &&
-                     this->chunk_body[i+ptr_shift+k+2] == 0) ){
+            for( k=0; k<m_chunkBody.size(); k++){
+                if( m_chunkBody[i+ptr_shift+k] == (m_cmdNoteOn + m_noteChannel) ||
+                    (m_chunkBody[i+ptr_shift+k] == 255 &&
+                     m_chunkBody[i+ptr_shift+k+1] == 47 &&
+                     m_chunkBody[i+ptr_shift+k+2] == 0) ){
                     break;
                 } else {
-                    note_off_len_multibyte_arr.push_back( this->chunk_body[i+ptr_shift+k] );
+                    note_off_len_multibyte_arr.push_back( m_chunkBody[i+ptr_shift+k] );
                 }
             }
 
 
-            vector<unsigned char> note;
+            std::vector<unsigned char> note;
 
-            note.push_back(this->chunk_body[i]);    //0x80 - note off channel #1
-            note.push_back(this->chunk_body[i+1]);  //note pitch
-            note.push_back(this->chunk_body[i+2]);  //note velocity
-            note.push_back(this->chunk_body[i+3]);  //note length
+            note.push_back(m_chunkBody[i]);    //0x80 - note off channel #1
+            note.push_back(m_chunkBody[i+1]);  //note pitch
+            note.push_back(m_chunkBody[i+2]);  //note velocity
+            note.push_back(m_chunkBody[i+3]);  //note length
 
-            this->events_note_off.push_back(note);
-            //this->chunk_length_notes_off.push_back(this->chunk_body[i+3]);
-            this->chunk_length_notes_off.push_back(note_off_len_multibyte_arr);
+            m_eventsNoteOff.push_back(note);
+            //chunk_length_notes_off.push_back(m_chunkBody[i+3]);
+            m_chunkLengthNotesOff.push_back(note_off_len_multibyte_arr);
 
             j++;
         }
@@ -323,36 +324,36 @@ int MTrkChunk::_detect_events_note_off(){
     }
 }
 
-vector<vector<int>> MTrkChunk::getLengthNotesOFF(){
-    return this->chunk_length_notes_off;
+std::vector<std::vector<int>> MTrkChunk::getLengthNotesOFF(){
+    return m_chunkLengthNotesOff;
 }
 
 int MTrkChunk::getEventsNoteOFFCount(){
-    return this->events_note_off.size();
+    return m_eventsNoteOff.size();
 }
 
 void MTrkChunk::dbg_printSymbolicNotes(){
-    if( this->events_note_on.size() > 0 ){
-        for( int i=0; i<this->events_note_on.size(); i++){
+    if( m_eventsNoteOn.size() > 0 ){
+        for( uint64_t i=0; i<m_eventsNoteOn.size(); i++){
             for( int j=0; j<4; j++){
                 if( j == 1){
-                    cout << this->symbolic_notes[static_cast<int>(this->events_note_on[i][j])];
+                    std::cout << m_symbolicNotes[static_cast<int>(m_eventsNoteOn[i][j])];
                 }
             }
-            cout << endl;
+            std::cout << std::endl;
         }
     }
 }
 
 void MTrkChunk::dbg_printFreqNotes(){
-    if( this->events_note_on.size() > 0 ){
-        for( int i=0; i<this->events_note_on.size(); i++){
+    if( m_eventsNoteOn.size() > 0 ){
+        for( uint64_t i=0; i<m_eventsNoteOn.size(); i++){
             for( int j=0; j<4; j++){
                 if( j == 1){
-                    cout << this->freq_notes[static_cast<int>(this->events_note_on[i][j])];
+                    std::cout << m_freqNotes[static_cast<int>(m_eventsNoteOn[i][j])];
                 }
             }
-            cout << endl;
+            std::cout << std::endl;
         }
     }
 }
@@ -360,69 +361,69 @@ void MTrkChunk::dbg_printFreqNotes(){
 
 int MTrkChunk::_detectTempo(){
     //FF 51 03 tt tt tt
-    for( int i=0; i<this->chunk_body.size(); i++){
-        if( this->chunk_body[i]   == 255 &&
-            this->chunk_body[i+1] == 81 &&
-            this->chunk_body[i+2] == 3 ){
+    for( uint64_t i=0; i<m_chunkBody.size(); i++){
+        if( m_chunkBody[i]   == 255 &&
+            m_chunkBody[i+1] == 81 &&
+            m_chunkBody[i+2] == 3 ){
 
             int tmp_tempo = 0;
-            tmp_tempo  = (unsigned char)this->chunk_body[i+3] << 16;
-            tmp_tempo |= (unsigned char)this->chunk_body[i+4] << 8;
-            tmp_tempo |= (unsigned char)this->chunk_body[i+5];
-            this->tempo = 60000000 / tmp_tempo;
+            tmp_tempo  = (unsigned char)m_chunkBody[i+3] << 16;
+            tmp_tempo |= (unsigned char)m_chunkBody[i+4] << 8;
+            tmp_tempo |= (unsigned char)m_chunkBody[i+5];
+            m_tempo = 60000000 / tmp_tempo;
 
-            //cout << " Tempo: " << this->tempo << " BPM" << endl;
+            //cout << " Tempo: " << m_tempo << " BPM" << endl;
         }
     }
 }
 
 int MTrkChunk::getTempo(){
-    return this->tempo;
+    return m_tempo;
 }
 
 int MTrkChunk::_detectTrackName(){
     //FF 03 len text
-    for( int i=0; i<this->chunk_body.size(); i++){
-        if( this->chunk_body[i]   == 255 &&
-            this->chunk_body[i+1] == 3 ){
+    for( uint64_t i=0; i<m_chunkBody.size(); i++){
+        if( m_chunkBody[i]   == 255 &&
+            m_chunkBody[i+1] == 3 ){
 
-            this->track_name_length = this->chunk_body[i+2];
+            m_trackNameLength = m_chunkBody[i+2];
 
-            for( int j=i+3; j<i+3+this->track_name_length; j++){
-                this->track_name.push_back(chunk_body[j]);
+            for( int j=i+3; j<i+3+m_trackNameLength; j++){
+                m_trackName.push_back(m_chunkBody[j]);
             }
         }
     }
 }
 
 int MTrkChunk::getTrackNameLength(){
-    return this->track_name_length;
+    return m_trackNameLength;
 }
 
-string MTrkChunk::getTrackName(){
-    return this->track_name;
+std::string MTrkChunk::getTrackName(){
+    return m_trackName;
 }
 
 void MTrkChunk::_detect_text(){
     //FF 01 len text
-    for( int i=0; i<this->chunk_body.size(); i++){
-        if( this->chunk_body[i]   == 255 &&
-            this->chunk_body[i+1] == 1 ){
+    for( uint64_t i=0; i<m_chunkBody.size(); i++){
+        if( m_chunkBody[i]   == 255 &&
+            m_chunkBody[i+1] == 1 ){
 
-            this->track_text_length = this->chunk_body[i+2];
+            m_trackTextLength = m_chunkBody[i+2];
 
-            for( int j=i+3; j<i+3+this->track_text_length; j++){
-                this->track_text.push_back(chunk_body[j]);
+            for( int j=i+3; j<i+3+m_trackTextLength; j++){
+                m_trackText.push_back(m_chunkBody[j]);
             }
         }
     }
 }
 
 int MTrkChunk::getTrackTextLength(){
-    return this->track_text_length;
+    return m_trackTextLength;
 }
 
-string MTrkChunk::getTrackText(){
-    return this->track_text;
+std::string MTrkChunk::getTrackText(){
+    return m_trackText;
 }
 

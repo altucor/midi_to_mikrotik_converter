@@ -1,4 +1,13 @@
-#Track comment: 
+#----------------File Description-----------------#
+# This file created by Midi To Mikrotik Converter
+# Original midi file name/path: midi_files\1ch_star_wars.mid
+# Track BPM: 140
+# MIDI Channel: 0
+# Number of notes: 176
+# Track text: 
+# Track comment: reFX Nexus #2 1
+#-------------------------------------------------#
+
 :beep frequency=130.81 length=116.071ms; # C 4
 :delay 424.107ms;
 
@@ -8,8 +17,8 @@
 :beep frequency=65.41 length=116.071ms; # C 3
 :delay 428.571ms;
 
-:beep frequency=49 length=575.893ms; # G 2
-:delay 1174.11ms;
+:beep frequency=49 length=785.714ms; # G 2
+:delay 1459.82ms;
 
 :beep frequency=98 length=294.643ms; # G 3
 :delay 428.571ms;
@@ -96,28 +105,28 @@
 :delay 71.4286ms;
 
 :beep frequency=98 length=53.5714ms; # G 3
-:delay 825.893ms;
+:delay 986.607ms;
 
 :beep frequency=58.27 length=98.2143ms; # Bb 2
-:delay 674.107ms;
+:delay 861.607ms;
 
 :beep frequency=58.27 length=93.75ms; # Bb 2
-:delay 669.643ms;
+:delay 857.143ms;
 
 :beep frequency=82.41 length=84.8214ms; # E 3
-:delay 678.571ms;
+:delay 1169.64ms;
 
 :beep frequency=92.5 length=98.2143ms; # F# 3
 :delay 428.571ms;
 
 :beep frequency=92.5 length=93.75ms; # F# 3
-:delay 674.107ms;
+:delay 723.214ms;
 
 :beep frequency=92.5 length=93.75ms; # F# 3
 :delay 428.571ms;
 
 :beep frequency=92.5 length=93.75ms; # F# 3
-:delay 700.893ms;
+:delay 750ms;
 
 :beep frequency=61.74 length=276.786ms; # B 2
 :delay 428.571ms;
@@ -252,10 +261,10 @@
 :delay 214.286ms;
 
 :beep frequency=98 length=129.464ms; # G 3
-:delay 799.107ms;
+:delay 950.893ms;
 
-:beep frequency=98 length=575.893ms; # G 3
-:delay 656.25ms;
+:beep frequency=98 length=785.714ms; # G 3
+:delay 866.071ms;
 
 :beep frequency=77.78 length=107.143ms; # Eb 3
 :delay 428.571ms;
@@ -308,8 +317,8 @@
 :beep frequency=130.81 length=352.679ms; # C 4
 :delay 428.571ms;
 
-:beep frequency=98 length=575.893ms; # G 3
-:delay 1075.89ms;
+:beep frequency=98 length=785.714ms; # G 3
+:delay 1285.71ms;
 
 :beep frequency=98 length=40.1786ms; # G 3
 :delay 75.8929ms;
@@ -437,11 +446,11 @@
 :beep frequency=130.81 length=352.679ms; # C 4
 :delay 424.107ms;
 
-:beep frequency=98 length=575.893ms; # G 3
-:delay 1200.89ms;
+:beep frequency=98 length=785.714ms; # G 3
+:delay 1491.07ms;
 
 :beep frequency=49 length=116.071ms; # G 2
-:delay 696.429ms;
+:delay 723.214ms;
 
 :beep frequency=155.56 length=375ms; # Eb 4
 :delay 428.571ms;
@@ -465,7 +474,7 @@
 :delay 214.286ms;
 
 :beep frequency=49 length=62.5ms; # G 2
-:delay 638.393ms;
+:delay 647.321ms;
 
 :beep frequency=49 length=35.7143ms; # G 2
 :delay 71.4286ms;
@@ -486,7 +495,7 @@
 :delay 214.286ms;
 
 :beep frequency=49 length=62.5ms; # G 2
-:delay 638.393ms;
+:delay 647.321ms;
 
 :beep frequency=49 length=35.7143ms; # G 2
 :delay 71.4286ms;
@@ -509,11 +518,11 @@
 :beep frequency=98 length=40.1786ms; # G 3
 :delay 71.4286ms;
 
-:beep frequency=130.81 length=593.75ms; # C 4
-:delay 691.964ms;
+:beep frequency=130.81 length=852.679ms; # C 4
+:delay 950.893ms;
 
 :beep frequency=49 length=84.8214ms; # G 2
-:delay 674.107ms;
+:delay 1089.29ms;
 
 :beep frequency=73.42 length=35.7143ms; # D 3
 :delay 71.4286ms;
