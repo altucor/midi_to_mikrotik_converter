@@ -21,32 +21,36 @@
 #include <cstdio>
 #include <vector>
 #include <unistd.h>
-#include "MidiFile.h"
-#include "MTrkChunk.h"
-
-//using namespace std;
+#include "./include/MidiFile.h"
+#include "./include/MTrkChunk.h"
 
 int main(int argc, char *argv[]){
-    int res = 0;
-    int octave_shift = 0;
-    int note_shift = 0;
-    std::string file_name = "";
-    int new_bpm = -1;
-    bool enable_comments_flag = false;
+    int result = 0;
+    int octaveShift = 0;
+    int noteShift = 0;
+    std::string fileName = "";
+    int newBpm = -1;
+    bool enableCommentsFlag = false;
 
-    while ( (res = getopt(argc,argv,"o:n:f:b:c")) != -1){
-        switch (res){
-            case 'o': octave_shift = atoi(optarg);        break; //octave shift
-            case 'n': note_shift = atoi(optarg);          break; //note shift
-            case 'f': file_name = optarg;                 break; //midi file
-            case 'b': new_bpm = atoi(optarg);             break; //set new bpm for all files
-            case 'c': enable_comments_flag = true;        break; //enable note comments in output file
+    while ( (result = getopt(argc,argv,"o:n:f:b:c")) != -1){
+        switch (result){
+            case 'o': octaveShift = atoi(optarg);         break; //octave shift
+            case 'n': noteShift = atoi(optarg);           break; //note shift
+            case 'f': fileName = optarg;                  break; //midi file
+            case 'b': newBpm = atoi(optarg);              break; //set new bpm for all files
+            case 'c': enableCommentsFlag = true;          break; //enable note comments in output file
             case '?': printf("Error argument found !\n"); break; //Error handler
         };
 	};
 
-    if( file_name != "" ){
-        MidiFile midi_obj( file_name, (int)octave_shift, (int)note_shift, (int)new_bpm, enable_comments_flag );
+    if( fileName != "" ){
+        MidiFile midiObj;
+        midiObj.setFilePath(fileName);
+        midiObj.setOctaveShift(octaveShift);
+        midiObj.setNoteShift(noteShift);
+        midiObj.setNewBpm(newBpm);
+        midiObj.setEnableCommentsTo(enableCommentsFlag);
+        midiObj.parseFile();
     } else {
         std::cout << "Error: No file specified" << std::endl;
     }
