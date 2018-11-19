@@ -6,6 +6,32 @@
 #include <fstream>
 #include <vector>
 
+enum STATE
+{
+    UNDEFINED = 0,
+    HEADER_MARKER,
+    HEADER_SIZE,
+    FIRST_DELAY,
+    NOTE_ON,
+    NOTE_OFF,
+    EVENT,
+    TEXT,
+    COPYRIGHT,
+    TRACK_NAME,
+    INSTRUMENT_NAME,
+    VOCAL_TEXT,
+    TEXT_MARKER,
+    CUE_POINT,
+    MIDI_CHANNEL,
+    MIDI_PORT,
+    TEMPO,
+    SMPTE_OFFSET,
+    TIME_SIGNATURE,
+    KEY_SIGNATURE,
+    TRACK_END,
+    UNPREDICTED
+};
+
 struct NoteCmd
 {
     uint8_t channel : 4;
@@ -53,6 +79,7 @@ class MTrkChunk
 
 
     private:
+        void m_stateMachine();
         int m_work();
         int m_getChannelFromCmd(uint8_t cmd);
         void m_debugPrintNoteEvent(NoteEvent note);
@@ -67,6 +94,7 @@ class MTrkChunk
         //void m_detect_first_delay();
 
     private:
+        STATE m_cms = UNDEFINED; // Current Machine State
         std::vector<NoteEvent> m_notesOn;
         std::vector<NoteEvent> m_notesOff;
         int m_cmdNoteOnMask  = 0x09; // 0x90
@@ -81,6 +109,7 @@ class MTrkChunk
 		int64_t m_mtrkSize = 0;
         int32_t m_tempo = 0;
         int m_debugLevel = 0;
+        std::vector<uint8_t> m_firstDelays;
         std::string m_trackName = "";
         std::string m_trackText = "";
         std::vector<HumanizedNote> m_humanizedNotes;

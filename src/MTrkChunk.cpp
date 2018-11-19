@@ -91,6 +91,227 @@ int MTrkChunk::process()
     }
 }
 
+void MTrkChunk::m_stateMachine()
+{
+    STATE machineState = UNDEFINED;
+    uint64_t chunkPtr = 0;
+
+    while(true)
+    {
+        switch(m_cms)
+        {
+            case UNDEFINED:
+            {
+                if( m_chunkData[chunkPtr++] == 0x4D &&    // 0x4D - 77  - M
+                    m_chunkData[chunkPtr++] == 0x54 &&    // 0x54 - 84  - T
+                    m_chunkData[chunkPtr++] == 0x72 &&    // 0x72 - 114 - r
+                    m_chunkData[chunkPtr++] == 0x6B )     // 0x6B - 107 - k
+                {
+                    m_cms = HEADER_MARKER;
+                    if(m_debugLevel >= 4)
+                        std::cout << "Found MTrk header marker" << std::endl;
+                }
+                break;
+            }
+
+            case HEADER_MARKER:
+            {
+                m_mtrkSize  = m_chunkData[chunkPtr++] << 24;
+                m_mtrkSize |= m_chunkData[chunkPtr++] << 16;
+                m_mtrkSize |= m_chunkData[chunkPtr++] << 8;
+                m_mtrkSize |= m_chunkData[chunkPtr++];
+                m_mtrkSize += 8; // Include 4 bytes of MTrk header and 4 bytes of MTrk chunk size
+
+                if(m_debugLevel >= 4)
+                    std::cout << "Found MTrk header size and first delay" << std::endl;
+
+                m_cms = FIRST_DELAY;
+                break;
+            }
+
+            case FIRST_DELAY:
+            {
+                m_firstDelays.push_back(m_chunkData[chunkPtr++]);
+
+                if(m_chunkData[chunkPtr++] == 0xFF)
+                {
+                    if(m_debugLevel >= 4)
+                        std::cout << "Found EVENT" << std::endl;
+
+                    m_cms = EVENT;
+                    break;
+                }
+                else
+                {
+                    m_cms = UNPREDICTED;
+                    break;
+                }
+            }
+
+            case EVENT:
+            {
+                uint8_t currentCmd = m_chunkData[chunkPtr++];
+
+                if(currentCmd == 0x01){
+                    m_cms = TEXT; break;
+                } else if(currentCmd == 0x02){
+                    m_cms = COPYRIGHT; break;
+                } else if(currentCmd == 0x03){
+                    m_cms = TRACK_NAME; break;
+                } else if(currentCmd == 0x04){
+                    m_cms = INSTRUMENT_NAME; break;
+                } else if(currentCmd == 0x05){
+                    m_cms = VOCAL_TEXT; break;
+                } else if(currentCmd == 0x06){
+                    m_cms = TEXT_MARKER; break;
+                } else if(currentCmd == 0x07){
+                    m_cms = CUE_POINT; break;
+                } else if(currentCmd == 0x20 && m_chunkData[chunkPtr+1] == 0x01){
+                    m_cms = MIDI_CHANNEL; break;
+                } else if(currentCmd == 0x21 && m_chunkData[chunkPtr+1] == 0x01){
+                    m_cms = MIDI_PORT; break;
+                } else if(currentCmd == 0x51 && m_chunkData[chunkPtr+1] == 0x03){
+                    m_cms = TEMPO;
+                } else if(currentCmd == 0x54 && m_chunkData[chunkPtr+1] == 0x05){
+                    m_cms = SMPTE_OFFSET; break;
+                } else if(currentCmd == 0x58 && m_chunkData[chunkPtr+1] == 0x04){
+                    m_cms = TIME_SIGNATURE; break;
+                } else if(currentCmd == 0x59 && m_chunkData[chunkPtr+1] == 0x02){
+                    m_cms = KEY_SIGNATURE; break;
+                } else if(currentCmd == 0x2F && m_chunkData[chunkPtr+1] == 0x00){
+                    m_cms = TRACK_END; break;
+                } else if((currentCmd >> 4) == m_cmdNoteOnMask){
+                    m_cms = NOTE_ON; break;
+                } else if((currentCmd >> 4) == m_cmdNoteOffMask){
+                    m_cms = NOTE_OFF; break;
+                } else {
+                    m_cms = EVENT;
+                    break;
+                }
+            }
+
+            case UNPREDICTED:
+            {
+                std::cout << " --- >> MTrk STATE MACHINE: Unpredicted Behaviour" << std::endl;
+                return;
+            }
+
+            case TEXT:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found TEXT event" << std::endl;
+
+                break;
+            }
+            case COPYRIGHT:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found COPYRIGHT event" << std::endl;
+
+                break;
+            }
+            case TRACK_NAME:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found TRACK_NAME event" << std::endl;
+
+                break;
+            }
+            case INSTRUMENT_NAME:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found INSTRUMENT_NAME event" << std::endl;
+
+                break;
+            }
+            case VOCAL_TEXT:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found VOCAL_TEXT event" << std::endl;
+
+                break;
+            }
+            case TEXT_MARKER:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found TEXT_MARKER event" << std::endl;
+
+                break;
+            }
+            case CUE_POINT:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found CUE_POINT event" << std::endl;
+
+                break;
+            }
+            case MIDI_CHANNEL:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found MIDI_CHANNEL event" << std::endl;
+
+                break;
+            }
+            case MIDI_PORT:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found MIDI_PORT event" << std::endl;
+
+                break;
+            }
+            case TEMPO:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found TEMPO event" << std::endl;
+
+                break;
+            }
+            case SMPTE_OFFSET:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found SMPTE_OFFSET event" << std::endl;
+
+                break;
+            }
+            case TIME_SIGNATURE:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found TIME_SIGNATURE event" << std::endl;
+
+                break;
+            }
+            case KEY_SIGNATURE:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found KEY_SIGNATURE event" << std::endl;
+
+                break;
+            }
+            case TRACK_END:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found TRACK_END event" << std::endl;
+
+                break;
+            }
+            case NOTE_ON:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found NOTE_ON event" << std::endl;
+
+                break;
+            }
+            case NOTE_OFF:
+            {
+                if(m_debugLevel >= 4)
+                    std::cout << "Found NOTE_OFF event" << std::endl;
+
+                break;
+            }
+        }
+    }
+}
+
 int MTrkChunk::m_work(){
 
     if( m_chunkData[m_chunkPtr++] == 0x4D &&    // 0x4D - 77  - M
