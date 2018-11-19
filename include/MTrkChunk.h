@@ -6,82 +6,84 @@
 #include <fstream>
 #include <vector>
 
-struct Note
+struct NoteCmd
 {
-    uint8_t channel = 0;
+    uint8_t channel : 4;
+	uint8_t cmd : 4;
+};
+
+struct NoteEvent
+{
+    NoteCmd noteCmd;
     uint8_t pitch = 0;
     uint8_t velocity = 0;
-    uint8_t length = 0;
+    std::vector<uint8_t> length;
+};
+
+struct HumanizedNote
+{
+    std::string symbolicCode = "";
+    double frequency = 0.0;
+    std::vector<uint8_t> durationOn;
+    std::vector<uint8_t> durationOff;
 };
 
 class MTrkChunk
 {
     public:
         // Functions
-        MTrkChunk();
-        virtual ~MTrkChunk();
-        int setInitData( const int &chunk_ptr, const std::vector<unsigned char> &chunk_data, const int &_mtrk_octave_shift, const int &_mtrk_note_shift );
-
-        int getStartPos();
-        int getEndPos();
-        int getSize();
-        int getEventsNoteONCount();
-        int getEventsNoteOFFCount();
+        explicit MTrkChunk();
+        ~MTrkChunk();
+        void initialize(std::vector<uint8_t> &fileData, uint64_t startPos, uint64_t endPos);
+        void setOctaveShift(int octaveShift);
+        void setNoteShift(int noteShift);
+        void setDebugLevel(int debugLevel);
+        int8_t getMidiChannel();
+        int32_t getNotesCount();
+        std::vector<HumanizedNote> getHumanizedNotes();
+        int process();
+		int64_t getStartPos();
+		int64_t getEndPos();
+		int64_t getSize();
         int getTempo();
-        int getTrackNameLength();
+        void dbg_printBody();
         std::string getTrackName();
-        int getTrackTextLength();
         std::string getTrackText();
-        int getNoteChannel();
-
-        std::vector<double> getFreqNotes();
-        std::vector<std::vector<int>> getLengthNotesON();
-        std::vector<std::vector<int>> getLengthNotesOFF();
-        std::vector<std::string> getSymbolicNotes();
         //vector<int> getFirstDelay();
 
-        void dbg_printBody();
-        void dbg_printSymbolicNotes();
-        void dbg_printFreqNotes();
-
-        // Variables
 
     private:
-        // Functions
         int m_work();
-        int m_detect_events_note_on();
-        int m_detect_events_note_off();
-        int m_detectTempo();
-        std::string m_detectTrackName();
-        void m_detect_text();
-        int m_found_note_channel();
+        int m_getChannelFromCmd(uint8_t cmd);
+        void m_debugPrintNoteEvent(NoteEvent note);
+        int m_detectNoteEvents(uint8_t cmdMask, std::vector<NoteEvent> &noteEvents);
+        void m_debugPrintHumanizedNote(HumanizedNote hNote);
+        void m_mapEventsToHumanizedNotes();
+        void m_detectTempo();
+        void m_detectTrackName();
+        void m_detectTrackText();
+        bool m_isTrackEnd(uint64_t startIndex);
+        bool m_isNoteEnd(uint64_t startIndex);
         //void m_detect_first_delay();
 
-        // Variables
-        int m_cmdNoteOn  = 0x90; // 0x90
-        int m_cmdNoteOff =  0x80; //0x80
+    private:
+        std::vector<NoteEvent> m_notesOn;
+        std::vector<NoteEvent> m_notesOff;
+        int m_cmdNoteOnMask  = 0x09; // 0x90
+        int m_cmdNoteOffMask =  0x08; //0x80
         int m_chunkPtr = 0;
-        std::vector<unsigned char> m_chunkData;
+        std::vector<uint8_t> m_chunkData;
+        int32_t m_midiChannel = 0;
         int m_mtrkOctaveShift = 0;
         int m_mtrkNoteShift = 0;
-        int m_mtrkStartPos = 0;
-        int m_mtrkEndPos = 0;
-        int m_mtrkSize = 0;
-        int m_tempo = 0;
-        uint64_t m_trackNameLength = 0;
+        int64_t m_mtrkStartPos = 0;
+		int64_t m_mtrkEndPos = 0;
+		int64_t m_mtrkSize = 0;
+        int32_t m_tempo = 0;
+        int m_debugLevel = 0;
         std::string m_trackName = "";
-        int m_trackTextLength = 0;
         std::string m_trackText = "";
-        int m_noteChannel = 0;
-        int m_firstNoteOnByteAddr = 0;
-        std::vector<unsigned char> m_chunkBody;
-        std::vector<std::vector<unsigned char>> m_eventsNoteOn;
-        std::vector<std::vector<unsigned char>> m_eventsNoteOff;
-        std::vector<double> m_chunkFreqNotes;
-        std::vector<std::vector<int>> m_chunkLengthNotesOn;
-        std::vector<std::vector<int>> m_chunkLengthNotesOff;
-        std::vector<std::string> m_chunkSymbolicNotes;
-        std::vector<int> m_firstDelay;
+        std::vector<HumanizedNote> m_humanizedNotes;
 };
 
 #endif // MTRKCHUNK_H

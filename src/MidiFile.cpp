@@ -33,6 +33,12 @@ void MidiFile::setNoteShift(int noteShift)
 void MidiFile::setNewBpm(int bpm)
 {
     m_newBpm = bpm;
+    m_tempoTrack = m_newBpm;
+}
+
+void MidiFile::setDebugLevel(int debugLevel)
+{
+    m_debugLevel = debugLevel;
 }
 
 void MidiFile::setEnableCommentsTo(bool enableCommentsFlag)
@@ -42,7 +48,7 @@ void MidiFile::setEnableCommentsTo(bool enableCommentsFlag)
 
 void MidiFile::parseFile()
 {
-    if( m_readFile( m_filePath ) == 0){
+    if( m_readFile() == 0){
         std::cout << "Success opened file" << std::endl;
     } else {
         std::cout << " @ERROR: file can not be opened" << std::endl;
@@ -56,19 +62,34 @@ void MidiFile::parseFile()
         exit(-1);
     }
 
-    if( m_findChunksAndDecode() == 0){
-        std::cout << "Standard Midi File structure detected" << std::endl;
+    if(m_findMtrkChunks() == 0){
+        std::cout << "Success found MTrk chunks" << std::endl;
     } else {
-        std::cout << " @ERROR: This file does not have a SMF(Standart Midi File) structure " << std::endl;
+        std::cout << " @ERROR: cannot found any chunks" << std::endl;
         exit(-1);
     }
 
-    m_humanizeTime();
+    if(m_processChunks() == 0){
+        std::cout << "Success processed MTrk chunks" << std::endl;
+    } else {
+        std::cout << " @ERROR: cannot process chunks" << std::endl;
+        exit(-1);
+    }
+
+    if(m_generateOutputTrackFiles() == 0){
+        std::cout << "Success generated output scripts" << std::endl;
+    } else {
+        std::cout << " @ERROR: while generating script" << std::endl;
+        exit(-1);
+    }
 }
 
-int MidiFile::m_readFile( std::string path )
+int MidiFile::m_readFile()
 {
-    std::ifstream midiFileStream( path, std::ios::in | std::ios::binary | std::ios::ate );
+    if(m_filePath == "")
+        return -1;
+
+    std::ifstream midiFileStream( m_filePath, std::ios::in | std::ios::binary | std::ios::ate );
     midiFileStream.seekg(0, std::ios::end);
 	m_fileSize = midiFileStream.tellg();
 	m_fileData.resize(m_fileSize);
@@ -81,12 +102,12 @@ int MidiFile::m_readFile( std::string path )
 
     if(m_fileSize == m_fileData.size())
     {
-        m_fileSuccessReaded = true;
+        midiFileStream.close();
         return 0;
     }
     else
     {
-        m_fileSuccessReaded = false;
+        midiFileStream.close();
         return -1;
     }
 }
@@ -104,26 +125,30 @@ int MidiFile::m_parseHeader()
         return -1;
     }
 
-    m_mthdChunkLength  = reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]) << 24;
-    m_mthdChunkLength |= reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]) << 16;
-    m_mthdChunkLength |= reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]) << 8;
-    m_mthdChunkLength |= reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]);
+    m_mthdChunkLength  = m_fileData[m_filePtr++] << 24;
+    m_mthdChunkLength |= m_fileData[m_filePtr++] << 16;
+    m_mthdChunkLength |= m_fileData[m_filePtr++] << 8;
+    m_mthdChunkLength |= m_fileData[m_filePtr++];
 
     std::cout << "MThd Chunk Length: " << std::dec << m_mthdChunkLength << std::endl;
 
-    format_type  = reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]) << 8;
-    format_type |= reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]);
-    std::cout << "Format type: " << std::dec << format_type << std::endl;
+    m_formatType  = m_fileData[m_filePtr++] << 8;
+    m_formatType |= m_fileData[m_filePtr++];
+    std::cout << "Format type: " << std::dec << m_formatType << std::endl;
 
-    m_mtrkChunksCnt  = reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]) << 8;
-    m_mtrkChunksCnt |= reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]);
+    m_mtrkChunksCnt  = m_fileData[m_filePtr++] << 8;
+    m_mtrkChunksCnt |= m_fileData[m_filePtr++];
     std::cout << "MTrk chunks cnt: " << std::dec << m_mtrkChunksCnt << std::endl;
 
-    m_ppqn  = reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]) << 8;
-    m_ppqn |= reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]);
+    m_ppqn  = m_fileData[m_filePtr++] << 8;
+    m_ppqn |= m_fileData[m_filePtr++];
     std::cout << "PPQN: " << std::dec << m_ppqn << std::endl;
 
-    m_findMtrkChunks();
+    if(m_formatType != 0 && m_formatType != 1)
+    {
+        std::cout << " @ERROR: supported only midi files with type 0 or 1." << std::endl;
+        return -1;
+    }
 
     return 0;
 }
@@ -140,17 +165,22 @@ int MidiFile::m_findMtrkChunks()
         chunkInfo.mtrk[2] = m_fileData[m_filePtr++];
         chunkInfo.mtrk[3] = m_fileData[m_filePtr++];
 
-        chunkInfo.size  = reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]) << 24;
-        chunkInfo.size |= reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]) << 16;
-        chunkInfo.size |= reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]) << 8;
-        chunkInfo.size |= reinterpret_cast<uint8_t>(m_fileData[m_filePtr++]);
+        chunkInfo.size  = m_fileData[m_filePtr++] << 24;
+        chunkInfo.size |= m_fileData[m_filePtr++] << 16;
+        chunkInfo.size |= m_fileData[m_filePtr++] << 8;
+        chunkInfo.size |= m_fileData[m_filePtr++];
+        chunkInfo.size += 8; // We include 4 bytes of "MTrk" header and 4 bytes which contains chunk size
         chunkInfo.endPos = chunkInfo.startPos + chunkInfo.size;
-        m_filePtr = chunkInfo.endPos + 8; // We include 4 bytes of "MTrk" header and 4 bytes which contains chunk size
+        m_filePtr = chunkInfo.endPos;
+        chunkInfo.chunkNumber = i;
 
-        std::cout << " - Chunk header: " << chunkInfo.mtrk << std::endl;
-        std::cout << " - Chunk start pos: " << chunkInfo.startPos << std::endl;
-        std::cout << " - Chunk end pos: " << chunkInfo.endPos << std::endl;
-        std::cout << " - Chunk size: " << chunkInfo.size << std::endl;
+        if(m_debugLevel >= 1)
+        {
+            std::cout << " - Chunk header: " << chunkInfo.mtrk << std::endl;
+            std::cout << " - Chunk start pos: " << chunkInfo.startPos << std::endl;
+            std::cout << " - Chunk end pos: " << chunkInfo.endPos << std::endl;
+            std::cout << " - Chunk size: " << chunkInfo.size << std::endl << std::endl;
+        }
 
         m_mtrkChunks.push_back(chunkInfo);
     }
@@ -158,175 +188,144 @@ int MidiFile::m_findMtrkChunks()
     return 0;
 }
 
-int MidiFile::m_processChunk(MtrkChunkInfo chunkInfo)
+int MidiFile::m_processChunks()
 {
-    chunkInfo.mtrkChunkHandler = new MTrkChunk;
-    chunkInfo.mtrkChunkHandler->setInitData();
-    chunkInfo.mtrkChunkHandler->setOctaveShift(m_octaveShift);
-    chunkInfo.mtrkChunkHandler->setNoteShift(m_noteShift);
-    chunkInfo.mtrkChunkHandler->process();
+    for(auto & chunk : m_mtrkChunks)
+    {
+        if(m_processChunk(chunk) != 0)
+            return -1;
+    }
+     return 0;
 }
 
-int MidiFile::m_findChunksAndDecode()
+int MidiFile::m_processChunk(MtrkChunkInfo &chunkInfo)
 {
-    MTrkChunk *MTrk = new MTrkChunk[m_mtrkChunksCnt];
+    chunkInfo.mtrkChunkHandler = MTrkChunk();
+    chunkInfo.mtrkChunkHandler.setOctaveShift(m_octaveShift);
+    chunkInfo.mtrkChunkHandler.setNoteShift(m_noteShift);
+    chunkInfo.mtrkChunkHandler.initialize(m_fileData, chunkInfo.startPos, chunkInfo.endPos);
+    chunkInfo.mtrkChunkHandler.setDebugLevel(m_debugLevel);
 
-    for( int i=0; i < m_mtrkChunksCnt; i++)
+    if(m_debugLevel >= 3)
+        std::cout << "Processing chunk, start: " << chunkInfo.startPos << " end: " << chunkInfo.endPos << std::endl;
+
+    if(chunkInfo.mtrkChunkHandler.process() == 0)
     {
+        int tempoTrack = chunkInfo.mtrkChunkHandler.getTempo();
+        std::string trackText = chunkInfo.mtrkChunkHandler.getTrackText();
+        std::string trackName = chunkInfo.mtrkChunkHandler.getTrackName();
 
-        if( i == 0){
-            if( MTrk[i].setInitData( m_filePtr, m_fileData, m_octaveShift, m_noteShift ) == 1){
-                std::cout << "MTrk chunk #" << i << " found\n";
-            } else {
-                std::cout << " @ERROR: MTrk chunk NOT #" << i << " found\n";
-            }
-        } else {
-            if( MTrk[i].setInitData( MTrk[i-1].getEndPos(), m_fileData, m_octaveShift, m_noteShift ) == 1 ){
-                std::cout << "MTrk chunk #" << i << " found\n";
-            } else {
-                std::cout << " @ERROR: MTrk chunk NOT #" << i << " found\n";
-            }
+        if(tempoTrack != 0 && m_newBpm == -1)
+        {
+            m_tempoTrack = tempoTrack;
+            std::cout << "BPM: " << std::to_string(m_tempoTrack) << std::endl;
         }
 
-
-        if( MTrk[i].getTempo() > 0 ){
-            m_tempoTrack = MTrk[i].getTempo();
+        if(trackText != "")
+        {
+            m_trackText = trackText;
+            std::cout << "Track text: " << m_trackText << std::endl;
         }
 
-        if( m_newBpm > 0 ){
-            m_tempoTrack = m_newBpm;
+        if(trackName != "")
+        {
+            m_trackName = trackName;
+            std::cout << "Track name: " << m_trackName << std::endl;
         }
 
-        std::cout << "BPM: " << m_tempoTrack << std::endl;
-        std::cout << "Notes ON Count in MTrk chunk: " << MTrk[i].getEventsNoteONCount() << std::endl;
-        std::cout << "Notes OFF Count in MTrk chunk: " << MTrk[i].getEventsNoteOFFCount() << std::endl;
-        std::cout << "Track Name: " << MTrk[i].getTrackName() << std::endl;
-        std::cout << "Track Text: " << MTrk[i].getTrackText() << std::endl;
-        std::cout << "Note Channel: " << MTrk[i].getNoteChannel() << std::endl;
+        m_pulsesPerSec = (double)60000 / ( m_tempoTrack * m_ppqn );
+        std::cout << "Pulses per second: " << m_pulsesPerSec << std::endl;
 
-        int note_cnt_difference =  MTrk[i].getEventsNoteONCount() - MTrk[i].getEventsNoteOFFCount();
+        if(m_debugLevel >= 3)
+            chunkInfo.mtrkChunkHandler.dbg_printBody();
 
-        if( note_cnt_difference == 0 && MTrk[i].getEventsNoteONCount() > 0 && MTrk[i].getEventsNoteOFFCount() > 0 ){
-            pulses_per_sec = (double)60000 / ( m_tempoTrack * m_ppqn );
-            std::cout << "Pulses per second: " << pulses_per_sec << std::endl;
-
-            freq_notes_arr = MTrk[i].getFreqNotes();
-            length_notes_on_arr = MTrk[i].getLengthNotesON();
-            length_notes_off_arr = MTrk[i].getLengthNotesOFF();
-            symbolic_notes_arr = MTrk[i].getSymbolicNotes();
-            //first_dly = MTrk[i].getFirstDelay();
-			m_createMikrotikScriptFile( i, MTrk[i].getTrackText(), MTrk[i].getTrackName(), MTrk[i].getEventsNoteONCount(), MTrk[i].getNoteChannel() );
-        }
-        std::cout << std::endl;
+        std::cout << "OK Processed chunk" << std::endl;
     }
+    else
+    {
+        std::cout << " @ERROR Processing chunk" << std::endl;
+    }
+
     return 0;
 }
 
-int MidiFile::m_createMikrotikScriptFile( const int &chunk_number, const std::string &track_text, const std::string &track_name_comment, const int &notes_cnt, const int &note_ch )
+int MidiFile::m_generateOutputTrackFiles()
+{
+    for(int64_t i = 0; i < m_mtrkChunks.size(); i++)
+    {
+        if(m_createMikrotikScriptFile(m_mtrkChunks[i]) != 0)
+            return -1;
+    }
+
+    return 0;
+}
+
+int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
 {
     /*
     :beep frequency=440 length=1000ms;
     :delay 1000ms;
     */
-    //cout << "WRITE FUNC RUN: " << chunk_number << endl;
-    std::ostringstream ost_chunk_number;
-    ost_chunk_number << chunk_number;
-
-    std::ostringstream ost_bpm;
-    ost_bpm << m_tempoTrack;
-
-    std::ostringstream ost_notes_cnt;
-    ost_notes_cnt << notes_cnt;
-
-    std::ostringstream ost_note_ch;
-    ost_note_ch << note_ch;
-
-    //ostringstream ost_first_dly;
-
 
     int status = 0;
-    std::string spaces = "";
-    std::string out_data = "";
-    std::string out_path = m_filePath + ost_chunk_number.str() +".txt";;
-    std::ofstream output_file;
+    std::stringstream outFilePath;
+    outFilePath << m_filePath << chunk.chunkNumber << ".txt";
+    std::stringstream outputBuffer;
+    int8_t midiChannel = chunk.mtrkChunkHandler.getMidiChannel();
+    int64_t notesCount = chunk.mtrkChunkHandler.getNotesCount();
+    std::vector<HumanizedNote> humanizedNotes = chunk.mtrkChunkHandler.getHumanizedNotes();
 
-    out_data += "#----------------File Description-----------------#\n";
-    out_data += "# This file created by Midi To Mikrotik Converter\n";
-    out_data += "# Original midi file name/path: " + m_filePath + "\n";
-    out_data += "# Track BPM: " + ost_bpm.str() + "\n";
-    out_data += "# MIDI Channel: " + ost_note_ch.str() + "\n";
-    out_data += "# Number of notes: " + ost_notes_cnt.str() + "\n";
-    out_data += "# Track text: " + track_text + "\n";
-    out_data += "# Track comment: " + track_name_comment + "\n";
-    out_data += "#-------------------------------------------------#\n\n";
-
-    //out_data += ":delay " + ost_st_dly.str() + "ms;\n\n";
-
-    /*
-    double first_dly_double = 0;
-    for( int j=0; j<first_dly.size(); j++){
-        cout << " DBG: " << first_dly[j] << endl;
-        first_dly_double += ( first_dly[j] * pulses_per_sec );
-    }
-    ost_first_dly << first_dly_double;
-    out_data += ":delay " + ost_first_dly.str() + "ms;\n\n";
-    */
-
-    for( uint64_t i=0; i<freq_notes_arr.size(); i++){
-        std::string comment_str = "";
-
-        std::ostringstream ost_freq;
-        std::ostringstream ost_note_duration_ms;
-        std::ostringstream ost_pause_duration_ms;
-
-        ost_freq << freq_notes_arr[i];
-
-        double note_on_duration_ms = 0;
-        for( uint64_t j=0; j<length_notes_on_arr[i].size(); j++){
-            note_on_duration_ms += ( length_notes_on_arr[i][j] * pulses_per_sec );
-        }
-
-        double pause_duration_ms = note_on_duration_ms;
-        for( uint64_t j=0; j<length_notes_off_arr[i].size(); j++){
-            pause_duration_ms += (length_notes_off_arr[i][j] * pulses_per_sec);
-        }
-
-        full_track_length += note_on_duration_ms + pause_duration_ms;
-
-        ost_note_duration_ms << note_on_duration_ms;
-        ost_pause_duration_ms << pause_duration_ms;
-
-        if( m_commentsFlag == true ){
-            comment_str = " # " + symbolic_notes_arr[i];
-        }
-
-        out_data += ":beep frequency=" + ost_freq.str() + " length=" + ost_note_duration_ms.str() + "ms;" + comment_str + "\n:delay " + ost_pause_duration_ms.str() + "ms;\n\n";
+    if(midiChannel == -1 || notesCount == 0 || notesCount == -1 || humanizedNotes.size() == 0)
+    {
+        std::cout << "Skipping MTrk #" << chunk.chunkNumber << " no information about notes" << std::endl;
+        return 0;
     }
 
+    outputBuffer << "#----------------File Description-----------------#\n";
+    outputBuffer << "# This file generated by Midi To Mikrotik Converter\n";
+    outputBuffer << "# Original midi file name/path: " << m_filePath << "\n";
+    outputBuffer << "# Track BPM: " << m_tempoTrack << "\n";
+    outputBuffer << "# MIDI Channel: " << std::to_string(midiChannel) << "\n";
+    outputBuffer << "# Number of notes: " << std::to_string(notesCount) << "\n";
+    outputBuffer << "# Track text: " << m_trackText << "\n";
+    outputBuffer << "# Track name: " << m_trackName << "\n";
+    outputBuffer << "#-------------------------------------------------#\n\n";
 
-    output_file.open(out_path);
-    if(output_file.is_open()){
-        status = 1;
-    } else {
+    for(const auto & note : humanizedNotes)
+    {
+        double noteOnDuration = 0.0;
+        double noteOffDuration = 0.0;
+
+        for(const auto & lengthByte : note.durationOn)
+        {
+            noteOnDuration += (lengthByte * m_pulsesPerSec);
+        }
+
+        for(const auto & lengthByte : note.durationOff)
+        {
+            noteOffDuration += (lengthByte * m_pulsesPerSec);
+        }
+
+        outputBuffer << ":beep frequency=" << note.frequency;
+        outputBuffer << " length=" << std::to_string(noteOnDuration) << "ms;";
+        if(m_commentsFlag)
+            outputBuffer << " # " << note.symbolicCode << "\n";
+        outputBuffer << ":delay " << std::to_string(noteOffDuration) << "ms;\n\n";
+    }
+
+    std::ofstream outputFile;
+    outputFile.open(outFilePath.str());
+    if(outputFile.is_open()){
         status = 0;
+    } else {
+        status = -1;
     }
-    output_file << out_data;
-    output_file.close();
+    outputFile << outputBuffer.str();
+    outputFile.close();
+
+    std::cout << "Successfully writed MTrk #" << chunk.chunkNumber << std::endl;
 
     return status;
-}
-
-void MidiFile::m_humanizeTime()
-{
-    if( full_track_length > 60 ){
-        ftl_m = full_track_length / 60;
-
-        if( full_track_length > 60 ){
-            ftl_h = full_track_length / 3600;
-        }
-    }
-
-    //cout << "Hours: " << ftl_h << "Minutes: " << ftl_m << "Seconds: " << ftl_s << endl;
 }
 
 std::string MidiFile::getPath()
@@ -334,7 +333,7 @@ std::string MidiFile::getPath()
     return m_filePath;
 }
 
-int MidiFile::getFileSize()
+int64_t MidiFile::getFileSize()
 {
     return m_fileSize;
 }
@@ -344,7 +343,5 @@ std::vector<uint8_t> MidiFile::getFileData()
     return m_fileData;
 }
 
-double MidiFile::getFullTrackLength()
-{
-    return full_track_length;
-}
+
+
