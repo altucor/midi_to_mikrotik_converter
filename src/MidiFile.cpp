@@ -76,14 +76,14 @@ void MidiFile::parseFile()
         exit(-1);
     }
 
-    /*
+    
     if(m_generateOutputTrackFiles() == 0){
         std::cout << "Success generated output scripts" << std::endl;
     } else {
         std::cout << " @ERROR: while generating script" << std::endl;
         exit(-1);
     }
-    */
+    
 }
 
 int MidiFile::m_readFile()
@@ -228,7 +228,7 @@ int MidiFile::m_processChunk(MtrkChunkInfo &chunkInfo)
         m_pulsesPerSec = (double)60000 / ( m_tempoTrack * m_ppqn );
         std::cout << "Pulses per second: " << m_pulsesPerSec << std::endl;
 
-        if(m_debugLevel >= 3)
+        if(m_debugLevel >= 5)
             chunkInfo.mtrkChunkHandler.dbg_printBody();
 
         std::cout << "OK Processed chunk" << std::endl;
@@ -301,8 +301,8 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
         outputBuffer << ":beep frequency=" << note.frequency;
         outputBuffer << " length=" << std::to_string(noteOnDuration) << "ms;";
         if(m_commentsFlag)
-            outputBuffer << " # " << note.symbolicCode << "\n";
-        outputBuffer << ":delay " << std::to_string(noteOffDuration) << "ms;\n\n";
+            outputBuffer << " # " << note.symbolicCode;
+        outputBuffer << "\n:delay " << std::to_string(noteOffDuration) << "ms;\n\n";
     }
 
     std::ofstream outputFile;

@@ -20,7 +20,7 @@
 #include <fstream>
 #include <cstdio>
 #include <vector>
-#include <unistd.h>
+//#include <unistd.h>
 #include "./include/MidiFile.h"
 #include "./include/MTrkChunk.h"
 
@@ -29,10 +29,8 @@ int main(int argc, char *argv[]){
     int octaveShift = 0;
     int noteShift = 0;
 	std::string fileName;
-    //std::string fileName = "H:\\CodeBlocksPRJ\\01.09.2017-01.07.2018\\midi_to_mikrotik_converter\\Debug\\skibidi.mid";
-	//std::string fileName = "H:\\CodeBlocksPRJ\\01.09.2017-01.07.2018\\midi_to_mikrotik_converter\\Debug\\Jingle bells.mid";
     int newBpm = -1;
-    int debugLevel = 4;
+    int debugLevel = 0;
     bool enableCommentsFlag = false;
 
     while ( (result = getopt(argc,argv,"o:n:f:b:d:c")) != -1){

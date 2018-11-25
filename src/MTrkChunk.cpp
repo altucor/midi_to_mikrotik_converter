@@ -60,32 +60,11 @@ void MTrkChunk::setDebugLevel(int debugLevel)
     m_debugLevel = debugLevel;
 }
 
-int64_t MTrkChunk::getStartPos()
-{
-    return m_mtrkStartPos;
-}
-
-int64_t MTrkChunk::getEndPos()
-{
-    return m_mtrkEndPos;
-}
-
-int64_t MTrkChunk::getSize()
-{
-    return m_mtrkSize;
-}
-
 int MTrkChunk::process()
 {
     if( m_work() == 0 ){
         m_stateMachine();
-        //m_detectNoteEvents(m_cmdNoteOnMask, m_notesOn);
-        //m_detectNoteEvents(m_cmdNoteOffMask, m_notesOff);
-        //m_mapEventsToHumanizedNotes();
-        //m_detectTempo();
-        //m_detectTrackName();
-        //m_detectTrackText();
-        //_detect_first_delay(); // -- not working, in process
+		m_mapEventsToHumanizedNotes();
         return 0;
     } else {
         return -1;
@@ -193,7 +172,7 @@ void MTrkChunk::m_stateMachine()
                 } else if(currentCmd == 0x2F && m_chunkData[chunkPtr] == 0x00){
                     m_cms = TRACK_END; chunkPtr++; break;
                 } else {
-                    m_cms = EVENT;
+                    m_cms = FIRST_DELAY;
                     break;
                 }
             }
@@ -208,6 +187,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found TEXT event" << std::endl;
 
+				m_extractStringData(chunkPtr, m_trackText);
+				m_cms = FIRST_DELAY;
                 break;
             }
             case COPYRIGHT:
@@ -215,6 +196,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found COPYRIGHT event" << std::endl;
 
+				m_extractStringData(chunkPtr, m_copyright);
+				m_cms = FIRST_DELAY;
                 break;
             }
             case TRACK_NAME:
@@ -222,14 +205,7 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found TRACK_NAME event" << std::endl;
 
-				
-				uint8_t trackNameSize = m_chunkData[chunkPtr++];
-				uint32_t currentPos = chunkPtr;
-				while (chunkPtr != currentPos + trackNameSize)
-				{
-					m_trackName.push_back(m_chunkData[chunkPtr++]);
-				}
-
+				m_extractStringData(chunkPtr, m_trackName);
 				m_cms = FIRST_DELAY;
                 break;
             }
@@ -238,6 +214,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found INSTRUMENT_NAME event" << std::endl;
 
+				m_extractStringData(chunkPtr, m_instrumentName);
+				m_cms = FIRST_DELAY;
                 break;
             }
             case VOCAL_TEXT:
@@ -245,6 +223,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found VOCAL_TEXT event" << std::endl;
 
+				m_extractStringData(chunkPtr, m_vocalText);
+				m_cms = FIRST_DELAY;
                 break;
             }
             case TEXT_MARKER:
@@ -252,6 +232,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found TEXT_MARKER event" << std::endl;
 
+				m_extractStringData(chunkPtr, m_textMarker);
+				m_cms = FIRST_DELAY;
                 break;
             }
             case CUE_POINT:
@@ -259,6 +241,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found CUE_POINT event" << std::endl;
 
+				m_extractStringData(chunkPtr, m_cuePoint);
+				m_cms = FIRST_DELAY;
                 break;
             }
             case MIDI_CHANNEL:
@@ -266,6 +250,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found MIDI_CHANNEL event" << std::endl;
 
+				m_midiChannel = m_chunkData[chunkPtr++];
+				m_cms = FIRST_DELAY;
                 break;
             }
             case MIDI_PORT:
@@ -273,6 +259,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found MIDI_PORT event" << std::endl;
 
+				m_midiPort = m_chunkData[chunkPtr++];
+				m_cms = FIRST_DELAY;
                 break;
             }
             case TEMPO:
@@ -280,12 +268,7 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found TEMPO event" << std::endl;
 
-				int32_t tmp_tempo = 0;
-				tmp_tempo = m_chunkData[chunkPtr++] << 16;
-				tmp_tempo |= m_chunkData[chunkPtr++] << 8;
-				tmp_tempo |= m_chunkData[chunkPtr++];
-				m_tempo = 60000000 / tmp_tempo;
-
+				m_extractTempo(chunkPtr);
 				m_cms = FIRST_DELAY;
                 break;
             }
@@ -294,6 +277,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found SMPTE_OFFSET event" << std::endl;
 
+				m_extractSMPTEOffset(chunkPtr);
+				m_cms = FIRST_DELAY;
                 break;
             }
             case TIME_SIGNATURE:
@@ -301,11 +286,7 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found TIME_SIGNATURE event" << std::endl;
 
-				m_timeSignature.nn = m_chunkData[chunkPtr++];
-				m_timeSignature.dd = m_chunkData[chunkPtr++];
-				m_timeSignature.cc = m_chunkData[chunkPtr++];
-				m_timeSignature.bb = m_chunkData[chunkPtr++];
-
+				m_extractTimeSignature(chunkPtr);
 				m_cms = FIRST_DELAY;
                 break;
             }
@@ -314,6 +295,8 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found KEY_SIGNATURE event" << std::endl;
 
+				m_extractKeySignature(chunkPtr);
+				m_cms = FIRST_DELAY;
                 break;
             }
             case TRACK_END:
@@ -329,29 +312,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found NOTE_ON event" << std::endl;
 
 				chunkPtr--;
-				NoteEvent onEvent;
-				onEvent.noteCmd.cmd = (m_chunkData[chunkPtr] >> 4);
-				onEvent.noteCmd.channel = (m_chunkData[chunkPtr] & 0x0F);
-				chunkPtr++;
-				onEvent.pitch = m_chunkData[chunkPtr++];
-				onEvent.velocity = m_chunkData[chunkPtr++];
-
-				if (m_channel == 0xFF)
-					m_channel = onEvent.noteCmd.channel;
-
-				while(!m_isNoteEnd(chunkPtr))
-					onEvent.length.push_back(m_chunkData[chunkPtr++]);
-
-				m_notesOn.push_back(onEvent);
-
-				uint8_t nextByte = m_chunkData[chunkPtr++];
-				if ((nextByte >> 4) == m_cmdNoteOffMask)
-					m_cms = NOTE_OFF;
-				else if ((nextByte >> 4) == m_cmdNoteOnMask)
-					m_cms = NOTE_ON;
-				else if (nextByte == eventMarker)
-					m_cms = TRACK_END;
-
+				m_parseNoteEvent(chunkPtr, m_notesOn);
                 break;
             }
             case NOTE_OFF:
@@ -360,29 +321,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found NOTE_OFF event" << std::endl;
 
 				chunkPtr--;
-				NoteEvent offEvent;
-				offEvent.noteCmd.cmd = (m_chunkData[chunkPtr] >> 4);
-				offEvent.noteCmd.channel = (m_chunkData[chunkPtr] & 0x0F);
-				chunkPtr++;
-				offEvent.pitch = m_chunkData[chunkPtr++];
-				offEvent.velocity = m_chunkData[chunkPtr++];
-
-				if (m_channel == 0xFF)
-					m_channel = offEvent.noteCmd.channel;
-
-				while (!m_isNoteEnd(chunkPtr))
-					offEvent.length.push_back(m_chunkData[chunkPtr++]);
-
-				m_notesOff.push_back(offEvent);
-
-				uint8_t nextByte = m_chunkData[chunkPtr++];
-				if ((nextByte >> 4) == m_cmdNoteOffMask)
-					m_cms = NOTE_OFF;
-				else if ((nextByte >> 4) == m_cmdNoteOnMask)
-					m_cms = NOTE_ON;
-				else if (nextByte == eventMarker)
-					m_cms = TRACK_END;
-
+				m_parseNoteEvent(chunkPtr, m_notesOff);
 				break;
             }
         }
@@ -401,11 +340,6 @@ int MTrkChunk::m_work(){
     } else {
         return -1;
     }
-}
-
-int MTrkChunk::m_getChannelFromCmd(uint8_t cmd)
-{
-    return cmd && 0x0F;
 }
 
 void MTrkChunk::m_debugPrintNoteEvent(NoteEvent note)
@@ -429,60 +363,14 @@ bool MTrkChunk::m_isTrackEnd(uint64_t startIndex)
 
 bool MTrkChunk::m_isNoteEnd(uint64_t startIndex)
 {
-	//m_channel
 	if (m_chunkData[startIndex] == eventMarker)
 		return true;
 
     if((m_chunkData[startIndex] >> 4) == m_cmdNoteOnMask || (m_chunkData[startIndex] >> 4) == m_cmdNoteOffMask)
-		if((m_chunkData[startIndex] & 0x0F) == m_channel)
+		if((m_chunkData[startIndex] & 0x0F) == m_midiChannel)
 			return true;
 
 	return false;
-}
-
-int MTrkChunk::m_detectNoteEvents(uint8_t cmdMask, std::vector<NoteEvent> &noteEvents)
-{
-    for(uint64_t i=0; i < m_chunkData.size(); i++)
-    {
-        if((m_chunkData[i] >> 4) == cmdMask &&
-            m_chunkData[i+1] >= 0 && m_chunkData[i+1] <= 127 &&
-            m_chunkData[i+2] >= 0 && m_chunkData[i+2] <= 127)
-        {
-            //const NoteEvent *currentNoteEvent = reinterpret_cast<const NoteEvent*>(m_chunkData.data() + i);
-            NoteEvent currentNoteEvent;
-            currentNoteEvent.noteCmd.cmd = (m_chunkData[i] >> 4);
-            currentNoteEvent.noteCmd.channel = (m_chunkData[i] & 0x0F);
-            currentNoteEvent.pitch = m_chunkData[i+1];
-            currentNoteEvent.velocity = m_chunkData[i+2];
-            currentNoteEvent.length.push_back(m_chunkData[i+3]);
-
-            uint32_t additionalNoteLengthIter = 0;
-            while(!m_isNoteEnd(i + 4 + additionalNoteLengthIter))
-            {
-                currentNoteEvent.length.push_back(m_chunkData[i + 4 + additionalNoteLengthIter]);
-                std::cout << "Pushing byte: " << std::to_string(m_chunkData[i + 4 + additionalNoteLengthIter]) << std::endl;
-                additionalNoteLengthIter++;
-            }
-
-            if(m_debugLevel >= 2)
-                m_debugPrintNoteEvent(currentNoteEvent);
-
-            noteEvents.push_back(currentNoteEvent);
-        }
-    }
-
-    if(m_debugLevel >= 1)
-        std::cout << "Found " << noteEvents.size() << " note events with cmd " << std::to_string(cmdMask) << std::endl;
-
-    return 0;
-}
-
-void MTrkChunk::m_debugPrintHumanizedNote(HumanizedNote hNote)
-{
-    std::cout << "Symbolic: " << hNote.symbolicCode;
-    std::cout << "\tFrequency: " << hNote.frequency;
-    std::cout << "\tCount of duration On bytes: " << hNote.durationOn.size();
-    std::cout << "\tCount of duration Off bytes: " << hNote.durationOff.size() << std::endl;
 }
 
 void MTrkChunk::m_mapEventsToHumanizedNotes()
@@ -509,15 +397,7 @@ void MTrkChunk::m_mapEventsToHumanizedNotes()
     }
 }
 
-int8_t MTrkChunk::getMidiChannel()
-{
-    if(m_notesOn.size() == 0)
-        return -1;
-
-    return m_notesOn[0].noteCmd.channel;
-}
-
-int32_t MTrkChunk::getNotesCount()
+uint64_t MTrkChunk::getNotesCount()
 {
     if(m_notesOn.size() != m_notesOff.size())
         return -1;
@@ -537,7 +417,7 @@ void MTrkChunk::dbg_printBody()
     int iter = 1;
     for( uint64_t i=0; i<m_chunkData.size(); i++){
         std::cout << static_cast<int>(m_chunkData[i]) << "\t";
-        //cout << std::hex << m_chunkData[i] << "\t";
+        //std::cout << std::hex << m_chunkData[i] << "\t";
 
         if(iter == 4){
             std::cout << std::endl;
@@ -548,74 +428,109 @@ void MTrkChunk::dbg_printBody()
     std::cout << std::endl;
 }
 
-void MTrkChunk::m_detectTempo()
+void MTrkChunk::m_extractTempo(uint64_t &ptr)
 {
     //FF 51 03 tt tt tt
-    for( uint64_t i=0; i<m_chunkData.size(); i++)
-    {
-        if( m_chunkData[i]   == 0xFF &&
-            m_chunkData[i+1] == 0x51 &&
-            m_chunkData[i+2] == 0x03 ){
+	int32_t tmp_tempo = 0;
+	tmp_tempo = m_chunkData[ptr++] << 16;
+	tmp_tempo |= m_chunkData[ptr++] << 8;
+	tmp_tempo |= m_chunkData[ptr++];
+	m_tempo = 60000000 / tmp_tempo;
 
-            int32_t tmp_tempo = 0;
-            tmp_tempo  = m_chunkData[i+3] << 16;
-            tmp_tempo |= m_chunkData[i+4] << 8;
-            tmp_tempo |= m_chunkData[i+5];
-            m_tempo = 60000000 / tmp_tempo;
-
-            if(m_debugLevel >= 2)
-            std::cout << "Detected track tempo: " << m_tempo << " BPM" << std::endl;
-        }
-    }
+	if(m_debugLevel >= 2)
+		std::cout << "Detected track tempo: " << m_tempo << " BPM" << std::endl;
 }
 
-int MTrkChunk::getTempo()
+void MTrkChunk::m_extractTimeSignature(uint64_t &ptr)
 {
-    return m_tempo;
+	m_timeSignature.nn = m_chunkData[ptr++];
+	m_timeSignature.dd = m_chunkData[ptr++];
+	m_timeSignature.cc = m_chunkData[ptr++];
+	m_timeSignature.bb = m_chunkData[ptr++];
+
+	if (m_debugLevel >= 2)
+		std::cout << "Detected track time signature:"
+		<< "\nnn = " << m_timeSignature.nn
+		<< "\ndd = " << m_timeSignature.dd
+		<< "\ncc = " << m_timeSignature.dd
+		<< "\nbb = " << m_timeSignature.bb 
+		<< std::endl;
 }
 
-void MTrkChunk::m_detectTrackName()
+void MTrkChunk::m_extractKeySignature(uint64_t &ptr)
 {
-    //FF 03 len text
-    int trackNameLength = 0;
-    for( uint64_t i=0; i<m_chunkData.size(); i++)
-    {
-        if( m_chunkData[i]   == 0xFF &&
-            m_chunkData[i+1] == 0x03 ){
+	m_keySignature.sf = m_chunkData[ptr++];
+	m_keySignature.mi = m_chunkData[ptr++];
 
-            trackNameLength = m_chunkData[i+2];
-
-            for( uint64_t j=i+3; j<i+3+trackNameLength; j++){
-                m_trackName.push_back(m_chunkData[j]);
-            }
-        }
-    }
+	if (m_debugLevel >= 2)
+		std::cout << "Detected key signature:"
+		<< "\nsf = " << m_keySignature.sf
+		<< "\nmi = " << m_keySignature.mi
+		<< std::endl;
 }
 
-std::string MTrkChunk::getTrackName()
+void MTrkChunk::m_extractStringData(uint64_t &ptr, std::string &outputStr)
 {
-    return m_trackName;
+	uint8_t trackNameSize = m_chunkData[ptr++];
+	uint32_t currentPos = ptr;
+	while (ptr != currentPos + trackNameSize)
+		outputStr.push_back(m_chunkData[ptr++]);
+
+	if (m_debugLevel >= 2)
+		std::cout << "Found text data: " << outputStr << std::endl;
 }
 
-void MTrkChunk::m_detectTrackText()
+void MTrkChunk::m_extractSMPTEOffset(uint64_t &ptr)
 {
-    //FF 01 len text
-    int trackTextLength = 0;
-    for( uint64_t i=0; i<m_chunkData.size(); i++)
-    {
-        if( m_chunkData[i]   == 0xFF &&
-            m_chunkData[i+1] == 0x01 ){
+	m_smpteOffset.hr = m_chunkData[ptr++];
+	m_smpteOffset.mn = m_chunkData[ptr++];
+	m_smpteOffset.se = m_chunkData[ptr++];
+	m_smpteOffset.fr = m_chunkData[ptr++];
+	m_smpteOffset.ff = m_chunkData[ptr++];
 
-            trackTextLength = m_chunkData[i+2];
-
-            for( uint64_t j=i+3; j<i+3+trackTextLength; j++){
-                m_trackText.push_back(m_chunkData[j]);
-            }
-        }
-    }
+	if (m_debugLevel >= 2)
+		std::cout << "Detected track time signature:"
+		<< "\nnn = " << m_smpteOffset.hr
+		<< "\ndd = " << m_smpteOffset.mn
+		<< "\ncc = " << m_smpteOffset.se
+		<< "\nbb = " << m_smpteOffset.fr
+		<< "\nbb = " << m_smpteOffset.ff
+		<< std::endl;
 }
 
-std::string MTrkChunk::getTrackText()
+void MTrkChunk::m_parseNoteEvent(uint64_t &ptr, std::vector<NoteEvent> &noteEvents)
 {
-    return m_trackText;
+	NoteEvent noteEvent;
+	noteEvent.noteCmd.cmd = (m_chunkData[ptr] >> 4);
+	noteEvent.noteCmd.channel = (m_chunkData[ptr] & 0x0F);
+	ptr++;
+	noteEvent.pitch = m_chunkData[ptr++];
+	noteEvent.velocity = m_chunkData[ptr++];
+
+	if (m_midiChannel == 0xFF)
+		m_midiChannel = noteEvent.noteCmd.channel;
+
+	while (!m_isNoteEnd(ptr))
+		noteEvent.length.push_back(m_chunkData[ptr++]);
+
+	if (m_debugLevel >= 2)
+		m_debugPrintNoteEvent(noteEvent);
+
+	noteEvents.push_back(noteEvent);
+
+	uint8_t nextByte = m_chunkData[ptr++];
+	if ((nextByte >> 4) == m_cmdNoteOffMask)
+		m_cms = NOTE_OFF;
+	else if ((nextByte >> 4) == m_cmdNoteOnMask)
+		m_cms = NOTE_ON;
+	else if (nextByte == eventMarker)
+		m_cms = TRACK_END;
+}
+
+void MTrkChunk::m_debugPrintHumanizedNote(HumanizedNote hNote)
+{
+	std::cout << "Symbolic: " << hNote.symbolicCode;
+	std::cout << "\tFrequency: " << hNote.frequency;
+	std::cout << "\tCount of duration On bytes: " << hNote.durationOn.size();
+	std::cout << "\tCount of duration Off bytes: " << hNote.durationOff.size() << std::endl;
 }
