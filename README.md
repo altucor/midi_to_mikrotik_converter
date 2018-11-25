@@ -9,3 +9,4 @@
 | -n | Sets the note shift relative to the original | -n 3 //Shifts all notes 3 notes up |
 | -b | Sets the new bpm to output file | -b 130 //Sets a new bpm to 130, ignores the original bpm in the file |
 | -c | Adds comments in the form of notes | -c |
+| -d | Print different level debug information while running. You can specify debug level after flag. Higher value equals more info. | -d 3 |
