@@ -20,7 +20,7 @@
 #include <fstream>
 #include <cstdio>
 #include <vector>
-//#include <unistd.h>
+#include <unistd.h>
 #include "./include/MidiFile.h"
 #include "./include/MTrkChunk.h"
 
