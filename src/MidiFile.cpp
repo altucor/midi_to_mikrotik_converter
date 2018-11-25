@@ -76,12 +76,14 @@ void MidiFile::parseFile()
         exit(-1);
     }
 
+    /*
     if(m_generateOutputTrackFiles() == 0){
         std::cout << "Success generated output scripts" << std::endl;
     } else {
         std::cout << " @ERROR: while generating script" << std::endl;
         exit(-1);
     }
+    */
 }
 
 int MidiFile::m_readFile()
@@ -89,27 +91,17 @@ int MidiFile::m_readFile()
     if(m_filePath == "")
         return -1;
 
-    std::ifstream midiFileStream( m_filePath, std::ios::in | std::ios::binary | std::ios::ate );
-    midiFileStream.seekg(0, std::ios::end);
-	m_fileSize = midiFileStream.tellg();
-	m_fileData.resize(m_fileSize);
+    std::ifstream midiFileStream(m_filePath, std::ios::binary);
+	if (!midiFileStream.is_open())
+		return -1;
+
+	midiFileStream.seekg(0, std::ios::end);
+	m_fileData.resize(midiFileStream.tellg());
 	midiFileStream.seekg(0, std::ios::beg);
+	midiFileStream.read(reinterpret_cast<char*>(m_fileData.data()), m_fileData.size());
+	midiFileStream.close();
 
-    if (midiFileStream.is_open())
-    {
-        midiFileStream.read(reinterpret_cast<char*>(m_fileData.data()), m_fileSize);
-    }
-
-    if(m_fileSize == m_fileData.size())
-    {
-        midiFileStream.close();
-        return 0;
-    }
-    else
-    {
-        midiFileStream.close();
-        return -1;
-    }
+    return 0;
 }
 
 int MidiFile::m_parseHeader()

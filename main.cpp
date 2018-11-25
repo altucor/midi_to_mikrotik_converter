@@ -28,11 +28,12 @@ int main(int argc, char *argv[]){
     int result = 0;
     int octaveShift = 0;
     int noteShift = 0;
-    std::string fileName = ""; // H:\\CodeBlocksPRJ\\01.09.2017-01.07.2018\\midi_to_mikrotik_converter\\Debug\\skibidi.mid
+	std::string fileName;
+    //std::string fileName = "H:\\CodeBlocksPRJ\\01.09.2017-01.07.2018\\midi_to_mikrotik_converter\\Debug\\skibidi.mid";
+	//std::string fileName = "H:\\CodeBlocksPRJ\\01.09.2017-01.07.2018\\midi_to_mikrotik_converter\\Debug\\Jingle bells.mid";
     int newBpm = -1;
-    int debugLevel = 0;
+    int debugLevel = 4;
     bool enableCommentsFlag = false;
-
 
     while ( (result = getopt(argc,argv,"o:n:f:b:d:c")) != -1){
         switch (result){
@@ -45,7 +46,6 @@ int main(int argc, char *argv[]){
             case '?': printf("Error argument found !\n"); break; //Error handler
         };
 	};
-
 
     if( fileName != "" ){
         MidiFile midiObj;

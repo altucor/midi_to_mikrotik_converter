@@ -29,8 +29,11 @@ enum STATE
     TIME_SIGNATURE,
     KEY_SIGNATURE,
     TRACK_END,
-    UNPREDICTED
+    UNPREDICTED,
+    UNKNOWN_BYTE
 };
+
+const static uint8_t eventMarker = 0xFF;
 
 struct NoteCmd
 {
@@ -52,6 +55,14 @@ struct HumanizedNote
     double frequency = 0.0;
     std::vector<uint8_t> durationOn;
     std::vector<uint8_t> durationOff;
+};
+
+struct TimeSignature
+{
+	uint8_t nn = 0;
+	uint8_t dd = 0;
+	uint8_t cc = 0;
+	uint8_t bb = 0;
 };
 
 class MTrkChunk
@@ -97,6 +108,7 @@ class MTrkChunk
         STATE m_cms = UNDEFINED; // Current Machine State
         std::vector<NoteEvent> m_notesOn;
         std::vector<NoteEvent> m_notesOff;
+		uint8_t m_channel = -1;
         int m_cmdNoteOnMask  = 0x09; // 0x90
         int m_cmdNoteOffMask =  0x08; //0x80
         int m_chunkPtr = 0;
@@ -108,6 +120,7 @@ class MTrkChunk
 		int64_t m_mtrkEndPos = 0;
 		int64_t m_mtrkSize = 0;
         int32_t m_tempo = 0;
+		TimeSignature m_timeSignature;
         int m_debugLevel = 0;
         std::vector<uint8_t> m_firstDelays;
         std::string m_trackName = "";
