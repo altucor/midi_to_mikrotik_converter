@@ -28,20 +28,22 @@ int main(int argc, char *argv[]){
     int result = 0;
     int octaveShift = 0;
     int noteShift = 0;
-	std::string fileName;
+	std::string fileName = "";
     int newBpm = -1;
     int debugLevel = 0;
     bool enableCommentsFlag = false;
+    bool predelayFlag = false;
 
-    while ( (result = getopt(argc,argv,"o:n:f:b:d:c")) != -1){
+    while ( (result = getopt(argc,argv,"o:n:f:b:d:cp")) != -1){
         switch (result){
-            case 'o': octaveShift = atoi(optarg);         break; //octave shift
-            case 'n': noteShift = atoi(optarg);           break; //note shift
-            case 'f': fileName = optarg;                  break; //midi file
-            case 'b': newBpm = atoi(optarg);              break; //set new bpm for all files
-            case 'd': debugLevel = atoi(optarg);          break; //enable note comments in output file
-            case 'c': enableCommentsFlag = true;          break; //enable note comments in output file
-            case '?': printf("Error argument found !\n"); break; //Error handler
+            case 'o': octaveShift = atoi(optarg);           break; //octave shift
+            case 'n': noteShift = atoi(optarg);             break; //note shift
+            case 'f': fileName = optarg;                    break; //midi file
+            case 'b': newBpm = atoi(optarg);                break; //set new bpm for all files
+            case 'd': debugLevel = atoi(optarg);            break; //sets debug level
+            case 'c': enableCommentsFlag = true;            break; //enable note comments in output file
+            case 'p': predelayFlag = true;                  break; //enable pre-delay / delay before first note
+            case '?': printf("Error argument found !\n");   break; //Error handler
         };
 	};
 
@@ -53,6 +55,7 @@ int main(int argc, char *argv[]){
         midiObj.setNewBpm(newBpm);
         midiObj.setDebugLevel(debugLevel);
         midiObj.setEnableCommentsTo(enableCommentsFlag);
+        midiObj.setPredelayFlag(predelayFlag);
         midiObj.parseFile();
     } else {
         std::cout << "Error: No file specified" << std::endl;

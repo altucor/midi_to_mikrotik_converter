@@ -10,3 +10,4 @@
 | -b | Sets the new bpm to output file | -b 130 //Sets a new bpm to 130, ignores the original bpm in the file |
 | -c | Adds comments in the form of notes | -c |
 | -d | Print different level debug information while running. You can specify debug level after flag. Higher value equals more info. | -d 3 |
+| -p | Sometimes it works bad, because some files have strange bytes like delay events, but really they aren't detected as pre-delay by other programs. So, if you know pre-delay is present before first note, you can enable this feature by specifying flag "-p". You need this feature, only if you want play simultaneously several instruments on each router and want to hear start of all tracks/instruments at the right time | -p |

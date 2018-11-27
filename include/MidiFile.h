@@ -13,6 +13,14 @@
 #include <stdlib.h>
 #include "MTrkChunk.h"
 
+struct TrackLength
+{
+    uint32_t h = 0;
+    uint32_t m = 0;
+    uint32_t s = 0;
+    double ms = 0;
+};
+
 struct MidiMthdHeader
 {
     char mthd[5] = {0,0,0,0,'\0'};
@@ -35,8 +43,6 @@ struct MtrkChunkInfo
 class MidiFile
 {
     public:
-        // Persists
-
         // Functions
         explicit MidiFile();
         ~MidiFile();
@@ -46,6 +52,7 @@ class MidiFile
         void setNewBpm(int bpm);
         void setDebugLevel(int debugLevel);
         void setEnableCommentsTo(bool enableCommentsFlag);
+        void setPredelayFlag(bool predelayFlag);
         void parseFile();
         std::string getPath();
 		int64_t getFileSize();
@@ -53,12 +60,13 @@ class MidiFile
         //double getFullTrackLength();
 
     private:
-        // Persists
+        // Variables
         int m_octaveShift = 0;
         int m_noteShift = 0;
         int m_debugLevel = 0;
         int m_newBpm = -1;
         bool m_commentsFlag = false;
+        bool m_predelayFlag = false;
         uint64_t m_fileSize = 0;
 		int64_t m_filePtr = 0; // file pointer
         int m_mthdChunkLength = 0;
@@ -73,6 +81,7 @@ class MidiFile
         std::string m_trackName = "";
         std::vector<MtrkChunkInfo> m_mtrkChunks;
 
+    private:
         // Functions
         int m_readFile();
         int m_parseHeader();
@@ -82,7 +91,9 @@ class MidiFile
         int m_generateOutputTrackFiles();
 		double m_durationArrayToMiliseconds(std::vector<uint8_t> delayEvents);
         int m_createMikrotikScriptFile(MtrkChunkInfo chunk);
-        //void m_humanizeTime();
+        double m_calculateFullTrackSize(MtrkChunkInfo & chunkInfo);
+        TrackLength m_converTimeToReadable(double lengthInMs);
+        double m_calculateFirstDelay(std::vector<uint8_t> firstDelays);
 };
 
 #endif // MIDIFILE_H

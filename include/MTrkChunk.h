@@ -96,6 +96,7 @@ class MTrkChunk
 		int64_t getStartPos() { return m_mtrkStartPos; }
 		int64_t getEndPos() { return m_mtrkEndPos; }
 		int64_t getSize() { return m_mtrkSize; }
+		std::vector<uint8_t> getFirstDelays() { return m_firstDelays; }
 
 	public: // Public getters
 		std::string getTrackText() { return m_trackText; }
