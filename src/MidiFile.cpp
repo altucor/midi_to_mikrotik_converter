@@ -252,12 +252,34 @@ int MidiFile::m_generateOutputTrackFiles()
     return 0;
 }
 
+double MidiFile::m_durationArrayToMiliseconds(std::vector<uint8_t> delayEvents)
+{
+	double result = 0.0;
+	uint32_t assembledValue = 0;
+	uint64_t eventsTotal = delayEvents.size() - 1;
+
+	/*
+	 * Very detailed article about VLV(Variable Length Values)
+	 * http://www.ccarh.org/courses/253/handout/vlv/
+	 * Thats why 0x7F and -1 at the end
+	 */
+	for (auto & item : delayEvents)
+	{
+		assembledValue |= (item & 0x7F) << ((eventsTotal * 8) - 1); 
+		eventsTotal--;
+	}
+
+	result = (double)(static_cast<double>(assembledValue) * m_pulsesPerSec);
+
+	return result;
+}
+
 int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
 {
     /*
-    :beep frequency=440 length=1000ms;
-    :delay 1000ms;
-    */
+     * :beep frequency=440 length=1000ms;
+     * :delay 1000ms;
+     */
 
     int status = 0;
     std::stringstream outFilePath;
@@ -288,21 +310,14 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
         double noteOnDuration = 0.0;
         double noteOffDuration = 0.0;
 
-        for(const auto & lengthByte : note.durationOn)
-        {
-            noteOnDuration += (lengthByte * m_pulsesPerSec);
-        }
-
-        for(const auto & lengthByte : note.durationOff)
-        {
-            noteOffDuration += (lengthByte * m_pulsesPerSec);
-        }
+		noteOnDuration = m_durationArrayToMiliseconds(note.durationOn);
+		noteOffDuration = m_durationArrayToMiliseconds(note.durationOff);
 
         outputBuffer << ":beep frequency=" << note.frequency;
-        outputBuffer << " length=" << std::to_string(noteOnDuration) << "ms;";
+        outputBuffer << " length=" << noteOnDuration << "ms;";
         if(m_commentsFlag)
             outputBuffer << " # " << note.symbolicCode;
-        outputBuffer << "\n:delay " << std::to_string(noteOffDuration) << "ms;\n\n";
+        outputBuffer << "\n:delay " << (noteOffDuration + noteOnDuration) << "ms;\n\n";
     }
 
     std::ofstream outputFile;
@@ -334,6 +349,3 @@ std::vector<uint8_t> MidiFile::getFileData()
 {
     return m_fileData;
 }
-
-
-

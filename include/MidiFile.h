@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <iomanip>
 #include <stdlib.h>
 #include "MTrkChunk.h"
 
@@ -49,7 +50,7 @@ class MidiFile
         std::string getPath();
 		int64_t getFileSize();
         std::vector<uint8_t> getFileData();
-        double getFullTrackLength();
+        //double getFullTrackLength();
 
     private:
         // Persists
@@ -59,7 +60,7 @@ class MidiFile
         int m_newBpm = -1;
         bool m_commentsFlag = false;
         uint64_t m_fileSize = 0;
-		int64_t m_filePtr = 0; //file pointer
+		int64_t m_filePtr = 0; // file pointer
         int m_mthdChunkLength = 0;
         int m_formatType = 0;
         int m_mtrkChunksCnt = 0;
@@ -79,8 +80,9 @@ class MidiFile
         int m_processChunks();
         int m_processChunk(MtrkChunkInfo &chunkInfo);
         int m_generateOutputTrackFiles();
+		double m_durationArrayToMiliseconds(std::vector<uint8_t> delayEvents);
         int m_createMikrotikScriptFile(MtrkChunkInfo chunk);
-        void m_humanizeTime();
+        //void m_humanizeTime();
 };
 
 #endif // MIDIFILE_H

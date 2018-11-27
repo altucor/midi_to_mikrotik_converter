@@ -10,7 +10,6 @@ enum STATE
 {
     UNDEFINED = 0,
     HEADER_MARKER,
-    HEADER_SIZE,
     FIRST_DELAY,
     NOTE_ON,
     NOTE_OFF,
@@ -133,7 +132,7 @@ class MTrkChunk
         STATE m_cms = UNDEFINED; // Current Machine State
         uint8_t m_cmdNoteOnMask = 0x09;		// 0x90
         uint8_t m_cmdNoteOffMask = 0x08;	// 0x80
-        
+
 		uint64_t m_chunkPtr = 0;
         int64_t m_mtrkStartPos = 0;
 		int64_t m_mtrkEndPos = 0;
@@ -142,7 +141,7 @@ class MTrkChunk
 		int m_mtrkOctaveShift = 0;
 		int m_mtrkNoteShift = 0;
         int m_debugLevel = 0;
-        
+
         std::string m_trackText = "";
 		std::string m_copyright = "";
 		std::string m_trackName = "";

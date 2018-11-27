@@ -73,7 +73,7 @@ int MTrkChunk::process()
 
 void MTrkChunk::m_stateMachine()
 {
-    STATE machineState = UNDEFINED;
+	m_cms = UNDEFINED;
     uint64_t chunkPtr = 0;
 
     while(true)
@@ -122,6 +122,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found FIRST_DELAY" << std::endl;
 
                 m_firstDelays.push_back(m_chunkData[chunkPtr++]);
+                std::cout << "Added FIRST_DELAY information: 0x" << std::hex << static_cast<int>(m_firstDelays.back()) << std::endl;
 
                 uint8_t currentCmd = m_chunkData[chunkPtr++];
 
@@ -416,8 +417,8 @@ void MTrkChunk::dbg_printBody()
 
     int iter = 1;
     for( uint64_t i=0; i<m_chunkData.size(); i++){
-        std::cout << static_cast<int>(m_chunkData[i]) << "\t";
-        //std::cout << std::hex << m_chunkData[i] << "\t";
+        //std::cout << static_cast<int>(m_chunkData[i]) << "\t";
+        std::cout << "0x" << std::hex << static_cast<int>(m_chunkData[i]) << "\t";
 
         if(iter == 4){
             std::cout << std::endl;
@@ -450,10 +451,10 @@ void MTrkChunk::m_extractTimeSignature(uint64_t &ptr)
 
 	if (m_debugLevel >= 2)
 		std::cout << "Detected track time signature:"
-		<< "\nnn = " << m_timeSignature.nn
-		<< "\ndd = " << m_timeSignature.dd
-		<< "\ncc = " << m_timeSignature.dd
-		<< "\nbb = " << m_timeSignature.bb 
+		<< "\nnn = " << std::to_string(m_timeSignature.nn)
+		<< "\ndd = " << std::to_string(m_timeSignature.dd)
+		<< "\ncc = " << std::to_string(m_timeSignature.dd)
+		<< "\nbb = " << std::to_string(m_timeSignature.bb)
 		<< std::endl;
 }
 
@@ -464,8 +465,8 @@ void MTrkChunk::m_extractKeySignature(uint64_t &ptr)
 
 	if (m_debugLevel >= 2)
 		std::cout << "Detected key signature:"
-		<< "\nsf = " << m_keySignature.sf
-		<< "\nmi = " << m_keySignature.mi
+		<< "\nsf = " << std::to_string(m_keySignature.sf)
+		<< "\nmi = " << std::to_string(m_keySignature.mi)
 		<< std::endl;
 }
 
@@ -490,11 +491,11 @@ void MTrkChunk::m_extractSMPTEOffset(uint64_t &ptr)
 
 	if (m_debugLevel >= 2)
 		std::cout << "Detected track time signature:"
-		<< "\nnn = " << m_smpteOffset.hr
-		<< "\ndd = " << m_smpteOffset.mn
-		<< "\ncc = " << m_smpteOffset.se
-		<< "\nbb = " << m_smpteOffset.fr
-		<< "\nbb = " << m_smpteOffset.ff
+		<< "\nnn = " << std::to_string(m_smpteOffset.hr)
+		<< "\ndd = " << std::to_string(m_smpteOffset.mn)
+		<< "\ncc = " << std::to_string(m_smpteOffset.se)
+		<< "\nbb = " << std::to_string(m_smpteOffset.fr)
+		<< "\nbb = " << std::to_string(m_smpteOffset.ff)
 		<< std::endl;
 }
 
