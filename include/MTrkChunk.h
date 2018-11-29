@@ -29,7 +29,8 @@ enum STATE
     KEY_SIGNATURE,
     TRACK_END,
     UNPREDICTED,
-    UNKNOWN_BYTE
+    UNKNOWN_BYTE,
+	PARSE_BYTE_COMMAND,
 };
 
 const static uint8_t eventMarker = 0xFF;

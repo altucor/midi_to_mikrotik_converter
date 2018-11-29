@@ -1,18 +1,18 @@
 
 /*
-+  1) detect note on
-+  2) detect note off
-+  3) detect delay in ms beetwen notes
-+  4) detect tempo
-+  5) detect ppqn
-+  6) add octave shift
-+  7) add note shift
-+  8) add multitrack decoding
-+  9) add BPM change
-+ 10) auto detect note channel
-+ 11) add flag -c for writing note comments in file
-+ 12) detect more note length bytes before 0x90 or 0x80
-- 13) detect first/intro delay bytes
+ +	 1) detect note on
+ +	 2) detect note off
+ +	 3) detect delay in ms beetwen notes
+ +	 4) detect tempo
+ +	 5) detect ppqn
+ +	 6) add octave shift
+ +	 7) add note shift
+ +	 8) add multitrack decoding
+ +	 9) add BPM change
+ +	10) auto detect note channel
+ +	11) add flag -c for writing note comments in file
+ +	12) detect more note length bytes before 0x90 or 0x80
++/- 13) detect first/intro delay bytes (works but some times not so good)
 */
 
 #include <iostream>

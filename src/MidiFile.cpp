@@ -5,6 +5,8 @@ MThd - 77 84 104 100
 MTrk - 77 84 114 107
 */
 
+const static uint8_t CONTINUATION_BIT = 0x80;
+
 MidiFile::MidiFile()
 {
     //ctor
@@ -271,7 +273,11 @@ double MidiFile::m_durationArrayToMiliseconds(std::vector<uint8_t> delayEvents)
 	 */
 	for (auto & item : delayEvents)
 	{
-		assembledValue |= (item & 0x7F) << ((eventsTotal * 8) - 1);
+		uint8_t skipContinuationBit = 0;
+
+		if (item & CONTINUATION_BIT)
+			skipContinuationBit = 1;
+		assembledValue |= (item & 0x7F) << ((eventsTotal * 8) - skipContinuationBit);
 		eventsTotal--;
 	}
 
@@ -301,7 +307,9 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
         return 0;
     }
 
-    double totalTrackSizeInMs = m_calculateFullTrackSize(chunk);
+	// here calculated first pre-delay
+	double totalFirstDelay = m_calculateFirstDelay(chunk.mtrkChunkHandler.getFirstDelays());
+    double totalTrackSizeInMs = totalFirstDelay + m_calculateFullTrackSize(chunk);
     TrackLength ctl = m_converTimeToReadable(totalTrackSizeInMs); // ctl - current track length
 
     outputBuffer << "#----------------File Description-----------------#\n";
@@ -320,12 +328,12 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
     outputBuffer << "# Cue Point: " << chunk.mtrkChunkHandler.getCuePoint() << "\n";
     outputBuffer << "#-------------------------------------------------#\n\n";
 
-    // here calculate first pre-delay
-    double totalFirstDelay = m_calculateFirstDelay(chunk.mtrkChunkHandler.getFirstDelays());
+
     /*
+	   * * * Feature pre-delay / first delay * * *
      * Sometimes it works bad, because some files have strange bytes like delay events,
      * but really they aren't detected as pre-delay by other programs.
-     * So, if you know pre-delay is present before first note,
+     * So, if you really know, pre-delay is present before first note,
      * you can enable this feature by specifying flag "-p"
      *
      * You need this feature, only if you want play simultaneously several instruments on each router
@@ -395,7 +403,7 @@ double MidiFile::m_calculateFullTrackSize(MtrkChunkInfo & chunkInfo)
 TrackLength MidiFile::m_converTimeToReadable(double lengthInMs)
 {
     TrackLength tl;
-    tl.ms = (((int)lengthInMs%1000)/100);
+    tl.ms = (((int)lengthInMs%1000));
     tl.s  = (((int)lengthInMs/1000)%60);
     tl.m  = (((int)lengthInMs/(1000*60))%60);
     tl.h  = (((int)lengthInMs/(1000*60*60))%24);
@@ -411,13 +419,13 @@ double MidiFile::m_calculateFirstDelay(std::vector<uint8_t> firstDelays)
 	// This array *firstDelays* contains all delay bytes which we found before first note event
     for(uint64_t i=0; i<firstDelays.size(); i++)
     {
-		if ((firstDelays[i] & 0x80)) // when we found not the end of the sequence
+		if ((firstDelays[i] & CONTINUATION_BIT)) // when we found continuation bit in the sequence
 		{
 			bufferForTicks = bufferForTicks << 7;
 			bufferForTicks |= (firstDelays[i] & 0x7F);
 			appendVLV = true;
 		}
-		else if (appendVLV && !(firstDelays[i] & 0x80)) // when we appended already some bytes and it is the end of the sequence
+		else if (appendVLV && !(firstDelays[i] & CONTINUATION_BIT)) // when we appended already some bytes and it is the end of the sequence
 		{
 			bufferForTicks = bufferForTicks << 7;
 			bufferForTicks |= (firstDelays[i] & 0x7F);
@@ -427,7 +435,7 @@ double MidiFile::m_calculateFirstDelay(std::vector<uint8_t> firstDelays)
 			bufferForTicks = 0;
 			appendVLV = false;
 		}
-		else if (!appendVLV && !(firstDelays[i] & 0x80)) // just append solo byte
+		else if (!appendVLV && !(firstDelays[i] & CONTINUATION_BIT)) // just append solo byte
 		{
 			totalDelay += (double)(static_cast<double>(firstDelays[i]) * m_pulsesPerSec);
 		}

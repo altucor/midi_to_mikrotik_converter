@@ -57,7 +57,6 @@ class MidiFile
         std::string getPath();
 		int64_t getFileSize();
         std::vector<uint8_t> getFileData();
-        //double getFullTrackLength();
 
     private:
         // Variables

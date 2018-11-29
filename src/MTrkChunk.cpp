@@ -73,6 +73,7 @@ int MTrkChunk::process()
 
 void MTrkChunk::m_stateMachine()
 {
+	bool previousByteDelayEvent = false;
 	m_cms = UNDEFINED;
     uint64_t chunkPtr = 0;
 
@@ -105,7 +106,7 @@ void MTrkChunk::m_stateMachine()
                 if(m_debugLevel >= 4)
                     std::cout << "Found MTrk header size and first delay" << std::endl;
 
-                m_cms = FIRST_DELAY;
+                m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
 
@@ -113,28 +114,56 @@ void MTrkChunk::m_stateMachine()
             {
                 if(m_debugLevel >= 4)
                     std::cout << "Found UNKNOWN_BYTE" << std::endl;
+				chunkPtr++; // just skip that byte 
+				m_cms = PARSE_BYTE_COMMAND; // and try to parse next byte
                 break;
             }
 
+			case PARSE_BYTE_COMMAND:
+			{
+				if (m_debugLevel >= 4)
+					std::cout << "Command PARSE_BYTE_COMMAND" << std::endl;
+
+				uint8_t currentCmd = m_chunkData[chunkPtr++];
+
+				if (currentCmd == 0xFF) {
+					m_cms = EVENT; previousByteDelayEvent = false; break;
+				} else if ((currentCmd >> 4) == m_cmdNoteOnMask) {
+					m_cms = NOTE_ON; previousByteDelayEvent = false; break;
+				} else if ((currentCmd >> 4) == m_cmdNoteOffMask) {
+					m_cms = NOTE_OFF; previousByteDelayEvent = false; break;
+				} else if(!previousByteDelayEvent) {
+					chunkPtr--;
+					do {
+						m_firstDelays.push_back(m_chunkData[chunkPtr]);
+					} while (m_chunkData[chunkPtr++] & 0x80);
+					m_cms = PARSE_BYTE_COMMAND;
+					previousByteDelayEvent = true;
+					break;
+				} else if (previousByteDelayEvent) {
+					previousByteDelayEvent = false; // reset state after capturing delay
+					m_cms = UNKNOWN_BYTE;
+					break;
+				}
+
+				break;
+			}
+
             case FIRST_DELAY:
             {
+				previousByteDelayEvent = true;
+
                 if(m_debugLevel >= 4)
                     std::cout << "Found FIRST_DELAY" << std::endl;
 
+				chunkPtr--;
                 m_firstDelays.push_back(m_chunkData[chunkPtr++]);
-                std::cout << "Added FIRST_DELAY information: 0x" << std::hex << static_cast<int>(m_firstDelays.back()) << std::endl;
 
-                uint8_t currentCmd = m_chunkData[chunkPtr++];
+				if (m_debugLevel >= 4)
+					std::cout << "Added FIRST_DELAY information: 0x" << std::hex << static_cast<int>(m_firstDelays.back()) << std::endl;
 
-                if(currentCmd == 0xFF){
-                    m_cms = EVENT; break;
-                } else if((currentCmd >> 4) == m_cmdNoteOnMask){
-                    m_cms = NOTE_ON; break;
-                } else if((currentCmd >> 4) == m_cmdNoteOffMask){
-                    m_cms = NOTE_OFF; break;
-                } else {
-					m_cms = FIRST_DELAY; chunkPtr--; break;
-                }
+				m_cms = PARSE_BYTE_COMMAND;
+				break;
             }
 
             case EVENT:
@@ -173,7 +202,7 @@ void MTrkChunk::m_stateMachine()
                 } else if(currentCmd == 0x2F && m_chunkData[chunkPtr] == 0x00){
                     m_cms = TRACK_END; chunkPtr++; break;
                 } else {
-                    m_cms = FIRST_DELAY;
+                    m_cms = PARSE_BYTE_COMMAND;
                     break;
                 }
             }
@@ -189,7 +218,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found TEXT event" << std::endl;
 
 				m_extractStringData(chunkPtr, m_trackText);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case COPYRIGHT:
@@ -198,7 +227,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found COPYRIGHT event" << std::endl;
 
 				m_extractStringData(chunkPtr, m_copyright);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case TRACK_NAME:
@@ -207,7 +236,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found TRACK_NAME event" << std::endl;
 
 				m_extractStringData(chunkPtr, m_trackName);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case INSTRUMENT_NAME:
@@ -216,7 +245,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found INSTRUMENT_NAME event" << std::endl;
 
 				m_extractStringData(chunkPtr, m_instrumentName);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case VOCAL_TEXT:
@@ -225,7 +254,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found VOCAL_TEXT event" << std::endl;
 
 				m_extractStringData(chunkPtr, m_vocalText);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case TEXT_MARKER:
@@ -234,7 +263,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found TEXT_MARKER event" << std::endl;
 
 				m_extractStringData(chunkPtr, m_textMarker);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case CUE_POINT:
@@ -243,7 +272,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found CUE_POINT event" << std::endl;
 
 				m_extractStringData(chunkPtr, m_cuePoint);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case MIDI_CHANNEL:
@@ -252,7 +281,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found MIDI_CHANNEL event" << std::endl;
 
 				m_midiChannel = m_chunkData[chunkPtr++];
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case MIDI_PORT:
@@ -261,7 +290,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found MIDI_PORT event" << std::endl;
 
 				m_midiPort = m_chunkData[chunkPtr++];
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case TEMPO:
@@ -270,7 +299,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found TEMPO event" << std::endl;
 
 				m_extractTempo(chunkPtr);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case SMPTE_OFFSET:
@@ -279,7 +308,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found SMPTE_OFFSET event" << std::endl;
 
 				m_extractSMPTEOffset(chunkPtr);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case TIME_SIGNATURE:
@@ -288,7 +317,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found TIME_SIGNATURE event" << std::endl;
 
 				m_extractTimeSignature(chunkPtr);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case KEY_SIGNATURE:
@@ -297,7 +326,7 @@ void MTrkChunk::m_stateMachine()
                     std::cout << "Found KEY_SIGNATURE event" << std::endl;
 
 				m_extractKeySignature(chunkPtr);
-				m_cms = FIRST_DELAY;
+				m_cms = PARSE_BYTE_COMMAND;
                 break;
             }
             case TRACK_END:
@@ -417,7 +446,6 @@ void MTrkChunk::dbg_printBody()
 
     int iter = 1;
     for( uint64_t i=0; i<m_chunkData.size(); i++){
-        //std::cout << static_cast<int>(m_chunkData[i]) << "\t";
         std::cout << "0x" << std::hex << static_cast<int>(m_chunkData[i]) << "\t";
 
         if(iter == 4){
@@ -526,6 +554,8 @@ void MTrkChunk::m_parseNoteEvent(uint64_t &ptr, std::vector<NoteEvent> &noteEven
 		m_cms = NOTE_ON;
 	else if (nextByte == eventMarker)
 		m_cms = TRACK_END;
+	else
+		m_cms = PARSE_BYTE_COMMAND;
 }
 
 void MTrkChunk::m_debugPrintHumanizedNote(HumanizedNote hNote)
