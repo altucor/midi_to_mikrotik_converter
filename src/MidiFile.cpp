@@ -19,7 +19,7 @@ MidiFile::~MidiFile()
 
 void MidiFile::setFilePath(std::string &filePath)
 {
-	m_filePath = filePath;
+    m_filePath = filePath;
 }
 
 void MidiFile::setOctaveShift(int octaveShift)
@@ -100,14 +100,14 @@ int MidiFile::m_readFile()
         return -1;
 
     std::ifstream midiFileStream(m_filePath, std::ios::binary);
-	if (!midiFileStream.is_open())
-		return -1;
+    if (!midiFileStream.is_open())
+        return -1;
 
-	midiFileStream.seekg(0, std::ios::end);
-	m_fileData.resize(midiFileStream.tellg());
-	midiFileStream.seekg(0, std::ios::beg);
-	midiFileStream.read(reinterpret_cast<char*>(m_fileData.data()), m_fileData.size());
-	midiFileStream.close();
+    midiFileStream.seekg(0, std::ios::end);
+    m_fileData.resize(midiFileStream.tellg());
+    midiFileStream.seekg(0, std::ios::beg);
+    midiFileStream.read(reinterpret_cast<char*>(m_fileData.data()), m_fileData.size());
+    midiFileStream.close();
 
     return 0;
 }
@@ -116,9 +116,9 @@ int MidiFile::m_parseHeader()
 {
     m_filePtr = 0;
     if( m_fileData[m_filePtr++] == 0x4D &&   // M
-		m_fileData[m_filePtr++] == 0x54 &&   // T
-		m_fileData[m_filePtr++] == 0x68 &&   // h
-		m_fileData[m_filePtr++] == 0x64 )    // d
+        m_fileData[m_filePtr++] == 0x54 &&   // T
+        m_fileData[m_filePtr++] == 0x68 &&   // h
+        m_fileData[m_filePtr++] == 0x64 )    // d
     {
         std::cout << "MThd ID OK" << std::endl;
     } else {
@@ -262,28 +262,28 @@ int MidiFile::m_generateOutputTrackFiles()
 
 double MidiFile::m_durationArrayToMiliseconds(std::vector<uint8_t> delayEvents)
 {
-	double result = 0.0;
-	uint32_t assembledValue = 0;
-	uint64_t eventsTotal = delayEvents.size() - 1;
+    double result = 0.0;
+    uint32_t assembledValue = 0;
+    uint64_t eventsTotal = delayEvents.size() - 1;
 
-	/*
-	 * Very detailed article about VLV(Variable Length Values)
-	 * http://www.ccarh.org/courses/253/handout/vlv/
-	 * Thats why 0x7F and -1 at the end
-	 */
-	for (auto & item : delayEvents)
-	{
-		uint8_t skipContinuationBit = 0;
+    /*
+     * Very detailed article about VLV(Variable Length Values)
+     * http://www.ccarh.org/courses/253/handout/vlv/
+     * Thats why 0x7F and -1 at the end
+     */
+    for (auto & item : delayEvents)
+    {
+        uint8_t skipContinuationBit = 0;
 
-		if (item & CONTINUATION_BIT)
-			skipContinuationBit = 1;
-		assembledValue |= (item & 0x7F) << ((eventsTotal * 8) - skipContinuationBit);
-		eventsTotal--;
-	}
+        if (item & CONTINUATION_BIT)
+            skipContinuationBit = 1;
+        assembledValue |= (item & 0x7F) << ((eventsTotal * 8) - skipContinuationBit);
+        eventsTotal--;
+    }
 
-	result = (double)(static_cast<double>(assembledValue) * m_pulsesPerSec);
+    result = (double)(static_cast<double>(assembledValue) * m_pulsesPerSec);
 
-	return result;
+    return result;
 }
 
 int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
@@ -307,8 +307,8 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
         return 0;
     }
 
-	// here calculated first pre-delay
-	double totalFirstDelay = m_calculateFirstDelay(chunk.mtrkChunkHandler.getFirstDelays());
+    // here calculated first pre-delay
+    double totalFirstDelay = m_calculateFirstDelay(chunk.mtrkChunkHandler.getFirstDelays());
     double totalTrackSizeInMs = totalFirstDelay + m_calculateFullTrackSize(chunk);
     TrackLength ctl = m_converTimeToReadable(totalTrackSizeInMs); // ctl - current track length
 
@@ -330,7 +330,7 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
 
 
     /*
-	   * * * Feature pre-delay / first delay * * *
+       * * * Feature pre-delay / first delay * * *
      * Sometimes it works bad, because some files have strange bytes like delay events,
      * but really they aren't detected as pre-delay by other programs.
      * So, if you really know, pre-delay is present before first note,
@@ -347,8 +347,8 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
         double noteOnDuration = 0.0;
         double noteOffDuration = 0.0;
 
-		noteOnDuration = m_durationArrayToMiliseconds(note.durationOn);
-		noteOffDuration = m_durationArrayToMiliseconds(note.durationOff);
+        noteOnDuration = m_durationArrayToMiliseconds(note.durationOn);
+        noteOffDuration = m_durationArrayToMiliseconds(note.durationOff);
 
         outputBuffer << ":beep frequency=" << note.frequency;
         outputBuffer << " length=" << noteOnDuration << "ms;";
@@ -412,33 +412,33 @@ TrackLength MidiFile::m_converTimeToReadable(double lengthInMs)
 
 double MidiFile::m_calculateFirstDelay(std::vector<uint8_t> firstDelays)
 {
-	bool appendVLV = false;
+    bool appendVLV = false;
     double totalDelay = 0.0;
     uint32_t bufferForTicks = 0;
 
-	// This array *firstDelays* contains all delay bytes which we found before first note event
+    // This array *firstDelays* contains all delay bytes which we found before first note event
     for(uint64_t i=0; i<firstDelays.size(); i++)
     {
-		if ((firstDelays[i] & CONTINUATION_BIT)) // when we found continuation bit in the sequence
-		{
-			bufferForTicks = bufferForTicks << 7;
-			bufferForTicks |= (firstDelays[i] & 0x7F);
-			appendVLV = true;
-		}
-		else if (appendVLV && !(firstDelays[i] & CONTINUATION_BIT)) // when we appended already some bytes and it is the end of the sequence
-		{
-			bufferForTicks = bufferForTicks << 7;
-			bufferForTicks |= (firstDelays[i] & 0x7F);
+        if ((firstDelays[i] & CONTINUATION_BIT)) // when we found continuation bit in the sequence
+        {
+            bufferForTicks = bufferForTicks << 7;
+            bufferForTicks |= (firstDelays[i] & 0x7F);
+            appendVLV = true;
+        }
+        else if (appendVLV && !(firstDelays[i] & CONTINUATION_BIT)) // when we appended already some bytes and it is the end of the sequence
+        {
+            bufferForTicks = bufferForTicks << 7;
+            bufferForTicks |= (firstDelays[i] & 0x7F);
 
-			if(bufferForTicks != 0)
-				totalDelay += (double)(static_cast<double>(bufferForTicks) * m_pulsesPerSec);
-			bufferForTicks = 0;
-			appendVLV = false;
-		}
-		else if (!appendVLV && !(firstDelays[i] & CONTINUATION_BIT)) // just append solo byte
-		{
-			totalDelay += (double)(static_cast<double>(firstDelays[i]) * m_pulsesPerSec);
-		}
+            if(bufferForTicks != 0)
+                totalDelay += (double)(static_cast<double>(bufferForTicks) * m_pulsesPerSec);
+            bufferForTicks = 0;
+            appendVLV = false;
+        }
+        else if (!appendVLV && !(firstDelays[i] & CONTINUATION_BIT)) // just append solo byte
+        {
+            totalDelay += (double)(static_cast<double>(firstDelays[i]) * m_pulsesPerSec);
+        }
     }
 
     return totalDelay;

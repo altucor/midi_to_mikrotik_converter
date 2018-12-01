@@ -1,17 +1,17 @@
 
 /*
- +	 1) detect note on
- +	 2) detect note off
- +	 3) detect delay in ms beetwen notes
- +	 4) detect tempo
- +	 5) detect ppqn
- +	 6) add octave shift
- +	 7) add note shift
- +	 8) add multitrack decoding
- +	 9) add BPM change
- +	10) auto detect note channel
- +	11) add flag -c for writing note comments in file
- +	12) detect more note length bytes before 0x90 or 0x80
+ +   1) detect note on
+ +   2) detect note off
+ +   3) detect delay in ms beetwen notes
+ +   4) detect tempo
+ +   5) detect ppqn
+ +   6) add octave shift
+ +   7) add note shift
+ +   8) add multitrack decoding
+ +   9) add BPM change
+ +  10) auto detect note channel
+ +  11) add flag -c for writing note comments in file
+ +  12) detect more note length bytes before 0x90 or 0x80
 +/- 13) detect first/intro delay bytes (works but some times not so good)
 */
 
@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
     int result = 0;
     int octaveShift = 0;
     int noteShift = 0;
-	std::string fileName = "";
+    std::string fileName = "";
     int newBpm = -1;
     int debugLevel = 0;
     bool enableCommentsFlag = false;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
             case 'p': predelayFlag = true;                  break; //enable pre-delay / delay before first note
             case '?': printf("Error argument found !\n");   break; //Error handler
         };
-	};
+    };
 
     if( fileName != "" ){
         MidiFile midiObj;

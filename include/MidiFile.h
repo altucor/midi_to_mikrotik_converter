@@ -55,7 +55,7 @@ class MidiFile
         void setPredelayFlag(bool predelayFlag);
         void parseFile();
         std::string getPath();
-		int64_t getFileSize();
+        int64_t getFileSize();
         std::vector<uint8_t> getFileData();
 
     private:
@@ -67,7 +67,7 @@ class MidiFile
         bool m_commentsFlag = false;
         bool m_predelayFlag = false;
         uint64_t m_fileSize = 0;
-		int64_t m_filePtr = 0; // file pointer
+        int64_t m_filePtr = 0; // file pointer
         int m_mthdChunkLength = 0;
         int m_formatType = 0;
         int m_mtrkChunksCnt = 0;
@@ -88,7 +88,7 @@ class MidiFile
         int m_processChunks();
         int m_processChunk(MtrkChunkInfo &chunkInfo);
         int m_generateOutputTrackFiles();
-		double m_durationArrayToMiliseconds(std::vector<uint8_t> delayEvents);
+        double m_durationArrayToMiliseconds(std::vector<uint8_t> delayEvents);
         int m_createMikrotikScriptFile(MtrkChunkInfo chunk);
         double m_calculateFullTrackSize(MtrkChunkInfo & chunkInfo);
         TrackLength m_converTimeToReadable(double lengthInMs);
