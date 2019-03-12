@@ -4,6 +4,10 @@ Forum links:
 https://forum.mikrotik.com/viewtopic.php?f=9&t=135207
 <br>
 http://www.cyberforum.ru/mikrotik/thread2033981.html
+<br><br>
+Video how to manually parse music to midi file and how to use that program, check time codes in video description:
+<br>
+https://www.youtube.com/watch?v=g6GZVlYP7X0
 # Using programm
 
 | Key | Description | Example |
