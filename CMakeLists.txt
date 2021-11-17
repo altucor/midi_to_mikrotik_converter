@@ -21,8 +21,18 @@ include_directories("./include")
 include_directories(${BOOST_INCLUDEDIR})
 
 file(GLOB SOURCES "./main.cpp"
+    "./include/ByteStream.h"
+    "./include/MthdHeader.h"
+    "./include/MtrkHeader.h"
+    "./include/MidiEvent.h"
+    "./include/Note.h"
     "./include/MidiFile.h"
     "./include/MTrkChunk.h"
+    "./src/ByteStream.cpp"
+    "./src/MthdHeader.cpp"
+    "./src/MtrkHeader.cpp"
+    "./src/MidiEvent.cpp"
+    "./src/Note.cpp"
     "./src/MidiFile.cpp"
     "./src/MTrkChunk.cpp"
 )

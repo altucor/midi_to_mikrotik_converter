@@ -21,24 +21,17 @@ struct TrackLength
 	double ms = 0;
 };
 
-struct MidiMthdHeader
-{
-	char mthd[5] = {0,0,0,0,'\0'};
-	uint32_t mthdChunkLength = 0;
-	uint16_t formatType = 0;
-	uint16_t mtrkChunksCount = 0;
-	uint16_t ppqn = 0;
-};
 
 struct MtrkChunkInfo
 {
-	char mtrk[5] = {0,0,0,0,'\0'};
+	char mtrk[4];
 	uint64_t startPos = 0;
 	uint64_t endPos = 0;
 	uint64_t size = 0;
 	uint32_t chunkNumber = 0;
 	MTrkChunk mtrkChunkHandler;
 };
+
 
 class MidiFile
 {

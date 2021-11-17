@@ -1,9 +1,10 @@
 #include "../include/MidiFile.h"
+#include "../include/ByteStream.h"
+#include "../include/MthdHeader.h"
+#include "../include/MTrkHeader.h"
+#include "../include/MidiEvent.h"
+#include "boost/log/trivial.hpp"
 
-/*
-MThd - 77 84 104 100
-MTrk - 77 84 114 107
-*/
 
 const static uint8_t CONTINUATION_BIT = 0x80;
 
@@ -99,21 +100,52 @@ int MidiFile::m_readFile()
 	if(m_filePath == "")
 		return -1;
 
-	std::ifstream midiFileStream(m_filePath, std::ios::binary);
-	if (!midiFileStream.is_open())
+	ByteStream stream(m_filePath);
+	if(!stream.isOk())
+	{
+		BOOST_LOG_TRIVIAL(error) << "Stream is invalid";
 		return -1;
+	}
+	MthdHeader mthd(stream);
+	mthd.log();
+	if(!mthd.isOk())
+	{
+		BOOST_LOG_TRIVIAL(error) << "MThd header is invalid";
+		return -1;
+	}
+	for(uint64_t i=0; i<mthd.getChunksCount(); i++)
+	{
+		MtrkHeader mtrk(stream);
+		mtrk.log();
+		if(!mtrk.isOk())
+		{
+			BOOST_LOG_TRIVIAL(error) << "MTrk chunk header is invalid";
+			return -1;
+		}
+		/*
+		MidiEvent midi(stream);
+		midi.log();
+		if(!midi.isOk())
+		{
+			BOOST_LOG_TRIVIAL(error) << "Midi event is invalid";
+			return -1;
+		}
+		*/
+	}
+	exit(-1);
 
-	midiFileStream.seekg(0, std::ios::end);
-	m_fileData.resize(midiFileStream.tellg());
-	midiFileStream.seekg(0, std::ios::beg);
-	midiFileStream.read(reinterpret_cast<char*>(m_fileData.data()), m_fileData.size());
-	midiFileStream.close();
 
 	return 0;
 }
 
 int MidiFile::m_parseHeader()
 {
+	/*
+	MidiMthdHeader *test_mapper = (MidiMthdHeader *)m_fileData.data();
+	std::cout << "Chunks length: " << test_mapper->mthdChunkLength << std::endl;
+	exit(-1);
+	*/
+
 	m_filePtr = 0;
 	if( m_fileData[m_filePtr++] == 0x4D &&   // M
 		m_fileData[m_filePtr++] == 0x54 &&   // T
@@ -201,14 +233,14 @@ int MidiFile::m_processChunks()
 int MidiFile::m_processChunk(MtrkChunkInfo &chunkInfo)
 {
 	chunkInfo.mtrkChunkHandler = MTrkChunk();
-	chunkInfo.mtrkChunkHandler.setOctaveShift(m_octaveShift);
-	chunkInfo.mtrkChunkHandler.setNoteShift(m_noteShift);
-	chunkInfo.mtrkChunkHandler.initialize(m_fileData, chunkInfo.startPos, chunkInfo.endPos);
-	chunkInfo.mtrkChunkHandler.setDebugLevel(m_debugLevel);
+	//chunkInfo.mtrkChunkHandler.setOctaveShift(m_octaveShift);
+	//chunkInfo.mtrkChunkHandler.setNoteShift(m_noteShift);
+	//chunkInfo.mtrkChunkHandler.initialize(m_fileData, chunkInfo.startPos, chunkInfo.endPos);
+	//chunkInfo.mtrkChunkHandler.setDebugLevel(m_debugLevel);
 
 	if(m_debugLevel >= 3)
 		std::cout << "Processing chunk, start: " << chunkInfo.startPos << " end: " << chunkInfo.endPos << std::endl;
-
+	/*
 	if(chunkInfo.mtrkChunkHandler.process() == 0)
 	{
 		uint32_t tempoTrack = chunkInfo.mtrkChunkHandler.getTempo();
@@ -245,7 +277,7 @@ int MidiFile::m_processChunk(MtrkChunkInfo &chunkInfo)
 	{
 		std::cout << " @ERROR Processing chunk" << std::endl;
 	}
-
+	*/
 	return 0;
 }
 
@@ -292,8 +324,8 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
 	 * :beep frequency=440 length=1000ms;
 	 * :delay 1000ms;
 	 */
-
 	int status = 0;
+	/*
 	std::stringstream outFilePath;
 	outFilePath << m_filePath << chunk.chunkNumber << ".txt";
 	std::stringstream outputBuffer;
@@ -327,7 +359,7 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
 	outputBuffer << "# Text marker: " << chunk.mtrkChunkHandler.getTextMarker() << "\n";
 	outputBuffer << "# Cue Point: " << chunk.mtrkChunkHandler.getCuePoint() << "\n";
 	outputBuffer << "#-------------------------------------------------#\n\n";
-
+	*/
 
 	/*
 	   * * * Feature pre-delay / first delay * * *
@@ -339,6 +371,7 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
 	 * You need this feature, only if you want play simultaneously several instruments on each router
 	 * and want to hear start of all tracks/instruments at the right time
 	 */
+	/*
 	if(m_predelayFlag)
 		outputBuffer << ":delay " << totalFirstDelay << "ms; First delay / Pre-delay\n\n";
 
@@ -368,7 +401,7 @@ int MidiFile::m_createMikrotikScriptFile(MtrkChunkInfo chunk)
 	outputFile.close();
 
 	std::cout << "Successfully writed MTrk #" << chunk.chunkNumber << std::endl;
-
+	*/
 	return status;
 }
 
@@ -390,6 +423,7 @@ std::vector<uint8_t> MidiFile::getFileData()
 double MidiFile::m_calculateFullTrackSize(MtrkChunkInfo & chunkInfo)
 {
 	double trackDuration = 0.0;
+	/*
 	std::vector<HumanizedNote> humanizedNotes = chunkInfo.mtrkChunkHandler.getHumanizedNotes();
 
 	for(const auto & note : humanizedNotes)
@@ -397,6 +431,7 @@ double MidiFile::m_calculateFullTrackSize(MtrkChunkInfo & chunkInfo)
 		trackDuration += m_durationArrayToMiliseconds(note.durationOn);
 		trackDuration += m_durationArrayToMiliseconds(note.durationOff);
 	}
+	*/
 	return trackDuration;
 }
 

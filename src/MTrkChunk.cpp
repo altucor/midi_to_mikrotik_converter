@@ -34,6 +34,7 @@ MTrkChunk::~MTrkChunk()
 	//dtor
 }
 
+/*
 void MTrkChunk::initialize(std::vector<uint8_t> &fileData, uint64_t startPos, uint64_t endPos)
 {
 	std::vector<uint8_t>::iterator begIter = fileData.begin() + startPos;
@@ -126,7 +127,7 @@ void MTrkChunk::m_stateMachine()
 
 				uint8_t currentCmd = m_chunkData[chunkPtr++];
 
-				if (currentCmd == 0xFF) {
+				if (currentCmd == EVENT) {
 					m_cms = EVENT; previousByteDelayEvent = false; break;
 				} else if ((currentCmd >> 4) == m_cmdNoteOnMask) {
 					m_cms = NOTE_ON; previousByteDelayEvent = false; break;
@@ -571,3 +572,4 @@ void MTrkChunk::m_debugPrintHumanizedNote(HumanizedNote hNote)
 	std::cout << "\tCount of duration On bytes: " << hNote.durationOn.size();
 	std::cout << "\tCount of duration Off bytes: " << hNote.durationOff.size() << std::endl;
 }
+*/
