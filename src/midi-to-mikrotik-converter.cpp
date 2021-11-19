@@ -21,8 +21,9 @@
 #include <cstdio>
 #include <vector>
 
-#include "./include/MidiFile.h"
-#include "./include/MTrkChunk.h"
+#include "MidiFile.h"
+#include "MTrkChunk.h"
+#include "Mikrotik.h"
 
 #include <boost/program_options.hpp>
 #include "boost/log/trivial.hpp"
@@ -128,15 +129,19 @@ int main(int argc, char *argv[])
 
 	if( fileName != "" )
 	{
-		MidiFile midiObj;
-		midiObj.setFilePath(fileName);
-		midiObj.setOctaveShift(octaveShift);
-		midiObj.setNoteShift(noteShift);
-		midiObj.setNewBpm(newBpm);
-		midiObj.setDebugLevel(debugLevel);
-		midiObj.setEnableCommentsTo(enableCommentsFlag);
-		midiObj.setPredelayFlag(predelayFlag);
-		midiObj.parseFile();
+		MidiFile midiObj(fileName, octaveShift, noteShift, newBpm);
+		midiObj.process();
+		std::vector<MtrkHeader> tracks = midiObj.getTracks();
+
+		for(uint64_t i=0; i<tracks.size(); i++)
+		{
+			std::vector<Note> notes = tracks[i].getNotes();
+			if(notes.size() == 0)
+				continue;
+			Mikrotik mikrotik;
+			mikrotik.setNoteComments(enableCommentsFlag);
+			mikrotik.buildNote(notes[0], notes[1]);
+		}
 	} 
 	else 
 	{

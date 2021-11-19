@@ -20,21 +20,28 @@ set(Boost_USE_STATIC_RUNTIME ON)
 include_directories("./include")
 include_directories(${BOOST_INCLUDEDIR})
 
-file(GLOB SOURCES "./main.cpp"
+file(GLOB SOURCES 
     "./include/ByteStream.h"
     "./include/MthdHeader.h"
     "./include/MtrkHeader.h"
     "./include/MidiEvent.h"
+    "./include/EventTempo.h"
+    "./include/VLV.h"
     "./include/Note.h"
+    "./include/Mikrotik.h"
     "./include/MidiFile.h"
     "./include/MTrkChunk.h"
     "./src/ByteStream.cpp"
     "./src/MthdHeader.cpp"
     "./src/MtrkHeader.cpp"
     "./src/MidiEvent.cpp"
+    "./src/EventTempo.cpp"
+    "./src/VLV.cpp"
     "./src/Note.cpp"
+    "./src/Mikrotik.cpp"
     "./src/MidiFile.cpp"
     "./src/MTrkChunk.cpp"
+    "./src/midi-to-mikrotik-converter.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

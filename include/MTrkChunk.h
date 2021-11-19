@@ -11,8 +11,8 @@ enum STATE
 	UNDEFINED = 0,
 	HEADER_MARKER = 0x100,
 	FIRST_DELAY = 0x101,
-	NOTE_ON,
-	NOTE_OFF,
+	//NOTE_ON,
+	//NOTE_OFF,
 	//EVENT = 0xFF,
 	//TEXT = 0x01,
 	//COPYRIGHT = 0x02,
@@ -35,19 +35,22 @@ enum STATE
 
 const static uint8_t eventMarker = 0xFF;
 
+/*
 struct NoteCmd
 {
 	uint8_t channel : 4;
 	uint8_t cmd : 4;
 };
+*/
 
 struct NoteEvent
 {
-	NoteCmd noteCmd;
+	//NoteCmd noteCmd;
 	uint8_t pitch = 0;
 	uint8_t velocity = 0;
 	std::vector<uint8_t> length;
 };
+
 
 struct HumanizedNote
 {

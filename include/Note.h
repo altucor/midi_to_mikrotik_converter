@@ -1,32 +1,40 @@
 #ifndef NOTE_HPP
 #define NOTE_HPP
 
-#include "../include/ByteStream.h"
+#include "ByteStream.h"
+#include "VLV.h"
 #include <vector>
 
 enum NOTE_CMD
 {
-	NOTE_OFF,
-	NOTE_ON
+	NOTE_UNKNOWN = 0,
+	NOTE_OFF = 8,
+	NOTE_ON = 9
 };
 
 class Note
 {
 public:
-	Note(ByteStream &stream, uint8_t cmd);
+	Note();
+	Note(uint8_t cmd, ByteStream &stream, double m_pulsesPerSecond);
 	~Note();
+	void log();
+	NOTE_CMD getType();
+	void setOctaveShift(const int shift);
+	void setNoteShift(const int shift);
+	double getFreqencyHz();
+	std::string getSymbolicNote();
+	double getDurationPulses();
 private:
-	NOTE_CMD note_cmd;
-	uint8_t velocity;
-	std::vector<uint8_t> vlv_duration;
-	/*
-	 * Very detailed article about VLV(Variable Length Values)
-	 * http://www.ccarh.org/courses/253/handout/vlv/
-	 * Thats why 0x7F and -1 at the end
-	 */
+	int m_octaveShift = 0;
+	int m_noteShift = 0;
+	double m_pulsesPerSecond = 0.0;
+	uint8_t m_cmd = 0;
+	uint8_t m_channel = 0;
+	uint8_t m_pitch = 0;
+	uint8_t m_velocity = 0;
+	VLV m_vlv;
 };
-
-
 
 
 #endif // NOTE_HPP

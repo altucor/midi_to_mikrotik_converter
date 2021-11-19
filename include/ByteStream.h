@@ -26,8 +26,7 @@ T swap_endian(T u)
 class ByteStream
 {
 public:
-	ByteStream(std::string &filename)
-		: m_stream(filename, std::ios::binary) {};
+	ByteStream(std::string &filename);
 	~ByteStream();
 	bool isOk();
 	uint64_t tellg();
