@@ -1,7 +1,7 @@
 #include "EventTempo.h"
 
 
-EventTempo::EventTempo(MidiEvent &event)
+EventTempo::EventTempo(Event &event)
 {
 	//FF 51 03 tt tt tt
 	std::vector<uint8_t> data = event.getData();

@@ -1,12 +1,12 @@
 #ifndef EVENT_TEMPO_HPP
 #define EVENT_TEMPO_HPP
 
-#include "MidiEvent.h"
+#include "Event.h"
 
 class EventTempo
 {
 public:
-	EventTempo(MidiEvent &event);
+	EventTempo(Event &event);
 	~EventTempo();
 	uint32_t get();
 private:

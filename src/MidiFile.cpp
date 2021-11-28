@@ -6,10 +6,11 @@
 #include <boost/log/trivial.hpp>
 #include <fstream>
 
-const static uint8_t CONTINUATION_BIT = 0x80;
-
-MidiFile::MidiFile(std::string &filePath, const int octaveShift, const int noteShift, const int bpm)
-	: m_filePath(filePath), m_octaveShift(octaveShift), m_noteShift(noteShift), m_bpm(bpm)
+MidiFile::MidiFile(
+	std::string &filePath, 
+	const uint32_t bpm
+)
+	: m_filePath(filePath), m_bpm(bpm)
 {
 
 }
@@ -17,6 +18,81 @@ MidiFile::MidiFile(std::string &filePath, const int octaveShift, const int noteS
 MidiFile::~MidiFile()
 {
 	
+}
+
+int MidiFile::processV0()
+{
+	return 0;
+}
+
+int MidiFile::processV1()
+{
+	if(m_mtrkTracks.size() == 0)
+	{
+		BOOST_LOG_TRIVIAL(error) << "No tracks found for processing";
+		return -1;
+	}
+
+	MtrkHeader track = m_mtrkTracks[0];
+	// Read BPM from MIDI File only when user not
+	// specified custom value
+	if(m_bpm != 0)
+	{
+		BOOST_LOG_TRIVIAL(info) << "BPM set to user custom value: " << m_bpm;
+	}
+	else
+	{
+		std::vector<Event> events = track.getEvents();
+		for(auto event : events)
+		{
+			if(event.getCmd().getFullCmd() == TEMPO)
+			{
+				m_bpm = EventTempo(event).get();
+				BOOST_LOG_TRIVIAL(info) << "Found original BPM information in service track: " << m_bpm;
+				break;
+			}
+		}
+	}
+
+	//if(m_bpm == 0)
+	//{
+	//	m_bpm = g_default_bpm;
+	//	BOOST_LOG_TRIVIAL(info) << "Cannot extract track BPM, setting default value: " << m_bpm;
+	//}
+
+	for(uint64_t i=0; i<m_mtrkTracks.size(); i++)
+	{
+		m_mtrkTracks[i].updateBpm(m_bpm);
+	}
+
+	return 0;
+}
+
+int MidiFile::processV2()
+{
+	return 0;
+}
+
+int MidiFile::postProcess()
+{
+	int ret = 0;
+	switch (m_mthd.getFormatType())
+	{
+	case MIDI_V0:
+		ret = processV0();
+		break;
+	case MIDI_V1:
+		ret = processV1();
+		break;
+	case MIDI_V2:
+		ret = processV2();
+		break;
+	default:
+		BOOST_LOG_TRIVIAL(error) << "Invalid MThd format";
+		ret = -1;
+		break;
+	}
+	return ret;
 }
 
 int MidiFile::process()
@@ -39,51 +115,16 @@ int MidiFile::process()
 	}
 	for(uint64_t i=0; i<m_mthd.getChunksCount(); i++)
 	{
-		MtrkHeader mtrk(stream, m_pulsesPerSec);
+		MtrkHeader mtrk(stream, m_bpm, m_mthd.getPPQN());
 		mtrk.log();
 		if(!mtrk.isOk())
 		{
 			BOOST_LOG_TRIVIAL(error) << "MTrk chunk header is invalid";
 			return -1;
 		}
-		if(mtrk.isServiceTrack())
-		{
-			// Read BPM from MIDI File only when user not
-			// specified custom value
-			
-
-			if(m_bpm != 0)
-			{
-				BOOST_LOG_TRIVIAL(info) << "BPM set to user custom value: " << m_bpm;
-			}
-			else
-			{
-				std::vector<MidiEvent> events = mtrk.getEvents();
-				for(auto event : events)
-				{
-					if(event.getType() == TEMPO)
-					{
-						m_bpm = EventTempo(event).get();
-						BOOST_LOG_TRIVIAL(info) << "Found original BPM information in service track: " << m_bpm;
-						break;
-					}
-				}
-			}
-			if(m_bpm == 0)
-			{
-				m_bpm = g_default_bpm;
-				BOOST_LOG_TRIVIAL(info) << "Cannot extract track BPM, setting default value: " << m_bpm;
-			}
-			else
-			{
-				
-			}
-			m_pulsesPerSec = (double)60000.0 / ( m_bpm * m_mthd.getPPQN() );
-			BOOST_LOG_TRIVIAL(info) << "Pulses per second: " << m_pulsesPerSec;
-		}
 		m_mtrkTracks.push_back(mtrk);
 	}
-	return 0;
+	return postProcess();
 }
 
 std::vector<MtrkHeader> MidiFile::getTracks()

@@ -1,79 +1,59 @@
 #include "MidiEvent.h"
+#include "Utils.h"
 #include "boost/log/trivial.hpp"
 
-#include <iostream>
-#include <utility>
-#include <iomanip>
-#include <sstream>
-
-MidiEvent::MidiEvent(uint8_t cmd, ByteStream &stream, double pulsesPerSec)
+MidiEvent::MidiEvent(MidiEventCode cmd, ByteStream &stream)
+	: m_cmd(cmd)
 {
-	m_pulsesPerSec = pulsesPerSec;
-	m_ok = false;
-	m_cmd = cmd;
-RESTART_MARKER:
-	switch (m_cmd)
+	uint8_t mainCmd = m_cmd.getMainCmd();
+	m_byte2 = stream.get8u();
+	// http://www33146ue.sakura.ne.jp/staff/iz/formats/midi-event.html
+	// Some midi events consist of 2 or 3 bytes
+	switch (mainCmd)
 	{
-	case READ_NEXT_CMD:
-	case SYSTEM_RESET:
-		m_cmd = stream.get8u();
-		goto RESTART_MARKER;
+	case NOTE_OFF:
+	case NOTE_ON:
+	case POLYPHONIC_AFTERTOUCH_PRESSURE:
+	case CONTROL_MODE_CHANGE:
+	case PROGRAM_CHANGE:
+	case PITCH_WHEEL:
+		m_byte3 = stream.get8u();
+		break;
 	default:
 		break;
 	}
-	m_cmd_size = VLV(stream);
-	m_data = stream.getDataPart(m_cmd_size.getValue());
-	m_ok = true;
+	m_delay = VLV(stream);
 }
 
 MidiEvent::~MidiEvent()
 {
 }
 
-void printHexBuffer(std::vector<uint8_t> &buf)
-{
-	if(buf.size() == 0)
-		return;
-	std::stringstream ss;
-	for(std::size_t i=0; i<buf.size(); i++)
-	{
-		ss << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << ((int)buf[i]) << " " << std::dec;
-	}
-	std::cout << ss.str();
-	std::cout << "\n";
-}
-
-std::stringstream toPrintHex(uint64_t val, size_t width)
-{
-	std::stringstream ss;
-	ss << "0x" <<
-		std::hex << 
-		std::uppercase << 
-		std::setfill('0') << 
-		std::setw(width) << 
-		((int64_t)val) << 
-		std::dec;
-	return ss;
-}
-
 void MidiEvent::log()
 {
-	BOOST_LOG_TRIVIAL(info) << "MIDI cmd: " << toPrintHex(m_cmd, 1).str()
-	<< " data size: " << (uint32_t)m_cmd_size.getValue();
-	printHexBuffer(m_data);
+	BOOST_LOG_TRIVIAL(info) 
+	<< "Full cmd: " << (uint32_t)m_cmd.getFullCmd()
+	<< " byte2: " << (uint32_t)m_byte2
+	<< " byte3: " << (uint32_t)m_byte3
+	<< " duration value: " << (uint32_t)m_delay.getValue();
 }
 
-bool MidiEvent::isOk()
-{
-	return m_ok;
-}
-
-uint8_t MidiEvent::getType()
+MidiEventCode MidiEvent::getCmd()
 {
 	return m_cmd;
 }
 
-std::vector<uint8_t> MidiEvent::getData()
+uint8_t MidiEvent::getSecondByte()
 {
-	return m_data;
+	return m_byte2;
+}
+
+uint8_t MidiEvent::getThirdByte()
+{
+	return m_byte3;
+}
+
+VLV MidiEvent::getDelay()
+{
+	return m_delay;
 }

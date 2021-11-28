@@ -35,14 +35,19 @@ Note::Note()
 
 }
 
-Note::Note(uint8_t cmd, ByteStream &stream, double pulsesPerSecond)
+
+Note::Note(Event &event)
 {
-	m_pulsesPerSecond = pulsesPerSecond;
-	m_cmd =  (cmd >> 4);
-	m_channel = (cmd & 0x0F);
-	m_pitch = stream.get8u(); // note pitch
-	m_velocity = stream.get8u(); // note velocity
-	m_vlv = VLV(stream);
+	MidiEventCode cmd = event.getCmd();
+	m_cmd = cmd.getMainCmd();
+	m_channel = cmd.getSubCmd();
+
+	std::vector<uint8_t> data = event.getData();
+	if(data.size() != 2)
+		return;
+	m_pitch = data[0];
+	m_velocity = data[1];
+	m_delay = event.getDelay();
 }
 
 Note::~Note()
@@ -55,41 +60,48 @@ void Note::log()
 	<< " channel: " << (uint32_t)m_channel
 	<< " pitch: " << (uint32_t)m_pitch
 	<< " velocity: " << (uint32_t)m_velocity
-	<< " duration value: " << (uint32_t)m_vlv.getValue();
+	<< " duration value: " << (uint32_t)m_delay.getValue();
 }
 
-NOTE_CMD Note::getType()
+NOTE_TYPE Note::getType()
 {
-	return (NOTE_CMD)m_cmd;
+	return (NOTE_TYPE)m_cmd;
 }
 
-void Note::setOctaveShift(const int shift)
+double Note::getFreqencyHz(
+	const int octaveShift, 
+	const int noteShift, 
+	const double fineTuning
+)
 {
-	m_octaveShift = shift;
+	return g_freqNotes[m_pitch + (octaveShift * NOTES_IN_OCTAVE) + noteShift] + fineTuning;
 }
 
-void Note::setNoteShift(const int shift)
+std::string Note::getSymbolicNote(
+	const int octaveShift, 
+	const int noteShift, 
+	const double fineTuning
+)
 {
-	m_noteShift = shift;
+	std::string symbolic = g_symbolicNotes[m_pitch + (octaveShift * NOTES_IN_OCTAVE) + noteShift];
+	if(fineTuning != 0.0)
+	{
+		symbolic += std::string(" ");
+		symbolic += ((fineTuning < 0.0) ? "-" : "+");
+		symbolic += fineTuning;
+		symbolic += std::string(" Hz");
+	}
+	return symbolic;
 }
 
-double Note::getFreqencyHz()
+/*
+double durationToMs(VLV vlv, const double pulsesPerSecond)
 {
-	return g_freqNotes[m_pitch + (m_octaveShift * NOTES_IN_OCTAVE) + m_noteShift];
+	return (double)(static_cast<double>(vlv.getValue()) * pulsesPerSecond);
 }
+*/
 
-std::string Note::getSymbolicNote()
+VLV Note::getDelay()
 {
-	return g_symbolicNotes[m_pitch + (m_octaveShift * NOTES_IN_OCTAVE) + m_noteShift];
-}
-
-double Note::getDurationPulses()
-{
-	double result = static_cast<double>(m_vlv.getValue());
-	return result;
-	/*
-	m_pulsesPerSec = (double)60000 / ( m_tempoTrack * m_ppqn );
-	std::cout << "Pulses per second: " << m_pulsesPerSec << std::endl;
-	result = (double)(static_cast<double>(assembledValue) * m_pulsesPerSec);
-	*/
+	return m_delay;
 }

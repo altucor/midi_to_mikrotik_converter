@@ -21,18 +21,23 @@ const uint8_t g_default_bpm = 120;
 class MidiFile
 {
 public:
-	explicit MidiFile(std::string &filePath, const int octaveShift, const int noteShift, const int bpm);
+	explicit MidiFile(
+		std::string &filePath, 
+		const uint32_t bpm
+	);
 	~MidiFile();
 	int process();
 	std::vector<MtrkHeader> getTracks();
 private:
 	MthdHeader m_mthd;
-	int m_octaveShift = 0;
-	int m_noteShift = 0;
 	uint16_t m_bpm = 0;
-	double m_pulsesPerSec = 0.0;
 	std::string m_filePath;
 	std::vector<MtrkHeader> m_mtrkTracks;
+private:
+	int processV0();
+	int processV1();
+	int processV2();
+	int postProcess();
 };
 
 #endif // MIDIFILE_H

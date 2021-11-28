@@ -73,24 +73,22 @@ int main(int argc, char *argv[])
 	int result = 0;
 	int octaveShift = 0;
 	int noteShift = 0;
-	std::string fileName = "";
-	int newBpm = -1;
-	int debugLevel = 0;
+	std::string inFileName = "";
+	std::string outFileName = "";
+	int newBpm = 0;
 	bool enableCommentsFlag = false;
-	bool predelayFlag = false;
 	double fineTuning = 0.0;
 
 	po::options_description desc("Application arguments");
 	desc.add_options()
 		("help,h", "Print this help message")
-		("debug,d", po::value<int>(&debugLevel), "Enable verbose debug prints, allowed levels 0-5")
-		("file,f", po::value<std::string>(&fileName), "Select input standart midi file (SMF)")
+		("file,f", po::value<std::string>(&inFileName), "Select input standart midi file (SMF)")
+		("output-file,g", po::value<std::string>(&outFileName), "Specify output file name. If not set than output will be saved in file with same name as input but with additional suffix")
 		("octave-shift,o", po::value<int>(&octaveShift), "Sets the octave shift relative to the original (-10 to +10)")
 		("note-shift,n", po::value<int>(&noteShift), "Sets the note shift relative to the original")
 		("fine-tuning,t", po::value<double>(&fineTuning), "Sets frequency offset for all notes in case when you think your beeper producess beeps at wrong frequencies")
 		("bpm,b", po::value<int>(&newBpm), "Sets the new bpm to output file")
 		("comments,c", po::value<bool>(&enableCommentsFlag), "Adds comments in the form of notes")
-		("predelay,p", po::value<bool>(&predelayFlag), "Enable pre-delay in track")
 	;
 
 	if(argc == 1)
@@ -127,25 +125,31 @@ int main(int argc, char *argv[])
 	BOOST_LOG_TRIVIAL(fatal) << "A fatal severity message";
 	*/
 
-	if( fileName != "" )
+	if(inFileName == "")
 	{
-		MidiFile midiObj(fileName, octaveShift, noteShift, newBpm);
-		midiObj.process();
-		std::vector<MtrkHeader> tracks = midiObj.getTracks();
+		BOOST_LOG_TRIVIAL(error) << "No input (SMF) file specified";
+		std::cout << desc << std::endl;
+		return 0;
+	}
 
-		for(uint64_t i=0; i<tracks.size(); i++)
-		{
-			std::vector<Note> notes = tracks[i].getNotes();
-			if(notes.size() == 0)
-				continue;
-			Mikrotik mikrotik;
-			mikrotik.setNoteComments(enableCommentsFlag);
-			mikrotik.buildNote(notes[0], notes[1]);
-		}
-	} 
-	else 
+	if(outFileName == "")
+		outFileName = inFileName;
+
+	MidiFile midiObj(inFileName, newBpm);
+	midiObj.process();
+	std::vector<MtrkHeader> tracks = midiObj.getTracks();
+
+	for(uint64_t i=0; i<tracks.size(); i++)
 	{
-		BOOST_LOG_TRIVIAL(error) << "No file specified";
+		Mikrotik mikrotik(
+			tracks[i], 
+			i, 
+			octaveShift, 
+			noteShift, 
+			fineTuning,
+			enableCommentsFlag
+		);
+		mikrotik.buildScript(outFileName);
 	}
 
 	return 0;

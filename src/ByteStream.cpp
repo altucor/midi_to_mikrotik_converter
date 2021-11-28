@@ -74,6 +74,8 @@ uint64_t ByteStream::get64u_bswap()
 
 std::vector<uint8_t> ByteStream::getDataPart(const uint64_t size)
 {
+	if(size == 0)
+		return std::vector<uint8_t>();
 	std::vector<uint8_t> data(size);
 	m_stream.read(reinterpret_cast<char*>(data.data()), data.size());
 	return data;
