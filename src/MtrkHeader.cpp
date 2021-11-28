@@ -32,8 +32,8 @@ MtrkHeader::~MtrkHeader()
 void MtrkHeader::log()
 {
 	BOOST_LOG_TRIVIAL(info) << "MTrk header: " << m_mtrk;
-	BOOST_LOG_TRIVIAL(info) << "MTrk start pos: " << m_startPos;
-	BOOST_LOG_TRIVIAL(info) << "MTrk end   pos: " << m_endPos;
+	BOOST_LOG_TRIVIAL(info) << "MTrk start  pos: " << m_startPos;
+	BOOST_LOG_TRIVIAL(info) << "MTrk end    pos: " << m_endPos;
 	BOOST_LOG_TRIVIAL(info) << "MTrk chunk size: " << m_size;
 	BOOST_LOG_TRIVIAL(info) << "MTrk pulses per second: " << getPulsesPerSecond();
 	BOOST_LOG_TRIVIAL(info) << "MTrk predelay value: " << m_trackPreDelay.getValue();

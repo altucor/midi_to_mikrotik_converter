@@ -38,10 +38,13 @@ std::string Mikrotik::getTrackTimeLength(const uint8_t channel)
 	for(auto event : m_track.getEvents())
 	{
 		uint8_t cmd = event.getCmd().getMainCmd();
-		if((cmd == NOTE_ON || cmd == NOTE_OFF) && 
-			event.getCmd().getSubCmd() == channel)
+		if(cmd == NOTE_ON || cmd == NOTE_OFF)
 		{
-			//totalTime += Note(event).getDurationMs(m_track.getPulsesPerSecond());
+			if(event.getCmd().getSubCmd() == channel)
+				totalTime += durationToMs(event.getDelay(), m_track.getPulsesPerSecond());
+		}
+		else
+		{
 			totalTime += durationToMs(event.getDelay(), m_track.getPulsesPerSecond());
 		}
 	}
@@ -144,10 +147,6 @@ int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel
 	outFileName += std::to_string(channel);
 	outFileName += std::string(".txt");
 
-	BOOST_LOG_TRIVIAL(info) 
-		<< "Mikrotik buildScript started for track: " 
-		<< m_index << " channel: " << (uint32_t)channel;
-	
 	std::stringstream outputBuffer;
 	outputBuffer << getScriptHeader(channel);
 	outputBuffer << getDelayLine(m_track.getPreDelayMs());
@@ -169,6 +168,10 @@ int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel
 
 	if(foundNoteEventsCount == 0)
 		return 0;
+
+	BOOST_LOG_TRIVIAL(info) 
+		<< "Mikrotik buildScript started for track: " 
+		<< m_index << " channel: " << (uint32_t)channel;
 
 	std::ofstream outputFile;
 	outputFile.open(outFileName);
