@@ -34,8 +34,8 @@ int MidiFile::processV1()
 	}
 
 	MtrkHeader track = m_mtrkTracks[0];
-	// Read BPM from MIDI File only when user not
-	// specified custom value
+	// Read BPM from MIDI File 
+	// only when user not specified custom value
 	if(m_bpm != 0)
 	{
 		BOOST_LOG_TRIVIAL(info) << "BPM set to user custom value: " << m_bpm;
@@ -53,17 +53,14 @@ int MidiFile::processV1()
 			}
 		}
 	}
-
-	//if(m_bpm == 0)
-	//{
-	//	m_bpm = g_default_bpm;
-	//	BOOST_LOG_TRIVIAL(info) << "Cannot extract track BPM, setting default value: " << m_bpm;
-	//}
+	if(m_bpm == 0)
+	{
+		m_bpm = g_default_bpm;
+		BOOST_LOG_TRIVIAL(info) << "Cannot extract track BPM, setting default value: " << m_bpm;
+	}
 
 	for(uint64_t i=0; i<m_mtrkTracks.size(); i++)
-	{
 		m_mtrkTracks[i].updateBpm(m_bpm);
-	}
 
 	return 0;
 }

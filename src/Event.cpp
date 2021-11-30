@@ -1,6 +1,10 @@
 #include "Event.h"
 #include "Utils.h"
 #include "boost/log/trivial.hpp"
+#include <iomanip>
+
+// http://midi.teragonaudio.com/tech/midifile.htm
+// Very good examples and description about midi meta events
 
 Event::Event(ByteStream &stream)
 {
@@ -25,7 +29,6 @@ Event::Event(ByteStream &stream)
 		case NOTE_ON:
 		case POLYPHONIC_AFTERTOUCH_PRESSURE:
 		case CONTROL_MODE_CHANGE:
-		case PROGRAM_CHANGE:
 		case PITCH_WHEEL:
 			m_data.push_back(stream.get8u());
 			break;
@@ -44,9 +47,11 @@ void Event::log()
 {
 	BOOST_LOG_TRIVIAL(info) 
 	<< "Event cmd: " << Utils::toHex(m_cmd.getFullCmd(), 2)
-	<< " delay value: " <<  m_delay.getValue();
-	BOOST_LOG_TRIVIAL(info) 
-	<< "Event data size: " << m_data.size() 
+	<< " delay value: " 
+	<< std::setfill('0')
+	<< std::setw(4)
+	<<  m_delay.getValue()
+	<< " Event data size: " << m_data.size() 
 	<< " Event data: " << Utils::toHexBuffer(m_data);
 }
 
