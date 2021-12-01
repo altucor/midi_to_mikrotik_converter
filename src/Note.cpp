@@ -1,6 +1,8 @@
 #include "Note.h"
 #include <boost/log/trivial.hpp>
 
+const static uint8_t NOTES_IN_OCTAVE = 12;
+
 const static std::vector<std::string> g_symbolicNotes = {
 	"C 0", "C# 0", "D 0", "Eb 0", "E 0", "F 0", "F# 0", "G 0", "G# 0", "A 0", "Bb 0", "B 0",  /* #0 */
 	"C 1", "C# 1", "D 1", "Eb 1", "E 1", "F 1", "F# 1", "G 1", "G# 1", "A 1", "Bb 1", "B 1",  /* #1 */
@@ -26,9 +28,6 @@ const static std::vector<double> g_freqNotes = {
 	2093.0,  2217.46, 2349.32, 2489.02, 2637.02, 2793.83,   2959.96,  3135.96, 3322.44, 3520.0, 3729.31, 3951.07,  /* #8 */
 	4186.01, 4434.92, 4698.63, 4978.03, 5274.04, 5587.65,   5919.91,  6271.93, 6644.88, 7040.0, 7458.62, 7902.13   /* #9 */
 };
-
-
-const static uint8_t NOTES_IN_OCTAVE = 12;
 
 Note::Note()
 {
@@ -68,7 +67,7 @@ NOTE_TYPE Note::getType()
 	return (NOTE_TYPE)m_cmd;
 }
 
-double Note::getFreqencyHz(
+double Note::getFrequencyHz(
 	const int octaveShift, 
 	const int noteShift, 
 	const double fineTuning
@@ -93,13 +92,6 @@ std::string Note::getSymbolicNote(
 	}
 	return symbolic;
 }
-
-/*
-double durationToMs(VLV vlv, const double pulsesPerSecond)
-{
-	return (double)(static_cast<double>(vlv.getValue()) * pulsesPerSecond);
-}
-*/
 
 VLV Note::getDelay()
 {

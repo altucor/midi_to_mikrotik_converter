@@ -126,5 +126,26 @@ int MidiFile::process()
 
 std::vector<MtrkHeader> MidiFile::getTracks()
 {
-	return m_mtrkTracks;
+	switch (m_mthd.getFormatType())
+	{
+	case MIDI_V0:
+		return m_mtrkTracks;
+	case MIDI_V1:
+	{
+		// In format 1 we need to ignore track under index zero
+		// because it is service track and it need to be without notes
+		std::vector<MtrkHeader> filteredTracks(m_mtrkTracks);
+		filteredTracks.erase(filteredTracks.begin());
+		return filteredTracks;
+	}
+	case MIDI_V2:
+		return m_mtrkTracks;
+	default:
+		return std::vector<MtrkHeader>();
+	}
+}
+
+uint16_t MidiFile::getVersion()
+{
+	return m_mthd.getFormatType();
 }

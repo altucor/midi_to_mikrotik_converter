@@ -38,8 +38,8 @@ void MtrkHeader::log()
 	BOOST_LOG_TRIVIAL(info) << "MTrk pulses per second: " << getPulsesPerSecond();
 	BOOST_LOG_TRIVIAL(info) << "MTrk predelay value: " << m_trackPreDelay.getValue();
 	BOOST_LOG_TRIVIAL(info) << "MTrk count of events: " << m_events.size();
-	for(auto event : m_events)
-		event.log();
+	//for(auto event : m_events)
+	//	event.log();
 }
 
 bool MtrkHeader::isOk()

@@ -20,7 +20,7 @@ public:
 	~Note();
 	void log();
 	NOTE_TYPE getType();
-	double getFreqencyHz(
+	double getFrequencyHz(
 		const int octaveShift, 
 		const int noteShift, 
 		const double fineTuning

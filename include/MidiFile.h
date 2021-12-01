@@ -7,14 +7,6 @@
 #include <string>
 #include <vector>
 
-struct TrackLength
-{
-	uint32_t h = 0;
-	uint32_t m = 0;
-	uint32_t s = 0;
-	double ms = 0;
-};
-
 // MIDI Spec: If there are no tempo events in a MIDI file, then the tempo is assumed to be 120 BPM
 const uint8_t g_default_bpm = 120;
 
@@ -28,6 +20,7 @@ public:
 	~MidiFile();
 	int process();
 	std::vector<MtrkHeader> getTracks();
+	uint16_t getVersion();
 private:
 	MthdHeader m_mthd;
 	uint16_t m_bpm = 0;

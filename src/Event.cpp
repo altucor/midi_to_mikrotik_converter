@@ -47,12 +47,12 @@ void Event::log()
 {
 	BOOST_LOG_TRIVIAL(info) 
 	<< "Event cmd: " << Utils::toHex(m_cmd.getFullCmd(), 2)
-	<< " delay value: " 
+	<< " delay vlv: " 
 	<< std::setfill('0')
 	<< std::setw(4)
 	<<  m_delay.getValue()
-	<< " Event data size: " << m_data.size() 
-	<< " Event data: " << Utils::toHexBuffer(m_data);
+	<< " data size: " << m_data.size() 
+	<< " data: " << Utils::toHexBuffer(m_data);
 }
 
 MidiEventCode Event::getCmd()

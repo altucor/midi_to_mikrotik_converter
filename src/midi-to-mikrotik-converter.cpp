@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 		("note-shift,n", po::value<int>(&noteShift), "Sets the note shift relative to the original")
 		("fine-tuning,t", po::value<double>(&fineTuning), "Sets frequency offset for all notes in case when you think your beeper producess beeps at wrong frequencies")
 		("bpm,b", po::value<int>(&newBpm), "Sets the new bpm to output file")
-		("comments,c", po::value<bool>(&enableCommentsFlag), "Adds comments in the form of notes")
+		("comments,c", "Adds comments in the form of notes")
 	;
 
 	if(argc == 1)
@@ -105,11 +105,13 @@ int main(int argc, char *argv[])
 		po::store(parsed, vm);
 		po::notify(vm);
 
-		if (vm.count("help"))
+		if(vm.count("help"))
 		{
 			std::cout << desc << std::endl;
 			return 0;
 		}
+		if(vm.count("comments"))
+			enableCommentsFlag = true;
 	}
 	catch(std::exception& ex)
 	{
@@ -150,6 +152,7 @@ int main(int argc, char *argv[])
 			fineTuning,
 			enableCommentsFlag
 		);
+		mikrotik.setTimeCommentsAfterEachMs(1000.0 * 10.0);
 		mikrotik.buildScript(outFileName);
 	}
 

@@ -31,6 +31,22 @@ double durationToMs(VLV vlv, const double pulsesPerSecond)
 	return (double)(static_cast<double>(vlv.getValue()) * pulsesPerSecond);
 }
 
+void Mikrotik::setTimeCommentsAfterEachMs(const double stepMs)
+{
+	m_timestampMarkerStep = stepMs;
+	m_nextTimestampMarker = stepMs;
+}
+
+std::string Mikrotik::getTimeAsText(const double time)
+{
+	std::stringstream out;
+	out << std::setfill('0') << std::setw(2) << ((static_cast<int>(time)/(1000*60*60))%24) << ":";
+	out << std::setfill('0') << std::setw(2) << ((static_cast<int>(time)/(1000*60))%60) << ":";
+	out << std::setfill('0') << std::setw(2) << ((static_cast<int>(time)/1000)%60) << ":";
+	out << std::setfill('0') << std::setw(3) << ((static_cast<int>(time)%1000));
+	return out.str();
+}
+
 std::string Mikrotik::getTrackTimeLength(const uint8_t channel)
 {
 	std::stringstream out;
@@ -49,10 +65,7 @@ std::string Mikrotik::getTrackTimeLength(const uint8_t channel)
 		}
 	}
 
-	out << std::setfill('0') << std::setw(2) << (((int)totalTime/(1000*60*60))%24) << ":";
-	out << std::setfill('0') << std::setw(2) << (((int)totalTime/(1000*60))%60) << ":";
-	out << std::setfill('0') << std::setw(2) << (((int)totalTime/1000)%60) << ":";
-	out << std::setfill('0') << std::setw(3) << (((int)totalTime%1000));
+	out << getTimeAsText(totalTime);
 
 	out << " HH:MM:SS:MS";
 	return out.str();
@@ -99,14 +112,30 @@ std::string Mikrotik::getDelayLine(const double delayMs)
 	std::stringstream out;
 	if(delayMs != 0.0)
 		out << ":delay " << delayMs << "ms;\n";
+	m_processedTime += delayMs;
 	return out.str();
 }
 
 std::string Mikrotik::getBeepLine(Note note)
 {
 	std::stringstream out;
-	out << ":beep frequency=" << note.getFreqencyHz(m_octaveShift, m_noteShift, m_fineTuning);
-	out << " length=" << durationToMs(note.getDelay(), m_track.getPulsesPerSecond()) << "ms;";
+	const double freq = note.getFrequencyHz(m_octaveShift, m_noteShift, m_fineTuning);
+	const double duration = durationToMs(note.getDelay(), m_track.getPulsesPerSecond());
+	if(freq == 0.0)
+	{
+		BOOST_LOG_TRIVIAL(warning) << "Found note with zero frequency, ignoring it:";
+		note.log();
+	}
+	if(duration == 0.0)
+	{
+		BOOST_LOG_TRIVIAL(warning) 
+		<< "Found overlayed note ignoring it:";
+		note.log();
+		return out.str();
+	}
+	
+	out << ":beep frequency=" << freq;
+	out << " length=" << duration << "ms;";
 	if(m_commentsFlag)
 		out << " # " << note.getSymbolicNote(m_octaveShift, m_noteShift, m_fineTuning);
 	out << "\n";
@@ -121,7 +150,7 @@ std::string Mikrotik::buildNote(Note note)
 	 */
 	
 	/*
-	outputBuffer << ":beep frequency=" << noteOn.getFreqencyHz();
+	outputBuffer << ":beep frequency=" << noteOn.getFrequencyHz();
 	outputBuffer << " length=" << noteOn.getDurationPulses() << "ms;";
 	if(m_commentsFlag)
 		outputBuffer << " # " << noteOn.getSymbolicNote();
@@ -133,17 +162,30 @@ std::string Mikrotik::buildNote(Note note)
 	std::stringstream out;
 	if(note.getType() == NOTE_TYPE_ON)
 		out << getBeepLine(note);
-	out << getDelayLine(durationToMs(note.getDelay(), m_track.getPulsesPerSecond()));
-	out << "\n";
+	double delay = durationToMs(note.getDelay(), m_track.getPulsesPerSecond());
+	if(delay != 0.0)
+	{
+		out << getDelayLine(durationToMs(note.getDelay(), m_track.getPulsesPerSecond()));
+		out << "\n";
+	}
+	return out.str();
+}
+
+std::string Mikrotik::getCurrentTimeMarker()
+{
+	std::stringstream out;
+	out << "# Time marker: " << getTimeAsText(m_processedTime) << "\n";
 	return out.str();
 }
 
 int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel)
 {
 	std::string outFileName(fileName);
-	outFileName += std::string("_track_");
+	outFileName += std::string("_");
+	outFileName += m_track.getName();
+	outFileName += std::string("_");
 	outFileName += std::to_string(m_index);
-	outFileName += std::string("_channel_");
+	outFileName += std::string("_");
 	outFileName += std::to_string(channel);
 	outFileName += std::string(".txt");
 
@@ -163,6 +205,14 @@ int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel
 		else
 		{
 			outputBuffer << getDelayLine(durationToMs(event.getDelay(), m_track.getPulsesPerSecond()));
+		}
+		if(m_timestampMarkerStep != 0.0)
+		{
+			if(m_processedTime >= m_nextTimestampMarker)
+			{
+				outputBuffer << getCurrentTimeMarker();
+				m_nextTimestampMarker = m_processedTime + m_timestampMarkerStep;
+			}
 		}
 	}
 
