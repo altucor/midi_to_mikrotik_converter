@@ -1,13 +1,15 @@
-#include "MtrkHeader.hpp"
+#include "MidiTrack.hpp"
 #include "MetaEventText.hpp"
 #include "boost/log/trivial.hpp"
 
-MtrkHeader::MtrkHeader()
+const static std::string unknownTxtValue = "<UNKNOWN>";
+
+MidiTrack::MidiTrack()
 {
 
 }
 
-MtrkHeader::MtrkHeader(ByteStream &stream, const uint16_t bpm, const uint16_t ppqn)
+MidiTrack::MidiTrack(ByteStream &stream, const uint16_t bpm, const uint16_t ppqn)
 	: m_bpm(bpm), m_ppqn(ppqn)
 {
 	m_mtrk = stream.get_text_header();
@@ -20,16 +22,28 @@ MtrkHeader::MtrkHeader(ByteStream &stream, const uint16_t bpm, const uint16_t pp
 		m_events.push_back(Event(stream));
 	}
 	m_endPos = stream.tellg();
+
+
+	m_trackName = unknownTxtValue;
+	m_instrumentName = unknownTxtValue;
+	for(auto event : m_events)
+	{
+		if(event.getCmd().getFullCmd() == TRACK_NAME)
+			m_trackName = MetaEventText(event).getText();
+		if(event.getCmd().getFullCmd() == INSTRUMENT_NAME)
+			m_instrumentName = MetaEventText(event).getText();
+	}
+
 	BOOST_LOG_TRIVIAL(info) << "MTrk header total read bytes " << m_endPos - m_startPos
 	<< " == " << m_size << " header size";
 	BOOST_LOG_TRIVIAL(info) << "MTrk header pos at end: " << m_endPos;
 }
 
-MtrkHeader::~MtrkHeader()
+MidiTrack::~MidiTrack()
 {
 }
 
-void MtrkHeader::log()
+void MidiTrack::log()
 {
 	BOOST_LOG_TRIVIAL(info) << "MTrk header: " << m_mtrk;
 	BOOST_LOG_TRIVIAL(info) << "MTrk start  pos: " << m_startPos;
@@ -42,67 +56,42 @@ void MtrkHeader::log()
 	//	event.log();
 }
 
-bool MtrkHeader::isOk()
+bool MidiTrack::isOk()
 {
 	return g_mtrk_reference == m_mtrk;
 }
 
-std::vector<Event> MtrkHeader::getEvents()
+std::vector<Event> MidiTrack::getEvents()
 {
 	return m_events;
 }
 
-uint64_t MtrkHeader::getStartPos()
-{
-	return m_startPos;
-}
-
-uint64_t MtrkHeader::getEndPos()
-{
-	return m_endPos;
-}
-
-uint64_t MtrkHeader::getSize()
-{
-	return m_size;
-}
-
-double MtrkHeader::getPulsesPerSecond()
+double MidiTrack::getPulsesPerSecond()
 {
 	return (double)(60000.0 / ( m_bpm * m_ppqn));
 }
 
-double MtrkHeader::getPreDelayMs()
+double MidiTrack::getPreDelayMs()
 {
 	return ((double)m_trackPreDelay.getValue() * getPulsesPerSecond());
 }
 
-void MtrkHeader::updateBpm(const uint16_t bpm)
+void MidiTrack::updateBpm(const uint16_t bpm)
 {
 	m_bpm = bpm;
 }
 
-uint16_t MtrkHeader::getBpm()
+uint16_t MidiTrack::getBpm()
 {
 	return m_bpm;
 }
 
-std::string MtrkHeader::getName()
+std::string MidiTrack::getName()
 {
-	for(auto event : m_events)
-	{
-		if(event.getCmd().getFullCmd() == TRACK_NAME)
-			return MetaEventText(event).getText();
-	}
-	return std::string("<UNKNOWN>");
+	return m_trackName;
 }
 
-std::string MtrkHeader::getInstrumentName()
+std::string MidiTrack::getInstrumentName()
 {
-	for(auto event : m_events)
-	{
-		if(event.getCmd().getFullCmd() == INSTRUMENT_NAME)
-			return MetaEventText(event).getText();
-	}
-	return std::string("<UNKNOWN>");
+	return m_instrumentName;
 }

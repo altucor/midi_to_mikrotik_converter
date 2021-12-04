@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iomanip>
 
-Mikrotik::Mikrotik(MtrkHeader &track, 
+Mikrotik::Mikrotik(MidiTrack &track, 
 	const uint64_t index, 
 	const int octaveShift, 
 	const int noteShift, 

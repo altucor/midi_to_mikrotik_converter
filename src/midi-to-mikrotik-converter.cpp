@@ -22,7 +22,6 @@
 #include <vector>
 
 #include "MidiFile.hpp"
-#include "MTrkChunk.hpp"
 #include "Mikrotik.hpp"
 
 #include <boost/program_options.hpp>
@@ -140,7 +139,7 @@ int main(int argc, char *argv[])
 
 	MidiFile midiObj(inFileName, newBpm);
 	midiObj.process();
-	std::vector<MtrkHeader> tracks = midiObj.getTracks();
+	std::vector<MidiTrack> tracks = midiObj.getTracks();
 
 	for(uint64_t i=0; i<tracks.size(); i++)
 	{

@@ -17,5 +17,4 @@ private:
 	uint32_t m_streamCounter = 0;
 };
 
-
 #endif // VLV_HPP

@@ -13,7 +13,4 @@ private:
 	std::string m_text;
 };
 
-
-
-
 #endif // META_EVENT_TEXT

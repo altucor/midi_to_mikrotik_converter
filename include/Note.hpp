@@ -39,5 +39,4 @@ private:
 	VLV m_delay;
 };
 
-
 #endif // NOTE_HPP

@@ -20,5 +20,4 @@ private:
 	VLV m_delay;
 };
 
-
 #endif // MIDI_META_EVENT_HPP

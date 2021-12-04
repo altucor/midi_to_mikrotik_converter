@@ -2,7 +2,7 @@
 #define MIDIFILE_H
 
 #include "MthdHeader.hpp"
-#include "MTrkHeader.hpp"
+#include "MidiTrack.hpp"
 
 #include <string>
 #include <vector>
@@ -19,13 +19,13 @@ public:
 	);
 	~MidiFile();
 	int process();
-	std::vector<MtrkHeader> getTracks();
+	std::vector<MidiTrack> getTracks();
 	uint16_t getVersion();
 private:
 	MthdHeader m_mthd;
 	uint16_t m_bpm = 0;
 	std::string m_filePath;
-	std::vector<MtrkHeader> m_mtrkTracks;
+	std::vector<MidiTrack> m_mtrkTracks;
 private:
 	int processV0();
 	int processV1();

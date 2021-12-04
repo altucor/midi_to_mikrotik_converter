@@ -8,7 +8,7 @@ const static std::string g_mthd_reference = "MThd";
 enum MIDI_FORMAT_VERSIONS
 {
 	MIDI_V0, // Single track SMF
-	MIDI_V1, // Multi-Track SMF
+	MIDI_V1, // Multi-Track SMF, with first track reserved for service commands
 	MIDI_V2,
 };
 

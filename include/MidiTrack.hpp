@@ -1,5 +1,5 @@
-#ifndef MTRK_HEADER_HPP
-#define MTRK_HEADER_HPP
+#ifndef MIDI_TRACK_HPP
+#define MIDI_TRACK_HPP
 
 #include "ByteStream.hpp"
 #include "VLV.hpp"
@@ -9,24 +9,21 @@
 
 const static std::string g_mtrk_reference = "MTrk";
 
-class MtrkHeader
+class MidiTrack
 {
 public:
-	MtrkHeader();
-	MtrkHeader(ByteStream &stream, const uint16_t bpm, const uint16_t ppqn);
-	~MtrkHeader();
+	MidiTrack();
+	MidiTrack(ByteStream &stream, const uint16_t bpm, const uint16_t ppqn);
+	~MidiTrack();
 	void log();
 	bool isOk();
 	std::vector<Event> getEvents();
-	uint64_t getStartPos();
-	uint64_t getEndPos();
-	uint64_t getSize();
 	double getPulsesPerSecond();
 	double getPreDelayMs();
 	void updateBpm(const uint16_t bpm);
 	uint16_t getBpm();
 	std::string getName();
-	std::string MtrkHeader::getInstrumentName();
+	std::string getInstrumentName();
 private:
 	uint16_t m_bpm = 0;
 	uint16_t m_ppqn = 0;
@@ -36,6 +33,8 @@ private:
 	uint64_t m_endPos = 0;
 	VLV m_trackPreDelay;
 	std::vector<Event> m_events;
+	std::string m_trackName;
+	std::string m_instrumentName;
 };
 
-#endif // MTRK_HEADER_HPP
+#endif // MIDI_TRACK_HPP

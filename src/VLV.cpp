@@ -3,6 +3,7 @@
 
 const static uint8_t MIDI_VLV_CONTINUATION_BIT = 0x80;
 const static uint8_t MIDI_VLV_DATA_MASK = 0x7F;
+const static uint8_t vlv_max_size = sizeof(uint32_t);
 
 VLV::VLV()
 {
@@ -20,6 +21,11 @@ VLV::VLV(ByteStream &stream)
 	uint8_t data = 0;
 	while(1)
 	{
+		if(m_streamCounter > vlv_max_size)
+		{
+			BOOST_LOG_TRIVIAL(error) << "VLV Error trying to read more than possible: " << m_streamCounter << " bytes";
+			return;
+		}
 		m_vlv = (m_vlv << 7);
 		data = stream.get8u(); // value duration
 		m_streamCounter++;

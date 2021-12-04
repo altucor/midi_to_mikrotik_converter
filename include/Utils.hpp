@@ -14,6 +14,4 @@ private:
 	~Utils();
 };
 
-
-
 #endif // UTILS_HPP

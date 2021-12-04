@@ -1,14 +1,14 @@
 #ifndef MIKROTIK_HPP
 #define MIKROTIK_HPP
 
-#include "MtrkHeader.hpp"
+#include "MidiTrack.hpp"
 #include "Note.hpp"
 #include <vector>
 
 class Mikrotik
 {
 public:
-	Mikrotik(MtrkHeader &track, 
+	Mikrotik(MidiTrack &track, 
 		const uint64_t index, 
 		const int octaveShift, 
 		const int noteShift, 
@@ -37,7 +37,7 @@ private:
 	double m_processedTime = 0.0;
 	double m_nextTimestampMarker = 0.0;
 	double m_timestampMarkerStep = 0.0;
-	MtrkHeader m_track;
+	MidiTrack m_track;
 };
 
 #endif // MIKROTIK_HPP

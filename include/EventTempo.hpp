@@ -14,7 +14,4 @@ private:
 	uint32_t m_tempo = 0;
 };
 
-
-
-
 #endif // EVENT_TEMPO_HPP

@@ -33,7 +33,7 @@ int MidiFile::processV1()
 		return -1;
 	}
 
-	MtrkHeader track = m_mtrkTracks[0];
+	MidiTrack track = m_mtrkTracks[0];
 	// Read BPM from MIDI File 
 	// only when user not specified custom value
 	if(m_bpm != 0)
@@ -112,7 +112,7 @@ int MidiFile::process()
 	}
 	for(uint64_t i=0; i<m_mthd.getChunksCount(); i++)
 	{
-		MtrkHeader mtrk(stream, m_bpm, m_mthd.getPPQN());
+		MidiTrack mtrk(stream, m_bpm, m_mthd.getPPQN());
 		mtrk.log();
 		if(!mtrk.isOk())
 		{
@@ -124,7 +124,7 @@ int MidiFile::process()
 	return postProcess();
 }
 
-std::vector<MtrkHeader> MidiFile::getTracks()
+std::vector<MidiTrack> MidiFile::getTracks()
 {
 	switch (m_mthd.getFormatType())
 	{
@@ -134,14 +134,14 @@ std::vector<MtrkHeader> MidiFile::getTracks()
 	{
 		// In format 1 we need to ignore track under index zero
 		// because it is service track and it need to be without notes
-		std::vector<MtrkHeader> filteredTracks(m_mtrkTracks);
+		std::vector<MidiTrack> filteredTracks(m_mtrkTracks);
 		filteredTracks.erase(filteredTracks.begin());
 		return filteredTracks;
 	}
 	case MIDI_V2:
 		return m_mtrkTracks;
 	default:
-		return std::vector<MtrkHeader>();
+		return std::vector<MidiTrack>();
 	}
 }
 

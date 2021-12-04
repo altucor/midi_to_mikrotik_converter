@@ -3,43 +3,6 @@
 
 #include <stdint.h>
 
-/*
-enum MIDI_META_EVENTS : uint8_t
-{
-	UNKNOWN = 0x00,
-	TEXT = 0x01,
-	COPYRIGHT = 0x02,
-	TRACK_NAME = 0x03,
-	INSTRUMENT_NAME = 0x04,
-	VOCAL_TEXT = 0x05,
-	TEXT_MARKER = 0x06,
-	CUE_POINT = 0x07,
-	MIDI_CHANNEL = 0x20,
-	MIDI_PORT = 0x21,
-	TEMPO = 0x51,
-	SMPTE_OFFSET = 0x54,
-	TIME_SIGNATURE = 0x58,
-	KEY_SIGNATURE = 0x59,
-	TRACK_END = 0x2F,
-	SYSEX = 0xF0,
-	META_EVENT = 0xFF,
-};
-
-enum MIDI_EVENTS : uint8_t
-{
-	CHANNEL_1_NOTE_OFF = 0x80,
-	/*
-		0x80 - Channel 1 Note Off
-		...
-		0x8F - Channel 1 Note Off
-		0x90 - Channel 1 Note On
-		...
-		0x9F - Channel 1 Note On
-	*
-	CHANNEL_16_NOTE_ON = 0x9F,
-};
-*/
-
 // High part of 4 bits
 enum MIDI_EVENT_MAIN_CMD : uint8_t
 {
@@ -104,12 +67,6 @@ enum MIDI_META_EVENTS : uint8_t
 	PROPRIETARY_EVENT = 0x7F,
 };
 
-
-enum MIDI_EVENT_SUB_CMD : uint8_t
-{
-
-};
-
 class MidiEventCode
 {
 public:
@@ -125,6 +82,5 @@ private:
 	uint8_t m_mainCmd = 0;
 	uint8_t m_subCmd = 0;
 };
-
 
 #endif // MIDI_EVENT_CODE_HPP
