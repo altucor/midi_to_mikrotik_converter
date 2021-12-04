@@ -1,7 +1,7 @@
 #ifndef EVENT_TEMPO_HPP
 #define EVENT_TEMPO_HPP
 
-#include "Event.h"
+#include "Event.hpp"
 
 class EventTempo
 {

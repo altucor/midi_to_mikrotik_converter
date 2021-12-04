@@ -1,4 +1,4 @@
-#include "VLV.h"
+#include "VLV.hpp"
 #include "boost/log/trivial.hpp"
 
 const static uint8_t MIDI_VLV_CONTINUATION_BIT = 0x80;

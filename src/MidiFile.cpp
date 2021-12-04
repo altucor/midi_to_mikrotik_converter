@@ -1,7 +1,7 @@
-#include "MidiFile.h"
-#include "ByteStream.h"
-#include "MidiEvent.h"
-#include "EventTempo.h"
+#include "MidiFile.hpp"
+#include "ByteStream.hpp"
+#include "MidiEvent.hpp"
+#include "EventTempo.hpp"
 
 #include <boost/log/trivial.hpp>
 #include <fstream>

@@ -1,5 +1,5 @@
-#include "Event.h"
-#include "Utils.h"
+#include "Event.hpp"
+#include "Utils.hpp"
 #include "boost/log/trivial.hpp"
 #include <iomanip>
 

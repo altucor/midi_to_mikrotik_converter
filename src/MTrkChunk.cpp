@@ -1,4 +1,4 @@
-#include "MTrkChunk.h"
+#include "MTrkChunk.hpp"
 
 const static std::vector<std::string> m_symbolicNotes = {
 	"C 0", "C# 0", "D 0", "Eb 0", "E 0", "F 0", "F# 0", "G 0", "G# 0", "A 0", "Bb 0", "B 0",  /* #0 */

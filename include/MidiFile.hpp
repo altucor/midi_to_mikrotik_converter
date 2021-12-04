@@ -1,8 +1,8 @@
 #ifndef MIDIFILE_H
 #define MIDIFILE_H
 
-#include "MthdHeader.h"
-#include "MTrkHeader.h"
+#include "MthdHeader.hpp"
+#include "MTrkHeader.hpp"
 
 #include <string>
 #include <vector>

@@ -1,4 +1,4 @@
-#include "Note.h"
+#include "Note.hpp"
 #include <boost/log/trivial.hpp>
 
 const static uint8_t NOTES_IN_OCTAVE = 12;

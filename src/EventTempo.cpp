@@ -1,4 +1,4 @@
-#include "EventTempo.h"
+#include "EventTempo.hpp"
 
 
 EventTempo::EventTempo(Event &event)

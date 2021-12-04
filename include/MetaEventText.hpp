@@ -1,7 +1,7 @@
 #ifndef META_EVENT_TEXT
 #define META_EVENT_TEXT
 
-#include "Event.h"
+#include "Event.hpp"
 
 class MetaEventText
 {

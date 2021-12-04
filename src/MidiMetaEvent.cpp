@@ -1,5 +1,5 @@
-#include "MidiMetaEvent.h"
-#include "Utils.h"
+#include "MidiMetaEvent.hpp"
+#include "Utils.hpp"
 #include "boost/log/trivial.hpp"
 
 MidiMetaEvent::MidiMetaEvent(ByteStream &stream)

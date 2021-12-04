@@ -1,4 +1,4 @@
-#include "ByteStream.h"
+#include "ByteStream.hpp"
 
 
 ByteStream::ByteStream(std::string &filename)

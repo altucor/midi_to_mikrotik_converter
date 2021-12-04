@@ -1,4 +1,4 @@
-#include "MidiEventCode.h"
+#include "MidiEventCode.hpp"
 
 MidiEventCode::MidiEventCode()
 {

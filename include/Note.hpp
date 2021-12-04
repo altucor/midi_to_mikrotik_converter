@@ -1,8 +1,8 @@
 #ifndef NOTE_HPP
 #define NOTE_HPP
 
-#include "VLV.h"
-#include "Event.h"
+#include "VLV.hpp"
+#include "Event.hpp"
 #include <vector>
 
 enum NOTE_TYPE

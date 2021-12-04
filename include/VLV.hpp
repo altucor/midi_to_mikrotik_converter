@@ -1,7 +1,7 @@
 #ifndef VLV_HPP
 #define VLV_HPP
 
-#include "ByteStream.h"
+#include "ByteStream.hpp"
 #include <vector>
 
 class VLV

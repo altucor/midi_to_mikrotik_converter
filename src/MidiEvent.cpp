@@ -1,5 +1,5 @@
-#include "MidiEvent.h"
-#include "Utils.h"
+#include "MidiEvent.hpp"
+#include "Utils.hpp"
 #include "boost/log/trivial.hpp"
 
 MidiEvent::MidiEvent(MidiEventCode cmd, ByteStream &stream)

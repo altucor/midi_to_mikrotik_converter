@@ -1,7 +1,7 @@
 #ifndef MTHD_HEADER_HPP
 #define MTHD_HEADER_HPP
 
-#include "ByteStream.h"
+#include "ByteStream.hpp"
 
 const static std::string g_mthd_reference = "MThd";
 

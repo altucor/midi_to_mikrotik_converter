@@ -21,9 +21,9 @@
 #include <cstdio>
 #include <vector>
 
-#include "MidiFile.h"
-#include "MTrkChunk.h"
-#include "Mikrotik.h"
+#include "MidiFile.hpp"
+#include "MTrkChunk.hpp"
+#include "Mikrotik.hpp"
 
 #include <boost/program_options.hpp>
 #include "boost/log/trivial.hpp"

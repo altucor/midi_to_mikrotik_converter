@@ -1,5 +1,5 @@
-#include "MtrkHeader.h"
-#include "MetaEventText.h"
+#include "MtrkHeader.hpp"
+#include "MetaEventText.hpp"
 #include "boost/log/trivial.hpp"
 
 MtrkHeader::MtrkHeader()

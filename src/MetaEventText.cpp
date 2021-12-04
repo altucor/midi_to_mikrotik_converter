@@ -1,4 +1,4 @@
-#include "MetaEventText.h"
+#include "MetaEventText.hpp"
 
 MetaEventText::MetaEventText(Event &event)
 {

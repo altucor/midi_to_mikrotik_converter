@@ -1,11 +1,11 @@
 #ifndef MTRK_HEADER_HPP
 #define MTRK_HEADER_HPP
 
-#include "ByteStream.h"
-#include "VLV.h"
-#include "Event.h"
-#include "MidiEvent.h"
-#include "MidiMetaEvent.h"
+#include "ByteStream.hpp"
+#include "VLV.hpp"
+#include "Event.hpp"
+#include "MidiEvent.hpp"
+#include "MidiMetaEvent.hpp"
 
 const static std::string g_mtrk_reference = "MTrk";
 

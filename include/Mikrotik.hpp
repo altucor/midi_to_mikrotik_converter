@@ -1,8 +1,8 @@
 #ifndef MIKROTIK_HPP
 #define MIKROTIK_HPP
 
-#include "MtrkHeader.h"
-#include "Note.h"
+#include "MtrkHeader.hpp"
+#include "Note.hpp"
 #include <vector>
 
 class Mikrotik

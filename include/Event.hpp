@@ -1,9 +1,9 @@
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
-#include "ByteStream.h"
-#include "MidiEventCode.h"
-#include "VLV.h"
+#include "ByteStream.hpp"
+#include "MidiEventCode.hpp"
+#include "VLV.hpp"
 #include <vector>
 
 class Event

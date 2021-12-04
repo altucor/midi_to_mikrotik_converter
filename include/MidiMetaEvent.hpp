@@ -1,9 +1,9 @@
 #ifndef MIDI_META_EVENT_HPP
 #define MIDI_META_EVENT_HPP
 
-#include "ByteStream.h"
-#include "MidiEventCode.h"
-#include "VLV.h"
+#include "ByteStream.hpp"
+#include "MidiEventCode.hpp"
+#include "VLV.hpp"
 
 class MidiMetaEvent
 {
