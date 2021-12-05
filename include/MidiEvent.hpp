@@ -10,7 +10,6 @@ class MidiEvent
 {
 public:
 	MidiEvent(MidiEventCode cmd, ByteStream &stream);
-	~MidiEvent();
 	void log();
 	MidiEventCode getCmd();
 	uint8_t getSecondByte();

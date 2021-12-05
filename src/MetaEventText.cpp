@@ -6,10 +6,6 @@ MetaEventText::MetaEventText(Event &event)
 	m_text = std::string(data.begin(), data.end());
 }
 
-MetaEventText::~MetaEventText()
-{
-}
-
 std::string MetaEventText::getText()
 {
 	return m_text;

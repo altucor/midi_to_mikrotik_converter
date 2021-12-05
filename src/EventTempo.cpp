@@ -11,10 +11,6 @@ EventTempo::EventTempo(Event &event)
 	m_tempo = 60000000 / m_tempo;
 }
 
-EventTempo::~EventTempo()
-{
-}
-
 uint32_t EventTempo::get()
 {
 	return m_tempo;

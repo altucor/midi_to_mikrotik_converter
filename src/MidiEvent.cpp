@@ -25,10 +25,6 @@ MidiEvent::MidiEvent(MidiEventCode cmd, ByteStream &stream)
 	m_delay = VLV(stream);
 }
 
-MidiEvent::~MidiEvent()
-{
-}
-
 void MidiEvent::log()
 {
 	BOOST_LOG_TRIVIAL(info) 

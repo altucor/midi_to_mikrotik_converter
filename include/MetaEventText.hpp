@@ -7,7 +7,6 @@ class MetaEventText
 {
 public:
 	MetaEventText(Event &event);
-	~MetaEventText();
 	std::string getText();
 private:
 	std::string m_text;

@@ -10,7 +10,6 @@ class Event
 {
 public:
 	Event(ByteStream &stream);
-	~Event();
 	void log();
 	MidiEventCode getCmd();
 	std::vector<uint8_t> getData();

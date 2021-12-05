@@ -7,7 +7,6 @@ class EventTempo
 {
 public:
 	EventTempo(Event &event);
-	~EventTempo();
 	uint32_t get();
 private:
 	std::vector<uint8_t> m_data;

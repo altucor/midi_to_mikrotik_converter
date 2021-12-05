@@ -39,10 +39,6 @@ Event::Event(ByteStream &stream)
 	m_delay = VLV(stream);
 }
 
-Event::~Event()
-{
-}
-
 void Event::log()
 {
 	BOOST_LOG_TRIVIAL(info) 

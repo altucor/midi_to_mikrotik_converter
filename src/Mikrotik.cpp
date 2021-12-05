@@ -18,7 +18,6 @@ Mikrotik::Mikrotik(MidiTrack &track,
 	m_fineTuning(fineTuning),
 	m_commentsFlag(commentsFlag)
 {
-
 }
 
 double durationToMs(VLV vlv, const double pulsesPerSecond)
