@@ -16,8 +16,7 @@ public:
 	explicit MidiFile(
 		std::string &filePath, 
 		const uint32_t bpm
-	);
-	~MidiFile();
+	) : m_filePath(filePath), m_bpm(bpm) {};
 	int process();
 	std::vector<MidiTrack> getTracks();
 	uint16_t getVersion();

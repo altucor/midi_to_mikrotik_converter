@@ -4,11 +4,6 @@
 
 const static std::string unknownTxtValue = "<UNKNOWN>";
 
-MidiTrack::MidiTrack()
-{
-
-}
-
 MidiTrack::MidiTrack(ByteStream &stream, const uint16_t bpm, const uint16_t ppqn)
 	: m_bpm(bpm), m_ppqn(ppqn)
 {
@@ -37,10 +32,6 @@ MidiTrack::MidiTrack(ByteStream &stream, const uint16_t bpm, const uint16_t ppqn
 	BOOST_LOG_TRIVIAL(info) << "MTrk header total read bytes " << m_endPos - m_startPos
 	<< " == " << m_size << " header size";
 	BOOST_LOG_TRIVIAL(info) << "MTrk header pos at end: " << m_endPos;
-}
-
-MidiTrack::~MidiTrack()
-{
 }
 
 void MidiTrack::log()

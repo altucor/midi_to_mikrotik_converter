@@ -5,11 +5,6 @@ const static uint8_t MIDI_VLV_CONTINUATION_BIT = 0x80;
 const static uint8_t MIDI_VLV_DATA_MASK = 0x7F;
 const static uint8_t vlv_max_size = sizeof(uint32_t);
 
-VLV::VLV()
-{
-
-}
-
 /*
  * Very detailed articles about VLV(Variable Length Values)
  * http://www.ccarh.org/courses/253/handout/vlv/
@@ -38,11 +33,6 @@ VLV::VLV(ByteStream &stream)
 	{
 		BOOST_LOG_TRIVIAL(error) << "VLV Error readed from stream: " << m_streamCounter << " bytes";
 	}
-}
-
-VLV::~VLV()
-{
-
 }
 
 uint32_t VLV::getValue()

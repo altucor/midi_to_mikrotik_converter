@@ -7,9 +7,8 @@
 class VLV
 {
 public:
-	VLV();
+	VLV() {};
 	VLV(ByteStream &stream);
-	~VLV();
 	uint32_t getValue();
 private:
 	// Maximum allowed delta-time is 0x0FFFFFFF - 32 bit - 4 byte value

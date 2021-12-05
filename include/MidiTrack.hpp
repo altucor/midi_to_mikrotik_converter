@@ -12,9 +12,8 @@ const static std::string g_mtrk_reference = "MTrk";
 class MidiTrack
 {
 public:
-	MidiTrack();
+	MidiTrack() {};
 	MidiTrack(ByteStream &stream, const uint16_t bpm, const uint16_t ppqn);
-	~MidiTrack();
 	void log();
 	bool isOk();
 	std::vector<Event> getEvents();
