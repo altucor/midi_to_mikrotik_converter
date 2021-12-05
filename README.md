@@ -1,4 +1,5 @@
 # midi_to_mikrotik_converter
+[![CodeFactor](https://www.codefactor.io/repository/github/altucor/midi_to_mikrotik_converter/badge/master)](https://www.codefactor.io/repository/github/altucor/midi_to_mikrotik_converter/overview/master)
 Forum links:
 <br>
 https://forum.mikrotik.com/viewtopic.php?f=9&t=135207
