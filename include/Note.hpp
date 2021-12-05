@@ -15,9 +15,8 @@ enum NOTE_TYPE
 class Note
 {
 public:
-	Note();
+	Note() {};
 	Note(Event &event);
-	~Note();
 	void log();
 	NOTE_TYPE getType();
 	double getFrequencyHz(

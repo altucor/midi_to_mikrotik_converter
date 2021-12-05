@@ -15,7 +15,6 @@ public:
 		const double fineTuning,
 		const bool commentsFlag
 	);
-	~Mikrotik();
 	void setTimeCommentsAfterEachMs(const double stepMs);
 	std::string getTrackTimeLength(const uint8_t channel);
 	std::string getNotesCount(const uint8_t channel);

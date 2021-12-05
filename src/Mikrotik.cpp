@@ -21,11 +21,6 @@ Mikrotik::Mikrotik(MidiTrack &track,
 
 }
 
-Mikrotik::~Mikrotik()
-{
-
-}
-
 double durationToMs(VLV vlv, const double pulsesPerSecond)
 {
 	return (double)(static_cast<double>(vlv.getValue()) * pulsesPerSecond);

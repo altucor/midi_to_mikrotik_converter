@@ -4,11 +4,6 @@
 ByteStream::ByteStream(std::string &filename)
 	: m_stream(filename, std::ios::binary)
 {
-	
-}
-
-ByteStream::~ByteStream()
-{
 }
 
 bool ByteStream::isOk()

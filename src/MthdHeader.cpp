@@ -1,11 +1,6 @@
 #include "MthdHeader.hpp"
 #include "boost/log/trivial.hpp"
 
-MthdHeader::MthdHeader()
-{
-
-}
-
 MthdHeader::MthdHeader(ByteStream &stream)
 {
 	m_mthd = stream.get_text_header();
@@ -13,10 +8,6 @@ MthdHeader::MthdHeader(ByteStream &stream)
 	m_formatType = stream.get16u_bswap();
 	m_mtrkChunksCount = stream.get16u_bswap();
 	m_ppqn = stream.get16u_bswap();
-}
-MthdHeader::~MthdHeader()
-{
-
 }
 
 void MthdHeader::log()

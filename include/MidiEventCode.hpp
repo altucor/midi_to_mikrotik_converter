@@ -70,9 +70,8 @@ enum MIDI_META_EVENTS : uint8_t
 class MidiEventCode
 {
 public:
-	MidiEventCode();
+	MidiEventCode() {};
 	MidiEventCode(const uint8_t cmd);
-	~MidiEventCode();
 	uint8_t getMainCmd();
 	uint8_t getSubCmd();
 	uint8_t getFullCmd();

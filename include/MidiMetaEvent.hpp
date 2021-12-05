@@ -9,7 +9,6 @@ class MidiMetaEvent
 {
 public:
 	MidiMetaEvent(ByteStream &stream);
-	~MidiMetaEvent();
 	void log();
 	std::vector<uint8_t> getData();
 	uint8_t getCmd();

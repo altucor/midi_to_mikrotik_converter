@@ -1,19 +1,10 @@
 #include "MidiEventCode.hpp"
 
-MidiEventCode::MidiEventCode()
-{
-
-}
-
 MidiEventCode::MidiEventCode(const uint8_t cmd)
 {
 	m_fullCmd = cmd;
 	m_mainCmd = ((cmd >> 4) & 0x0F);
 	m_subCmd = (cmd & 0x0F);
-}
-
-MidiEventCode::~MidiEventCode()
-{
 }
 
 uint8_t MidiEventCode::getMainCmd()

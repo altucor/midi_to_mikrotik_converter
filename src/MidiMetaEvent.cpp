@@ -10,11 +10,6 @@ MidiMetaEvent::MidiMetaEvent(ByteStream &stream)
 	m_delay = VLV(stream);
 }
 
-MidiMetaEvent::~MidiMetaEvent()
-{
-
-}
-
 void MidiMetaEvent::log()
 {
 	BOOST_LOG_TRIVIAL(info) << "MIDI cmd: " << Utils::toHex(m_cmd.getMainCmd(), 1)

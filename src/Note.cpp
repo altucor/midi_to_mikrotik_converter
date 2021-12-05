@@ -29,12 +29,6 @@ const static std::vector<double> g_freqNotes = {
 	4186.01, 4434.92, 4698.63, 4978.03, 5274.04, 5587.65,   5919.91,  6271.93, 6644.88, 7040.0, 7458.62, 7902.13   /* #9 */
 };
 
-Note::Note()
-{
-
-}
-
-
 Note::Note(Event &event)
 {
 	MidiEventCode cmd = event.getCmd();
@@ -47,10 +41,6 @@ Note::Note(Event &event)
 	m_pitch = data[0];
 	m_velocity = data[1];
 	m_delay = event.getDelay();
-}
-
-Note::~Note()
-{
 }
 
 void Note::log()

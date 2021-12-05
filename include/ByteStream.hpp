@@ -27,7 +27,6 @@ class ByteStream
 {
 public:
 	ByteStream(std::string &filename);
-	~ByteStream();
 	bool isOk();
 	uint64_t tellg();
 	uint8_t get8u();

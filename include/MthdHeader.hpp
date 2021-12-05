@@ -15,9 +15,8 @@ enum MIDI_FORMAT_VERSIONS
 class MthdHeader
 {
 public:
-	MthdHeader();
+	MthdHeader() {};
 	MthdHeader(ByteStream &stream);
-	~MthdHeader();
 	void log();
 	bool isOk();
 	uint32_t getChunkLength();

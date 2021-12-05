@@ -63,7 +63,6 @@ static void init_log()
 		boost::log::trivial::severity >= boost::log::trivial::info
 	);
 #endif
-
 }
 
 int main(int argc, char *argv[])
