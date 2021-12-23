@@ -20,5 +20,5 @@ https://www.youtube.com/watch?v=g6GZVlYP7X0
 
 
 # Building program
-cmake ../ -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_BUILD_TYPE=Release
+cmake ../ -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_BUILD_TYPE=Release\
 cmake --build .
