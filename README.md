@@ -20,5 +20,7 @@ https://www.youtube.com/watch?v=g6GZVlYP7X0
 
 
 # Building program
+Go to directory midi_to_mikrotik_converter/build\
+And then type two commands:\
 cmake ../ -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_BUILD_TYPE=Release\
-cmake --build .
+cmake --build .\
