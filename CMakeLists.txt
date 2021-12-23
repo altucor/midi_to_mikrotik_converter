@@ -2,23 +2,50 @@ cmake_minimum_required(VERSION 3.15.2)
 
 project(midi-to-mikrotik-converter C CXX)
 
-set(CMAKE_CXX_FLAGS "-Wall")
-set(CMAKE_CXX_FLAGS "-std=gnu++11 -stdlib=libc++")
+set(NEEDED_BOOST_VERSION 1.75.0)
 IF(MSVC)
-    set(CMAKE_CXX_FLAGS "/EHsc")
+    set(CMAKE_CXX_FLAGS "/EHsc /MT")
 ENDIF(MSVC)
 
-# b2 --build-dir=.\build toolset=msvc link=static runtime-link=static
-set(BOOST_CUSTOM_DIR_BASE "Z:\\projects\\programming\\cpp\\sdks\\boost\\boost_1_77_0")
-set(BOOST_ROOT ${BOOST_CUSTOM_DIR_BASE})
-set(BOOST_INCLUDEDIR ${BOOST_CUSTOM_DIR_BASE}\\boost)
-set(BOOST_LIBRARYDIR ${BOOST_CUSTOM_DIR_BASE}\\stage\\lib)
+IF(CMAKE_BUILD_TYPE MATCHES Debug)
+  message("Debug build.")
+ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
+  message("Release build.")
+ELSE()
+  message(" ! ! ! Unknown build type.")
+ENDIF()
+
+message("CMAKEFLAGS DUMP: ${CMAKE_CXX_FLAGS}")
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake"
+                "${CMAKE_BINARY_DIR}/conan.cmake"
+                EXPECTED_HASH SHA256=396e16d0f5eabdc6a14afddbcfff62a54a7ee75c6da23f32f7a31bc85db23484
+                TLS_VERIFY ON)
+endif()
+
+include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+conan_cmake_configure(REQUIRES boost/${NEEDED_BOOST_VERSION}
+                      GENERATORS cmake_find_package)
+
+conan_cmake_autodetect(settings)
+
+conan_cmake_install(PATH_OR_REFERENCE .
+                    BUILD missing
+                    REMOTE conancenter
+                    SETTINGS ${settings})
+
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
+find_package(Boost COMPONENTS program_options log REQUIRED)
 
 include_directories("./include")
-include_directories(${BOOST_INCLUDEDIR})
 
 file(GLOB SOURCES 
     "./include/Utils.hpp"
@@ -53,15 +80,16 @@ file(GLOB SOURCES
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-set_property(TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+IF(MSVC)
+    set_property(
+        TARGET 
+        ${PROJECT_NAME} 
+        PROPERTY 
+        MSVC_RUNTIME_LIBRARY 
+        "MultiThreaded$<$<CONFIG:>:>"
+    )
+ENDIF(MSVC)
 
-
-find_package(Boost 1.77.0 COMPONENTS program_options log)
-
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-endif()
-
-
+include_directories(${Boost_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} Boost::Boost)
 

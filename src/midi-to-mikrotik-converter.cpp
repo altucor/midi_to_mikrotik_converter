@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 		("output-file,g", po::value<std::string>(&outFileName), "Specify output file name. If not set than output will be saved in file with same name as input but with additional suffix")
 		("octave-shift,o", po::value<int>(&octaveShift), "Sets the octave shift relative to the original (-10 to +10)")
 		("note-shift,n", po::value<int>(&noteShift), "Sets the note shift relative to the original")
-		("fine-tuning,t", po::value<double>(&fineTuning), "Sets frequency offset for all notes in case when you think your beeper producess beeps at wrong frequencies")
+		("fine-tuning,t", po::value<double>(&fineTuning), "Sets frequency offset for all notes in case when you think your beeper produces beeps at wrong frequencies")
 		("bpm,b", po::value<int>(&newBpm), "Sets the new bpm to output file")
 		("comments,c", "Adds comments in the form of notes")
 	;
@@ -150,7 +150,6 @@ int main(int argc, char *argv[])
 			fineTuning,
 			enableCommentsFlag
 		);
-		mikrotik.setTimeCommentsAfterEachMs(1000.0 * 10.0);
 		mikrotik.buildScript(outFileName);
 	}
 

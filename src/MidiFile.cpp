@@ -6,6 +6,13 @@
 #include <boost/log/trivial.hpp>
 #include <fstream>
 
+MidiFile::MidiFile(
+	std::string &filePath, 
+	const uint32_t bpm
+) : m_filePath(filePath), m_bpm(bpm) 
+{
+};
+
 int MidiFile::processV0()
 {
 	return 0;

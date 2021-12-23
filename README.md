@@ -5,7 +5,7 @@ https://forum.mikrotik.com/viewtopic.php?f=9&t=135207
 http://www.cyberforum.ru/mikrotik/thread2033981.html  
 Video how to manually parse music to midi file and how to use that program, check time codes in video description:\
 https://www.youtube.com/watch?v=g6GZVlYP7X0
-# Using programm
+# Using program
 
 | Short Key | Full Key | Description | Example |
 | ------ | ------ | ------ |  ------ |
@@ -17,3 +17,8 @@ https://www.youtube.com/watch?v=g6GZVlYP7X0
 | -t | --fine-tuning | Sets frequency offset for all notes in case when you think your beeper produces beeps at wrong frequencies | -t -10.3 //Shifts all notes for 10.3Hz down |
 | -b | --bpm | Sets the new bpm to output file | -b 130 //Sets a new bpm to 130, ignores the original bpm in the file |
 | -c | --comments | Adds comments in the form of notes | -c |
+
+
+# Building program
+cmake ../ -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_BUILD_TYPE=Release
+cmake --build .

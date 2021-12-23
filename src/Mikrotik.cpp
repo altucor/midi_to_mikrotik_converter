@@ -25,12 +25,6 @@ double durationToMs(VLV vlv, const double pulsesPerSecond)
 	return (double)(static_cast<double>(vlv.getValue()) * pulsesPerSecond);
 }
 
-void Mikrotik::setTimeCommentsAfterEachMs(const double stepMs)
-{
-	m_timestampMarkerStep = stepMs;
-	m_nextTimestampMarker = stepMs;
-}
-
 std::string Mikrotik::getTimeAsText(const double time)
 {
 	std::stringstream out;
@@ -131,8 +125,12 @@ std::string Mikrotik::getBeepLine(Note note)
 	out << ":beep frequency=" << freq;
 	out << " length=" << duration << "ms;";
 	if(m_commentsFlag)
+	{
 		out << " # " << note.getSymbolicNote(m_octaveShift, m_noteShift, m_fineTuning);
+		out << " @ " << getTimeAsText(m_processedTime);
+	}
 	out << "\n";
+	m_processedTime += duration;
 	return out.str();
 }
 
@@ -165,15 +163,9 @@ std::string Mikrotik::buildNote(Note note)
 	return out.str();
 }
 
-std::string Mikrotik::getCurrentTimeMarker()
-{
-	std::stringstream out;
-	out << "# Time marker: " << getTimeAsText(m_processedTime) << "\n";
-	return out.str();
-}
-
 int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel)
 {
+	m_processedTime = 0.0;
 	std::string outFileName(fileName);
 	outFileName += std::string("_");
 	outFileName += m_track.getName();
@@ -199,14 +191,6 @@ int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel
 		else
 		{
 			outputBuffer << getDelayLine(durationToMs(event.getDelay(), m_track.getPulsesPerSecond()));
-		}
-		if(m_timestampMarkerStep != 0.0)
-		{
-			if(m_processedTime >= m_nextTimestampMarker)
-			{
-				outputBuffer << getCurrentTimeMarker();
-				m_nextTimestampMarker = m_processedTime + m_timestampMarkerStep;
-			}
 		}
 	}
 
@@ -235,7 +219,11 @@ int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel
 int Mikrotik::buildScript(std::string &fileName)
 {
 	if(m_track.getEvents().size() == 0)
+	{
+		BOOST_LOG_TRIVIAL(info) << "Cannot find any events in track, skipping";
 		return 0;
+	}
+	
 	int ret = 0;
 	for(uint8_t channel = 0; channel < 16; channel++)
 	{

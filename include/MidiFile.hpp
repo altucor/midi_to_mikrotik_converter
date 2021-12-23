@@ -13,10 +13,7 @@ const uint8_t g_default_bpm = 120;
 class MidiFile
 {
 public:
-	explicit MidiFile(
-		std::string &filePath, 
-		const uint32_t bpm
-	) : m_filePath(filePath), m_bpm(bpm) {};
+	explicit MidiFile(std::string &filePath, const uint32_t bpm);
 	int process();
 	std::vector<MidiTrack> getTracks();
 	uint16_t getVersion();

@@ -15,18 +15,16 @@ public:
 		const double fineTuning,
 		const bool commentsFlag
 	);
-	void setTimeCommentsAfterEachMs(const double stepMs);
+	int buildScriptForChannel(std::string &fileName, const uint8_t channel);
+	int buildScript(std::string &fileName);
+private:
+	std::string getTimeAsText(const double time);
 	std::string getTrackTimeLength(const uint8_t channel);
 	std::string getNotesCount(const uint8_t channel);
 	std::string getScriptHeader(const uint8_t channel);
 	std::string getDelayLine(const double delayMs);
 	std::string getBeepLine(Note note);
 	std::string buildNote(Note note);
-	int buildScriptForChannel(std::string &fileName, const uint8_t channel);
-	int buildScript(std::string &fileName);
-private:
-	std::string getTimeAsText(const double time);
-	std::string getCurrentTimeMarker();
 private:
 	bool m_commentsFlag = false;
 	uint64_t m_index = 0;
@@ -34,8 +32,6 @@ private:
 	int m_noteShift = 0;
 	double m_fineTuning = 0.0;
 	double m_processedTime = 0.0;
-	double m_nextTimestampMarker = 0.0;
-	double m_timestampMarkerStep = 0.0;
 	MidiTrack m_track;
 };
 
