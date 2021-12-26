@@ -2,9 +2,11 @@ cmake_minimum_required(VERSION 3.15.2)
 
 project(midi-to-mikrotik-converter C CXX)
 
-set(NEEDED_BOOST_VERSION 1.75.0)
+set(REQUIRED_BOOST_VERSION 1.75.0)
 IF(MSVC)
-    set(CMAKE_CXX_FLAGS "/EHsc /MT")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /MT")
+ELSE()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 ENDIF(MSVC)
 
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -30,7 +32,7 @@ endif()
 
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-conan_cmake_configure(REQUIRES boost/${NEEDED_BOOST_VERSION}
+conan_cmake_configure(REQUIRES boost/${REQUIRED_BOOST_VERSION}
                       GENERATORS cmake_find_package)
 
 conan_cmake_autodetect(settings)
