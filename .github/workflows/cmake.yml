@@ -43,8 +43,8 @@ jobs:
       
     - name: Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
       with:
+        tag_name: 2.0
         files: |
           README.md
           LICENSE
