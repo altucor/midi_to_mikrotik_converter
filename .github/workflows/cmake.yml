@@ -18,7 +18,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, windows-2016, macos-10.15]
+        os: [ubuntu-18.04, windows-2019, macos-10.15]
 
     steps:
     - uses: actions/checkout@v2
@@ -43,10 +43,11 @@ jobs:
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
-      
+
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
+        generate_release_notes: true
         tag_name: 2.0
         files: |
           README.md
