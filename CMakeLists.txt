@@ -6,7 +6,7 @@ set(REQUIRED_BOOST_VERSION 1.75.0)
 IF(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /MT")
 ELSE()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -static-libgcc -static-libstdc++")
 ENDIF(MSVC)
 
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
