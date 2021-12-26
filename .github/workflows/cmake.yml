@@ -48,4 +48,4 @@ jobs:
         files: |
           README.md
           LICENSE
-          midi-to-mikrotik-converter
+          ${{github.workspace}}/build/midi-to-mikrotik-converter
