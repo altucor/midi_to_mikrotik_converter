@@ -43,5 +43,9 @@ jobs:
       
     - name: Release
       uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
       with:
-          files: midi-to-mikrotik-converter
+        files: |
+          README.md
+          LICENSE
+          midi-to-mikrotik-converter
