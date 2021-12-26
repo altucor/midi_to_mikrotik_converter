@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.15.2)
 
 project(midi-to-mikrotik-converter C CXX)
+IF(MSVC)
+  set(PROJECT_NAME "${PROJECT_NAME}-win")
+ELSEIF(APPLE)
+  set(PROJECT_NAME "${PROJECT_NAME}-osx")
+ELSEIF(UNIX)
+  set(PROJECT_NAME "${PROJECT_NAME}-linux")
+ENDIF()
 
 set(REQUIRED_BOOST_VERSION 1.75.0)
 IF(MSVC)
@@ -94,4 +101,3 @@ ENDIF(MSVC)
 
 include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} Boost::Boost)
-
