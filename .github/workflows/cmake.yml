@@ -52,6 +52,6 @@ jobs:
         files: |
           README.md
           LICENSE
-          ${{github.workspace}}/build/midi-to-mikrotik-converter-win.exe
+          ${{github.workspace}}/build/Release/midi-to-mikrotik-converter-win.exe
           ${{github.workspace}}/build/midi-to-mikrotik-converter-osx
           ${{github.workspace}}/build/midi-to-mikrotik-converter-linux
