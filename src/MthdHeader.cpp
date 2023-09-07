@@ -32,7 +32,7 @@ bool MthdHeader::isOk()
 	// For V1 and V2 number of tracks need to be more than zero
 	case MIDI_V1:
 	case MIDI_V2:
-		return (m_mtrkChunksCount == 0)
+		return !(m_mtrkChunksCount == 0)
 	default:
 		return false;
 	}
