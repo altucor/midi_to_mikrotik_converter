@@ -28,15 +28,11 @@ bool MthdHeader::isOk()
 	switch (m_formatType)
 	{
 	case MIDI_V0:
-		if(m_mtrkChunksCount == 1 || m_mtrkChunksCount == 0)
-			return true;
-		return false;
+		return (m_mtrkChunksCount == 1 || m_mtrkChunksCount == 0)
 	// For V1 and V2 number of tracks need to be more than zero
 	case MIDI_V1:
 	case MIDI_V2:
-		if(m_mtrkChunksCount == 0)
-			return false;
-		return true;
+		return (m_mtrkChunksCount == 0)
 	default:
 		return false;
 	}
