@@ -9,10 +9,10 @@ IF(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /MT")
 ELSEIF(APPLE)
   set(PROJECT_NAME "${PROJECT_NAME}-osx")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 ELSEIF(UNIX)
   set(PROJECT_NAME "${PROJECT_NAME}-linux")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 ENDIF()
 
 set(REQUIRED_BOOST_VERSION 1.86.0)
@@ -27,11 +27,14 @@ ENDIF()
 
 message("CMAKEFLAGS DUMP: ${CMAKE_CXX_FLAGS}")
 
+add_subdirectory(libmidi)
+
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 find_package(Boost COMPONENTS program_options log REQUIRED)
 
+include_directories("./libmidi/src")
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories("./include")
 
@@ -79,6 +82,4 @@ IF(MSVC)
   )
 ENDIF(MSVC)
 
-# message("---TEST---")
-# message(${MSVC_RUNTIME_LIBRARY})
-target_link_libraries(${PROJECT_NAME} PRIVATE boost::boost)
+target_link_libraries(${PROJECT_NAME} PRIVATE boost::boost midi)
