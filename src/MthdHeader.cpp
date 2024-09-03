@@ -21,18 +21,18 @@ void MthdHeader::log()
 
 bool MthdHeader::isOk()
 {
-	if(g_mthd_reference != m_mthd)
+	if (g_mthd_reference != m_mthd)
 		return false;
-	if(m_mthdChunkLength != 6)
+	if (m_mthdChunkLength != 6)
 		return false;
 	switch (m_formatType)
 	{
 	case MIDI_V0:
-		return (m_mtrkChunksCount == 1 || m_mtrkChunksCount == 0)
+		return (m_mtrkChunksCount == 1 || m_mtrkChunksCount == 0);
 	// For V1 and V2 number of tracks need to be more than zero
 	case MIDI_V1:
 	case MIDI_V2:
-		return !(m_mtrkChunksCount == 0)
+		return !(m_mtrkChunksCount == 0);
 	default:
 		return false;
 	}

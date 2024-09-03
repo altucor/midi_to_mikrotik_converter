@@ -20,10 +20,14 @@ https://www.youtube.com/watch?v=g6GZVlYP7X0
 
 
 # Building program
-1) Install conan
-2) Install CMake
-3) Go to directory midi_to_mikrotik_converter/build and then type two commands:\
-> cmake ../ -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_BUILD_TYPE=Release\
-> cmake --build .
+1) Install CMake
+2) Install conan
+3) cd midi_to_mikrotik_converter
+4) mkdir build
+5) Run only once with provider to pull BOOST library: `cmake -B build -S . -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./conan_provider.cmake -DCMAKE_BUILD_TYPE=Debug`
+6) cd build
+7) cmake --build ./ --config Release
+
+Conan CMake provider manual: https://github.com/conan-io/cmake-conan/tree/develop2
 
 If you have some problems with getting Boost library than check available prebuilt packages and configure project to match one of available here: https://conan.io/center/boost?version=1.75.0&os=Windows&tab=configuration\

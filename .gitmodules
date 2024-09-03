@@ -1,0 +1,3 @@
+[submodule "libmidi"]
+	path = libmidi
+	url = git@github.com:altucor/libmidi.git
