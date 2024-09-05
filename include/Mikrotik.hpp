@@ -20,11 +20,11 @@ public:
 class Mikrotik
 {
 public:
-    Mikrotik(MikrotikConfig &config, const m_index index, mtrk_t *track) : m_config(config), m_track(track), m_index(index)
+    Mikrotik(MikrotikConfig &config, const std::size_t index, mtrk_t *track) : m_config(config), m_track(track), m_index(index)
     {
     }
     int buildScriptForChannel(std::string &fileName, const uint8_t channel);
-    int buildScript(std::string &fileName);
+    int buildScript();
 
 private:
     std::string getTimeAsText(const double time);

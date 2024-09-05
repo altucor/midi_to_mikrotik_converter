@@ -73,9 +73,9 @@ int main(int argc, char *argv[])
     desc.add_options()("help,h", "Print this help message")("file,f", po::value<std::string>(&config.inFileName), "Select input standart midi file (SMF)")(
         "output-file,g", po::value<std::string>(&config.outFileName),
         "Specify output file name. If not set than output will be saved in file with same name as input but with additional suffix")(
-        "octave-shift,o", po::value<int>(&config.octaveShift), "Sets the octave shift relative to the original (-10 to +10)")(
-        "note-shift,n", po::value<int>(&config.noteShift), "Sets the note shift relative to the original")(
-        "fine-tuning,t", po::value<double>(&config.fineTuning),
+        "octave-shift,o", po::value<uint8_t>(&config.pitchShift.octave), "Sets the octave shift relative to the original (-10 to +10)")(
+        "note-shift,n", po::value<uint8_t>(&config.pitchShift.note), "Sets the note shift relative to the original")(
+        "fine-tuning,t", po::value<float>(&config.pitchShift.fine),
         "Sets frequency offset for all notes in case when you think your beeper produces beeps at wrong frequencies")(
         "bpm,b", po::value<int>(&config.bpm), "Sets the new bpm to output file")("comments,c", "Adds comments in the form of notes");
 
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
         std::cout << desc << std::endl;
     }
 
-    if (inFileName == "")
+    if (config.inFileName == "")
     {
         BOOST_LOG_TRIVIAL(error) << "No input (SMF) file specified";
         std::cout << desc << std::endl;
@@ -120,10 +120,10 @@ int main(int argc, char *argv[])
         config.outFileName = config.inFileName;
     }
 
-    std::ifstream midiStream{inFileName, midiStream.binary | midiStream.in};
+    std::ifstream midiStream{config.inFileName, midiStream.binary | midiStream.in};
     if (!midiStream.is_open())
     {
-        BOOST_LOG_TRIVIAL(error) << "Cannot open file: " << inFileName;
+        BOOST_LOG_TRIVIAL(error) << "Cannot open file: " << config.inFileName;
         return -1;
     }
     std::vector<unsigned char> midiFileBuffer(std::istreambuf_iterator<char>(midiStream), {});
@@ -168,8 +168,8 @@ int main(int argc, char *argv[])
     for (uint32_t i = 0; i < trackCount; i++)
     {
         mtrk_t *track = midi_file_get_track(midiFile, i);
-        Mikrotik mikrotik(track, ppqn, newBpm, i, octaveShift, noteShift, fineTuning, enableCommentsFlag);
-        mikrotik.buildScript(outFileName);
+        Mikrotik mikrotik(config, i, track);
+        mikrotik.buildScript();
     }
 
     midi_file_free(midiFile);

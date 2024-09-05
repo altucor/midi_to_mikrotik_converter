@@ -21,38 +21,38 @@ public:
 class Note
 {
 public:
-    Note(midi_note_t &note_on, midi_note_t &note_off, const float pps) : m_pps(pps)
+    Note(midi_note_t &noteOn, midi_note_t &noteOff, const uint32_t duration)
     {
         // same kind of events skip
-        if (note_on.on == note_off.on)
+        if (noteOn.on == noteOff.on)
         {
             return;
         }
         // different channel events
-        if (note_on.channel != note_off.channel)
+        if (noteOn.channel != noteOff.channel)
         {
             return;
         }
         // zero pitch ignore
-        if (note_on.pitch == 0 || note_off.pitch == 0)
+        if (noteOn.pitch == 0 || noteOff.pitch == 0)
         {
             return;
         }
         // invalid pitch
-        if (note_on.pitch != note_off.pitch)
+        if (noteOn.pitch != noteOff.pitch)
         {
             return;
         }
-        m_channel = note_on.channel;
-        m_pitch = note_on.pitch;
-        m_duration = note_off.velocity;
+        m_channel = noteOn.channel;
+        m_pitch = noteOn.pitch;
+        m_duration = duration;
     }
     void log() const
     {
         BOOST_LOG_TRIVIAL(info) << "Note "
                                 << " channel: " << (uint32_t)m_channel << " pitch: " << (uint32_t)m_pitch << " duration ticks: " << (uint32_t)m_duration;
     }
-    std::string toMikrotikBeep(const PitchShift pitchShift, const bool comments)
+    std::string toMikrotikBeep(const PitchShift pitchShift, const float pps, const bool comments)
     {
         /*
          * :beep frequency=440 length=1000ms;
@@ -64,7 +64,7 @@ public:
 
         std::stringstream ss;
         ss << ":beep frequency=" << std::to_string(freq);
-        ss << " length=" << duration_to_ms(m_duration, m_pps) << "ms;";
+        ss << " length=" << duration_to_ms(m_duration, pps) << "ms;";
 
         if (comments)
         {
@@ -86,7 +86,6 @@ public:
     }
 
 private:
-    float m_pps;
     uint8_t m_channel = 0;
     uint8_t m_pitch = 0;
     uint32_t m_duration;
