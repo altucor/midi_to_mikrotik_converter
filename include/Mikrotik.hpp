@@ -22,6 +22,7 @@ class Mikrotik
 public:
     Mikrotik(MikrotikConfig &config, const std::size_t index, mtrk_t *track) : m_config(config), m_track(track), m_index(index)
     {
+        m_pps = pulses_per_second(m_config.ppqn, m_config.bpm);
     }
     int buildScriptForChannel(std::string &fileName, const uint8_t channel);
     int buildScript();
@@ -34,6 +35,7 @@ private:
 
 private:
     MikrotikConfig m_config = {0};
+    float m_pps = 0.0f;
     std::size_t m_index = 0;
     mtrk_t *m_track;
     double m_processedTime = 0.0;

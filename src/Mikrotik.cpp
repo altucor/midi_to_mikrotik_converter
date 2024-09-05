@@ -12,7 +12,7 @@
 std::string Mikrotik::getTrackTimeLength(const uint8_t channel)
 {
     std::stringstream out;
-    out << Utils::getTimeAsText(mtrk_get_duration_ms(m_track, m_config.ppqn, m_config.bpm));
+    out << Utils::getTimeAsText(duration_to_ms(mtrk_get_duration(m_track), m_pps));
     out << " HH:MM:SS:MS";
     return out.str();
 }

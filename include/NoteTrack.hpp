@@ -9,7 +9,9 @@
 class NoteTrack
 {
 public:
-    NoteTrack();
+    NoteTrack(const uint8_t channel) : m_channel(channel)
+    {
+    }
     bool addEvent(midi_event_smf_t event)
     {
         m_durationAccumulator += event.predelay.val;
@@ -47,6 +49,8 @@ public:
             m_noteOff = event.event.note;
             m_notes.push_back(Note(m_noteOn, m_noteOff, m_durationAccumulator));
             m_durationAccumulator = 0;
+            m_noteOn = {0};
+            m_noteOff = {0};
             return true;
         }
 
@@ -54,6 +58,7 @@ public:
     }
 
 private:
+    uint8_t m_channel = 0;
     uint32_t m_durationAccumulator = 0;
     midi_note_t m_noteOn = {0};
     midi_note_t m_noteOff = {0};
