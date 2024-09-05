@@ -1,43 +1,42 @@
 #ifndef MIKROTIK_HPP
 #define MIKROTIK_HPP
 
-#include "mtrk.h"
 #include "Note.hpp"
+#include "mtrk.h"
 #include <vector>
+
+class MikrotikConfig
+{
+public:
+    bool comments = false;
+    uint16_t ppqn;
+    int32_t bpm;
+    uint64_t track_index = 0;
+    PitchShift pitchShift;
+    std::string inFileName = "";
+    std::string outFileName = "";
+};
 
 class Mikrotik
 {
 public:
-	Mikrotik(mtrk_t *track,
-			 const uint16_t ppqn,
-			 const int32_t bpm,
-			 const uint64_t index,
-			 const int octaveShift,
-			 const int noteShift,
-			 const double fineTuning,
-			 const bool commentsFlag);
-	int buildScriptForChannel(std::string &fileName, const uint8_t channel);
-	int buildScript(std::string &fileName);
+    Mikrotik(MikrotikConfig &config, const m_index index, mtrk_t *track) : m_config(config), m_track(track), m_index(index)
+    {
+    }
+    int buildScriptForChannel(std::string &fileName, const uint8_t channel);
+    int buildScript(std::string &fileName);
 
 private:
-	std::string getTimeAsText(const double time);
-	std::string getTrackTimeLength(const uint8_t channel);
-	std::string getNotesCount(const uint8_t channel);
-	std::string getScriptHeader(const uint8_t channel);
-	std::string getDelayLine(const float delayMs);
-	std::string getBeepLine(midi_note_t note, const float duration);
-	// std::string buildNote(Note note);
+    std::string getTimeAsText(const double time);
+    std::string getTrackTimeLength(const uint8_t channel);
+    std::string getNotesCount(const uint8_t channel);
+    void getScriptHeader(std::stringstream &out, const uint8_t channel);
 
 private:
-	bool m_commentsFlag = false;
-	uint16_t m_ppqn;
-	int32_t m_bpm;
-	uint64_t m_index = 0;
-	int m_octaveShift = 0;
-	int m_noteShift = 0;
-	double m_fineTuning = 0.0;
-	double m_processedTime = 0.0;
-	mtrk_t *m_track;
+    MikrotikConfig m_config = {0};
+    std::size_t m_index = 0;
+    mtrk_t *m_track;
+    double m_processedTime = 0.0;
 };
 
 #endif // MIKROTIK_HPP
