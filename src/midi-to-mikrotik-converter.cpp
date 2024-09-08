@@ -21,8 +21,8 @@
 #include <stdlib.h>
 #include <vector>
 
-// #include "MidiFile.hpp"
-#include "Mikrotik.hpp"
+#include "MikrotikNote.hpp"
+#include "MikrotikTrack.hpp"
 #include "file.h"
 
 #include "boost/log/trivial.hpp"
@@ -61,13 +61,6 @@ int main(int argc, char *argv[])
     init_log();
 
     MikrotikConfig config = {0};
-    // int32_t octaveShift = 0;
-    // int32_t noteShift = 0;
-    // std::string inFileName = "";
-    // std::string outFileName = "";
-    // int32_t newBpm = 0;
-    // bool enableCommentsFlag = false;
-    // double fineTuning = 0.0;
 
     po::options_description desc("Application arguments");
     desc.add_options()("help,h", "Print this help message")("file,f", po::value<std::string>(&config.inFileName), "Select input standart midi file (SMF)")(
@@ -168,7 +161,7 @@ int main(int argc, char *argv[])
     for (uint32_t i = 0; i < trackCount; i++)
     {
         mtrk_t *track = midi_file_get_track(midiFile, i);
-        Mikrotik mikrotik(config, i, track);
+        MikrotikTrack mikrotik(config, i, track);
         mikrotik.buildScript();
     }
 

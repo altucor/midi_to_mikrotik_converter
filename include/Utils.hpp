@@ -36,4 +36,14 @@ std::string getTimeAsText(const double time)
     out << std::setfill('0') << std::setw(3) << ((static_cast<int>(time) % 1000));
     return out.str();
 }
+
+std::string getDelayLine(const float duration)
+{
+    /*
+     * :delay 1000ms;
+     */
+
+    return ":delay " + std::to_string((int)duration) + "ms;\n";
+}
+
 }; // namespace Utils

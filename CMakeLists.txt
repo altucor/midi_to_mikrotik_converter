@@ -32,28 +32,17 @@ add_subdirectory(libmidi)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
+set(Boost_NO_SYSTEM_PATHS TRUE)
 find_package(Boost COMPONENTS program_options log REQUIRED)
 
 include_directories("./libmidi/src")
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories("./include")
 
-file(GLOB SOURCES
-  "./include/Utils.hpp"
-  "./include/ByteStream.hpp"
-  "./include/Note.hpp"
-  "./include/NoteTrack.hpp"
-  "./include/Mikrotik.hpp"
-  "./src/Utils.cpp"
-  "./src/ByteStream.cpp"
-  "./src/Event.cpp"
-  "./src/Note.cpp"
-  "./src/NoteTrack.cpp"
-  "./src/Mikrotik.cpp"
-  "./src/midi-to-mikrotik-converter.cpp"
-)
+file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS "include/**.hpp")
+file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES "src/**.cpp")
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_HEADERS} ${${PROJECT_NAME}_SOURCES})
 
 IF(MSVC)
   set_property(
@@ -65,4 +54,4 @@ IF(MSVC)
   )
 ENDIF(MSVC)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE boost::boost midi)
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::boost midi)

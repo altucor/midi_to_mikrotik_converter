@@ -1,4 +1,4 @@
-#include "Mikrotik.hpp"
+#include "MikrotikTrack.hpp"
 
 #include "util.h"
 
@@ -9,7 +9,7 @@
 #include <iomanip>
 #include <sstream>
 
-std::string Mikrotik::getTrackTimeLength(const uint8_t channel)
+std::string MikrotikTrack::getTrackTimeLength(const uint8_t channel)
 {
     std::stringstream out;
     out << Utils::getTimeAsText(duration_to_ms(mtrk_get_duration(m_track), m_pps));
@@ -17,7 +17,7 @@ std::string Mikrotik::getTrackTimeLength(const uint8_t channel)
     return out.str();
 }
 
-std::string Mikrotik::getNotesCount(const uint8_t channel)
+std::string MikrotikTrack::getNotesCount(const uint8_t channel)
 {
     uint64_t count = 0;
     std::stringstream out;
@@ -33,7 +33,7 @@ std::string Mikrotik::getNotesCount(const uint8_t channel)
     return out.str();
 }
 
-void Mikrotik::getScriptHeader(std::stringstream &out, const uint8_t channel)
+void MikrotikTrack::getScriptHeader(std::ofstream &out, const uint8_t channel)
 {
     std::stringstream outputBuffer;
     out << "#----------------File Description-----------------#\n";
@@ -54,10 +54,25 @@ void Mikrotik::getScriptHeader(std::stringstream &out, const uint8_t channel)
     out << "#-------------------------------------------------#\n\n";
 }
 
-int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel)
+int MikrotikTrack::analyze()
+{
+    uint32_t eventsCount = mtrk_get_events_count(m_track);
+
+    for (uint32_t i = 0; i < eventsCount; i++)
+    {
+        midi_event_smf_t *event = mtrk_get_event(m_track, i);
+        if (event->message.status != MIDI_STATUS_SYSTEM)
+        {
+            // Count channel events
+            m_channelEvents[event->message.subCmd]++;
+        }
+    }
+}
+
+int MikrotikTrack::buildScriptForChannel(const uint8_t channel)
 {
     m_processedTime = 0.0;
-    std::string outFileName(fileName);
+    std::string outFileName(m_config.outFileName);
     outFileName += std::string("_");
     // outFileName += m_track.getName();
     outFileName += std::string("_");
@@ -66,51 +81,6 @@ int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel
     outFileName += std::to_string(channel);
     outFileName += std::string(".txt");
 
-    std::stringstream outputBuffer;
-    getScriptHeader(outputBuffer, channel);
-
-    uint64_t foundNoteEventsCount = 0;
-    float pps = pulses_per_second(m_config.ppqn, m_config.bpm);
-
-    uint32_t eventsCount = mtrk_get_events_count(m_track);
-    for (uint32_t i = 0; i < eventsCount; i++)
-    {
-        midi_event_smf_t *event = mtrk_get_event(m_track, i);
-        if (event->message.subCmd != channel)
-        {
-            continue;
-        }
-        if (event->predelay.val != 0)
-        {
-            // outputBuffer << getDelayLine(duration_to_ms(event->predelay.val, pps));
-        }
-        if (event->message.status == MIDI_STATUS_NOTE_ON)
-        {
-            int32_t noteOffIndex = mtrk_find_corresponding_note_off(m_track, i, *event);
-            if (noteOffIndex == -1)
-            {
-                BOOST_LOG_TRIVIAL(info) << "Cannot find corresponding noteOff event for noteOn at index: " << std::to_string(i);
-                continue;
-            }
-
-            float noteDuration = 0.0f;
-            for (uint32_t j = i; j < noteOffIndex - i; j++)
-            {
-                midi_event_smf_t *tempEvent = mtrk_get_event(m_track, j);
-                noteDuration += duration_to_ms(tempEvent->predelay.val, pps);
-            }
-            // getBeepLine(event->event.note, noteDuration);
-            foundNoteEventsCount++;
-        }
-    }
-
-    if (foundNoteEventsCount == 0)
-    {
-        return 0;
-    }
-
-    BOOST_LOG_TRIVIAL(info) << "Mikrotik buildScript started for track: " << m_index << " channel: " << (uint32_t)channel;
-
     std::ofstream outputFile;
     outputFile.open(outFileName);
     if (!outputFile.is_open())
@@ -118,24 +88,66 @@ int Mikrotik::buildScriptForChannel(std::string &fileName, const uint8_t channel
         BOOST_LOG_TRIVIAL(info) << "Mikrotik buildScript failed cannot create output file: " << outFileName;
         return -1;
     }
-    outputFile << outputBuffer.str();
-    outputFile.close();
+
+    // std::stringstream outputBuffer;
+    getScriptHeader(outputFile, channel);
+
+    uint64_t foundNoteEventsCount = 0;
+
+    BOOST_LOG_TRIVIAL(info) << "Mikrotik buildScript started for track: " << m_index << " channel: " << (uint32_t)channel;
+    NoteRetCode noteRetCode = NoteRetCode::NOTE_RETCODE_SUCCESS;
+    uint32_t eventsCount = mtrk_get_events_count(m_track);
+
+    for (uint32_t i = 0; i < eventsCount; i++)
+    {
+        midi_event_smf_t *event = mtrk_get_event(m_track, i);
+        if (event->predelay.val != 0)
+        {
+            outputFile << Utils::getDelayLine(duration_to_ms(event->predelay.val, m_pps));
+        }
+
+        noteRetCode = m_noteTracks[i].addEvent(*event);
+        switch (noteRetCode)
+        {
+        case NoteRetCode::NOTE_RETCODE_SUCCESS:
+            foundNoteEventsCount++;
+            break;
+        case NoteRetCode::NOTE_RETCODE_NOT_NOTE:
+            break;
+        case NoteRetCode::NOTE_RETCODE_OTHER_CHANNEL:
+            break;
+        case NoteRetCode::NOTE_RETCODE_NO_FIRST_PRESS:
+            foundNoteEventsCount++;
+            break;
+        case NoteRetCode::NOTE_RETCODE_ZERO_PITCH:
+            foundNoteEventsCount++;
+            break;
+        case NoteRetCode::NOTE_RETCODE_OVERLAY:
+            foundNoteEventsCount++;
+            break;
+        case NoteRetCode::NOTE_RETCODE_UNEXPECTED:
+        default:
+            // unexpected case
+            break;
+        }
+    }
+
+    if (foundNoteEventsCount == 0)
+    {
+        BOOST_LOG_TRIVIAL(info) << "Cannot find any events in track, skipping";
+        return 0;
+    }
+
     BOOST_LOG_TRIVIAL(info) << "Mikrotik buildScript generated file: " << outFileName;
     return 0;
 }
 
-int Mikrotik::buildScript()
+int MikrotikTrack::buildScript()
 {
-    // if (m_track.getEvents().size() == 0)
-    // {
-    // 	BOOST_LOG_TRIVIAL(info) << "Cannot find any events in track, skipping";
-    // 	return 0;
-    // }
-
     int ret = 0;
     for (uint8_t channel = 0; channel < MIDI_CHANNELS_MAX_COUNT; channel++)
     {
-        ret = buildScriptForChannel(m_config.outFileName, channel);
+        ret = buildScriptForChannel(channel);
         if (ret != 0)
         {
             BOOST_LOG_TRIVIAL(info) << "Mikrotik buildScript failed on channel: " << channel;

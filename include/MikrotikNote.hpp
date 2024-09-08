@@ -18,10 +18,13 @@ public:
     }
 };
 
-class Note
+class MikrotikNote
 {
 public:
-    Note(midi_note_t &noteOn, midi_note_t &noteOff, const uint32_t duration)
+    MikrotikNote(const uint8_t pitch, const uint32_t duration) : m_pitch(pitch), m_duration(duration)
+    {
+    }
+    MikrotikNote(midi_note_t &noteOn, midi_note_t &noteOff, const uint32_t duration)
     {
         // same kind of events skip
         if (noteOn.on == noteOff.on)
@@ -43,19 +46,17 @@ public:
         {
             return;
         }
-        m_channel = noteOn.channel;
         m_pitch = noteOn.pitch;
         m_duration = duration;
     }
     void log() const
     {
-        BOOST_LOG_TRIVIAL(info) << "Note "
-                                << " channel: " << (uint32_t)m_channel << " pitch: " << (uint32_t)m_pitch << " duration ticks: " << (uint32_t)m_duration;
+        BOOST_LOG_TRIVIAL(info) << "Note " << " pitch: " << (uint32_t)m_pitch << " duration ticks: " << (uint32_t)m_duration;
     }
-    std::string toMikrotikBeep(const PitchShift pitchShift, const float pps, const bool comments)
+    std::string toString(const PitchShift pitchShift, const float pps, const bool comments)
     {
         /*
-         * :beep frequency=440 length=1000ms;
+         * :beep frequency=440 length=1000ms; # C4 + 35Hz
          * :delay 1000ms;
          */
 
@@ -78,7 +79,13 @@ public:
             }
             // ss << " @ " << getTimeAsText(m_processedTime);
         }
+        ss << "\n";
+
         return ss.str();
+    }
+    std::string toStringWithDelay(const PitchShift pitchShift, const float pps, const bool comments)
+    {
+        return toString(pitchShift, pps, comments) + getDelayLine(duration_to_ms(m_duration, pps)) << "\n";
     }
     uint32_t duration() const
     {
@@ -86,7 +93,6 @@ public:
     }
 
 private:
-    uint8_t m_channel = 0;
     uint8_t m_pitch = 0;
-    uint32_t m_duration;
+    uint32_t m_duration = 0;
 };
