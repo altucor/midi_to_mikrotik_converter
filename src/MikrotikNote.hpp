@@ -1,9 +1,12 @@
 #pragma once
 
-#include "events/note.h"
 #include "util.h"
 
+#include "Utils.hpp"
+
 #include <boost/log/trivial.hpp>
+
+#include <fstream>
 #include <sstream>
 
 class PitchShift
@@ -24,39 +27,14 @@ public:
     MikrotikNote(const uint8_t pitch, const uint32_t duration) : m_pitch(pitch), m_duration(duration)
     {
     }
-    MikrotikNote(midi_note_t &noteOn, midi_note_t &noteOff, const uint32_t duration)
-    {
-        // same kind of events skip
-        if (noteOn.on == noteOff.on)
-        {
-            return;
-        }
-        // different channel events
-        if (noteOn.channel != noteOff.channel)
-        {
-            return;
-        }
-        // zero pitch ignore
-        if (noteOn.pitch == 0 || noteOff.pitch == 0)
-        {
-            return;
-        }
-        // invalid pitch
-        if (noteOn.pitch != noteOff.pitch)
-        {
-            return;
-        }
-        m_pitch = noteOn.pitch;
-        m_duration = duration;
-    }
     void log() const
     {
         BOOST_LOG_TRIVIAL(info) << "Note " << " pitch: " << (uint32_t)m_pitch << " duration ticks: " << (uint32_t)m_duration;
     }
-    std::string toString(const PitchShift pitchShift, const float pps, const bool comments)
+    std::string toString(const PitchShift pitchShift, const bool comments) const
     {
         /*
-         * :beep frequency=440 length=1000ms; # C4 + 35Hz
+         * :beep frequency=440 length=1000ms; # C4 + 35Hz @ HH:MM:SS:MS
          * :delay 1000ms;
          */
 
@@ -65,7 +43,7 @@ public:
 
         std::stringstream ss;
         ss << ":beep frequency=" << std::to_string(freq);
-        ss << " length=" << duration_to_ms(m_duration, pps) << "ms;";
+        ss << " length=" << m_duration << "ms;";
 
         if (comments)
         {
@@ -83,9 +61,14 @@ public:
 
         return ss.str();
     }
-    std::string toStringWithDelay(const PitchShift pitchShift, const float pps, const bool comments)
+    std::string toStringWithDelay(const PitchShift pitchShift, const bool comments) const
     {
-        return toString(pitchShift, pps, comments) + getDelayLine(duration_to_ms(m_duration, pps)) << "\n";
+        return toString(pitchShift, comments) + Utils::getDelayLine(m_duration) + "\n";
+    }
+    void toStringWithDelay(std::ofstream &out)
+    {
+        const PitchShift temp;
+        out << toStringWithDelay(temp, true);
     }
     uint32_t duration() const
     {

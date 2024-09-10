@@ -8,7 +8,7 @@
 
 namespace Utils
 {
-std::string toHexBuffer(std::vector<uint8_t> &buf)
+static std::string toHexBuffer(std::vector<uint8_t> &buf)
 {
     if (buf.size() == 0)
         return std::string();
@@ -20,14 +20,14 @@ std::string toHexBuffer(std::vector<uint8_t> &buf)
     return ss.str();
 }
 
-std::string toHex(uint64_t val, size_t width)
+static std::string toHex(uint64_t val, size_t width)
 {
     std::stringstream ss;
     ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(width) << ((int64_t)val) << std::dec;
     return ss.str();
 }
 
-std::string getTimeAsText(const double time)
+static std::string getTimeAsText(const double time)
 {
     std::stringstream out;
     out << std::setfill('0') << std::setw(2) << ((static_cast<int>(time) / (1000 * 60 * 60)) % 24) << ":";
@@ -37,7 +37,15 @@ std::string getTimeAsText(const double time)
     return out.str();
 }
 
-std::string getDelayLine(const float duration)
+static std::string getTrackTimeLength(const double time)
+{
+    std::stringstream out;
+    out << getTimeAsText(time);
+    out << " HH:MM:SS:MS";
+    return out.str();
+}
+
+static std::string getDelayLine(const float duration)
 {
     /*
      * :delay 1000ms;

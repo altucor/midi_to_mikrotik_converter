@@ -39,10 +39,9 @@ include_directories("./libmidi/src")
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories("./include")
 
-file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS "include/**.hpp")
-file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES "src/**.cpp")
+file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES "src/**.cpp" "src/**.hpp")
 
-add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_HEADERS} ${${PROJECT_NAME}_SOURCES})
+add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
 
 IF(MSVC)
   set_property(
@@ -54,4 +53,4 @@ IF(MSVC)
   )
 ENDIF(MSVC)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Boost::boost midi)
+target_link_libraries(${PROJECT_NAME} PRIVATE boost::boost midi)

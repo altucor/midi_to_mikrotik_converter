@@ -15,19 +15,20 @@
 +/- 13) detect first/intro delay bytes (works but some times not so good)
 */
 
+#include "file.h"
+
+#include "MikrotikTrack.hpp"
+#include "TrackAnalyzer.hpp"
+
+#include "boost/log/trivial.hpp"
+#include "boost/log/utility/setup.hpp"
+#include <boost/program_options.hpp>
+
 #include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
-
-#include "MikrotikNote.hpp"
-#include "MikrotikTrack.hpp"
-#include "file.h"
-
-#include "boost/log/trivial.hpp"
-#include "boost/log/utility/setup.hpp"
-#include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
 
@@ -103,7 +104,7 @@ int main(int argc, char *argv[])
 
     if (config.inFileName == "")
     {
-        BOOST_LOG_TRIVIAL(error) << "No input (SMF) file specified";
+        BOOST_LOG_TRIVIAL(error) << "[mtmc] no input (SMF) file specified";
         std::cout << desc << std::endl;
         return -1;
     }
@@ -116,7 +117,7 @@ int main(int argc, char *argv[])
     std::ifstream midiStream{config.inFileName, midiStream.binary | midiStream.in};
     if (!midiStream.is_open())
     {
-        BOOST_LOG_TRIVIAL(error) << "Cannot open file: " << config.inFileName;
+        BOOST_LOG_TRIVIAL(error) << "[mtmc] cannot open file: " << config.inFileName;
         return -1;
     }
     std::vector<unsigned char> midiFileBuffer(std::istreambuf_iterator<char>(midiStream), {});
@@ -126,11 +127,11 @@ int main(int argc, char *argv[])
     int read = midi_file_unmarshal(midiFile, midiFileBuffer.data(), midiFileBuffer.size());
     if (read > 0)
     {
-        BOOST_LOG_TRIVIAL(info) << "Midi file parsed total bytes: " << std::to_string(read) << std::endl;
+        BOOST_LOG_TRIVIAL(info) << "[mtmc] midi file parsed total bytes: " << std::to_string(read) << std::endl;
     }
     else
     {
-        BOOST_LOG_TRIVIAL(error) << "Error parsing midi file stream: " << std::to_string(read) << std::endl;
+        BOOST_LOG_TRIVIAL(error) << "[mtmc] error parsing midi file stream: " << std::to_string(read) << std::endl;
         midi_file_free(midiFile);
         return -1;
     }
@@ -156,16 +157,29 @@ int main(int argc, char *argv[])
         }
     }
 
-    auto trackCount = midi_file_get_tracks_count(midiFile);
+    std::vector<TrackAnalyzer> trackAnalyzers;
+    uint16_t trackCount = midi_file_get_tracks_count(midiFile);
 
-    for (uint32_t i = 0; i < trackCount; i++)
+    for (uint16_t i = 0; i < trackCount; i++)
     {
         mtrk_t *track = midi_file_get_track(midiFile, i);
-        MikrotikTrack mikrotik(config, i, track);
-        mikrotik.buildScript();
+        BOOST_LOG_TRIVIAL(info) << "[mtmc] analyzing track: " << std::to_string(i);
+        trackAnalyzers.push_back(TrackAnalyzer(track, pulses_per_second(config.ppqn, config.bpm)));
+        trackAnalyzers.at(i).analyze();
+        BOOST_LOG_TRIVIAL(info) << "[mtmc] analyzing track: " << std::to_string(i) << " done";
     }
 
     midi_file_free(midiFile);
+
+    for (std::size_t i = 0; i < trackAnalyzers.size(); i++)
+    {
+        for (std::size_t j = 0; j < MIDI_CHANNELS_MAX_COUNT; j++)
+        {
+            auto channel = trackAnalyzers.at(i).getChannel(j);
+            auto mikrotikTrack = MikrotikTrack(config, channel);
+            mikrotikTrack.exportScript();
+        }
+    }
 
     // MidiFile midiObj(inFileName, newBpm);
     // midiObj.process();
