@@ -65,14 +65,19 @@ int main(int argc, char *argv[])
     Config config = {0};
 
     po::options_description desc("Application arguments");
-    desc.add_options()("help,h", "Print this help message")("file,f", po::value<std::string>(&config.inFileName), "Select input standart midi file (SMF)")(
-        "output-file,g", po::value<std::string>(&config.outFileName),
-        "Specify output file name. If not set than output will be saved in file with same name as input but with additional suffix")(
-        "octave-shift,o", po::value<int8_t>(&config.pitchShift.octave), "Sets the octave shift relative to the original (-10 to +10)")(
-        "note-shift,n", po::value<int8_t>(&config.pitchShift.note), "Sets the note shift relative to the original")(
-        "fine-tuning,t", po::value<float>(&config.pitchShift.fine),
-        "Sets frequency offset for all notes in case when you think your beeper produces beeps at wrong frequencies")(
-        "bpm,b", po::value<int>(&config.bpm), "Sets the new bpm to output file")("comments,c", "Adds comments in the form of notes");
+    desc.add_options()                                                                                  //
+        ("help,h", "Print this help message")                                                           //
+        ("file,f", po::value<std::string>(&config.inFileName), "Select input standart midi file (SMF)") //
+        ("output-file,g", po::value<std::string>(&config.outFileName),
+         "Specify output file name. If not set than output will be saved in file with same name as input but with additional suffix")   //
+        ("octave-shift,o", po::value<int8_t>(&config.pitchShift.octave), "Sets the octave shift relative to the original (-10 to +10)") //
+        ("note-shift,n", po::value<int8_t>(&config.pitchShift.note), "Sets the note shift relative to the original")                    //
+        ("fine-tuning,t", po::value<float>(&config.pitchShift.fine),
+         "Sets frequency offset for all notes in case when you think your beeper produces beeps at wrong frequencies") //
+        ("bpm,b", po::value<int>(&config.bpm), "Sets the new bpm to output file")                                      //
+        ("log-level,l", po::value<boost::log::trivial::severity_level>(&config.logLevel)->default_value(boost::log::trivial::severity_level::info),
+         "Sets the log level: trace, debug, info, warning, error, fatal") //
+        ("comments,c", "Adds comments in the form of notes");
 
     if (argc == 1)
     {
@@ -102,6 +107,8 @@ int main(int argc, char *argv[])
         std::cout << ex.what() << std::endl;
         std::cout << desc << std::endl;
     }
+
+    boost::log::core::get()->set_filter(boost::log::trivial::severity >= config.logLevel);
 
     if (config.inFileName == "")
     {

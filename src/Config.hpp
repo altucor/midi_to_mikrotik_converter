@@ -1,5 +1,7 @@
 #pragma once
 
+#include "boost/log/trivial.hpp"
+
 #include <fstream>
 #include <string>
 
@@ -25,6 +27,7 @@ class Config
 {
 public:
     bool comments = false;
+    boost::log::trivial::severity_level logLevel = boost::log::trivial::severity_level::info;
     uint16_t ppqn = 0;
     int32_t bpm = 0;
     uint64_t track_index = 0;
