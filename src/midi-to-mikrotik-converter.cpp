@@ -17,6 +17,7 @@
 
 #include "file.h"
 
+#include "Config.hpp"
 #include "MikrotikTrack.hpp"
 #include "TrackAnalyzer.hpp"
 
@@ -61,14 +62,14 @@ int main(int argc, char *argv[])
 {
     init_log();
 
-    MikrotikConfig config = {0};
+    Config config = {0};
 
     po::options_description desc("Application arguments");
     desc.add_options()("help,h", "Print this help message")("file,f", po::value<std::string>(&config.inFileName), "Select input standart midi file (SMF)")(
         "output-file,g", po::value<std::string>(&config.outFileName),
         "Specify output file name. If not set than output will be saved in file with same name as input but with additional suffix")(
-        "octave-shift,o", po::value<uint8_t>(&config.pitchShift.octave), "Sets the octave shift relative to the original (-10 to +10)")(
-        "note-shift,n", po::value<uint8_t>(&config.pitchShift.note), "Sets the note shift relative to the original")(
+        "octave-shift,o", po::value<int8_t>(&config.pitchShift.octave), "Sets the octave shift relative to the original (-10 to +10)")(
+        "note-shift,n", po::value<int8_t>(&config.pitchShift.note), "Sets the note shift relative to the original")(
         "fine-tuning,t", po::value<float>(&config.pitchShift.fine),
         "Sets frequency offset for all notes in case when you think your beeper produces beeps at wrong frequencies")(
         "bpm,b", po::value<int>(&config.bpm), "Sets the new bpm to output file")("comments,c", "Adds comments in the form of notes");
@@ -137,11 +138,14 @@ int main(int argc, char *argv[])
     }
 
     config.ppqn = midi_file_get_mthd(midiFile).ppqn;
+    BOOST_LOG_TRIVIAL(info) << "[mtmc] mthd ppqn: " << std::to_string(config.ppqn);
+    const uint16_t trackCount = midi_file_get_tracks_count(midiFile);
+    BOOST_LOG_TRIVIAL(info) << "[mtmc] track count: " << std::to_string(trackCount);
 
     // If new not set by user input find in one of tracks
     if (config.bpm == 0)
     {
-        auto trackCount = midi_file_get_tracks_count(midiFile);
+        BOOST_LOG_TRIVIAL(info) << "[mtmc] searching bpm event...";
         for (uint32_t i = 0; i < trackCount; i++)
         {
             mtrk_t *track = midi_file_get_track(midiFile, i);
@@ -158,14 +162,15 @@ int main(int argc, char *argv[])
         }
     }
 
+    BOOST_LOG_TRIVIAL(info) << "[mtmc] bpm set to: " << std::to_string(config.bpm);
+
     std::vector<TrackAnalyzer> trackAnalyzers;
-    uint16_t trackCount = midi_file_get_tracks_count(midiFile);
 
     for (uint16_t i = 0; i < trackCount; i++)
     {
         mtrk_t *track = midi_file_get_track(midiFile, i);
         BOOST_LOG_TRIVIAL(info) << "[mtmc] analyzing track: " << std::to_string(i);
-        trackAnalyzers.push_back(TrackAnalyzer(track, pulses_per_second(config.ppqn, config.bpm)));
+        trackAnalyzers.push_back(TrackAnalyzer(config, track, pulses_per_second(config.ppqn, config.bpm)));
         trackAnalyzers.at(i).analyze();
         BOOST_LOG_TRIVIAL(info) << "[mtmc] analyzing track: " << std::to_string(i) << " done";
     }
@@ -177,26 +182,10 @@ int main(int argc, char *argv[])
         for (std::size_t j = 0; j < MIDI_CHANNELS_MAX_COUNT; j++)
         {
             auto channel = trackAnalyzers.at(i).getChannel(j);
-            auto mikrotikTrack = MikrotikTrack(config, channel);
+            auto mikrotikTrack = MikrotikTrack(config, channel, trackAnalyzers.at(i).getTrackInfo());
             mikrotikTrack.exportScript();
         }
     }
-
-    // MidiFile midiObj(inFileName, newBpm);
-    // midiObj.process();
-    // std::vector<MidiTrack> tracks = midiObj.getTracks();
-
-    // for (uint64_t i = 0; i < tracks.size(); i++)
-    // {
-    // 	Mikrotik mikrotik(
-    // 		tracks[i],
-    // 		i,
-    // 		octaveShift,
-    // 		noteShift,
-    // 		fineTuning,
-    // 		enableCommentsFlag);
-    // 	mikrotik.buildScript(outFileName);
-    // }
 
     return 0;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Config.hpp"
 #include "MikrotikNote.hpp"
 
 #include "boost/log/trivial.hpp"
@@ -13,7 +14,7 @@ public:
     ChannelAnalyzer()
     {
     }
-    ChannelAnalyzer(const uint8_t channel, const float pps) : m_channel(channel), m_pps(pps)
+    ChannelAnalyzer(Config &config, const uint8_t channel, const float pps) : m_config(config), m_channel(channel), m_pps(pps)
     {
     }
     const uint8_t channel() const
@@ -26,7 +27,7 @@ public:
     }
     const uint64_t duration() const
     {
-        return m_channelDuration;
+        return duration_to_ms(m_channelDuration, m_pps);
     }
     void toScript(std::ofstream &out)
     {
@@ -36,6 +37,12 @@ public:
     {
         BOOST_LOG_TRIVIAL(debug) << "[ChannelAnalyzer #" << std::to_string(m_channel) << " ] " << "got SMF event: status: " << std::to_string(event.message.status)
                                  << " subCmd: " << std::to_string(event.message.subCmd);
+
+        if (!m_noteOn.on)
+        {
+            m_currentPredelay += event.predelay.val;
+        }
+
         if (!m_firstEventSkipDelay)
         {
             m_firstEventSkipDelay = true;
@@ -53,15 +60,6 @@ public:
                                      << "ignore event cahnnel:" << std::to_string(event.event.note.channel);
             return;
         }
-
-        // if (m_notes.size() == 0)
-        // {
-        //     if (event.message.status == MIDI_STATUS_NOTE_OFF)
-        //     {
-        //         BOOST_LOG_TRIVIAL(debug) << "[ChannelAnalyzer #" << std::to_string(m_channel) << " ] " << "ignore event first note off";
-        //         return;
-        //     }
-        // }
 
         if (event.event.note.on)
         {
@@ -82,20 +80,24 @@ public:
                 return;
             }
 
-            float msDuration = duration_to_ms(m_durationAccumulator, m_pps);
+            float noteDuration = duration_to_ms(m_durationAccumulator, m_pps);
+            float preDelay = duration_to_ms(m_currentPredelay, m_pps);
             BOOST_LOG_TRIVIAL(info) << "[ChannelAnalyzer #" << std::to_string(m_channel) << " ] " << "found note: pitch: " << std::to_string(m_noteOn.pitch)
-                                    << " duration: " << std::to_string(msDuration);
-            m_notes.push_back(MikrotikNote(m_noteOn.pitch, msDuration));
+                                    << " duration: " << std::to_string(noteDuration);
+            m_notes.push_back(MikrotikNote(m_config, m_noteOn.pitch, noteDuration, preDelay, duration_to_ms(m_channelDuration, m_pps)));
             m_durationAccumulator = 0;
+            m_currentPredelay = 0;
             m_noteOn = {0};
             return;
         }
     }
 
 private:
+    Config m_config;
     float m_pps = 0.0f;
     uint8_t m_channel = 0;
     bool m_firstEventSkipDelay = false;
+    uint64_t m_currentPredelay = 0;
     uint64_t m_durationAccumulator = 0;
     uint64_t m_channelDuration = 0;
     midi_note_t m_noteOn = {0};
