@@ -6,6 +6,7 @@
 
 #include "boost/log/trivial.hpp"
 
+#include <array>
 #include <vector>
 
 class TrackAnalyzer

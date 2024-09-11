@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 project(midi-to-mikrotik-converter C CXX)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 
 IF(MSVC)
   set(PROJECT_NAME "${PROJECT_NAME}-win")

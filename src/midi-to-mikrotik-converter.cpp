@@ -146,7 +146,8 @@ int main(int argc, char *argv[])
         {
             mtrk_t *track = midi_file_get_track(midiFile, i);
 
-            midi_cmd_t cmd = {.status = MIDI_STATUS_SYSTEM, .subCmd = MIDI_STATUS_SYSTEM_RESET_OR_META};
+            // midi_cmd_t cmd = {.status = MIDI_STATUS_SYSTEM, .subCmd = MIDI_STATUS_SYSTEM_RESET_OR_META};
+            midi_cmd_t cmd = {MIDI_STATUS_SYSTEM_RESET_OR_META, MIDI_STATUS_SYSTEM};
             uint8_t message_meta = MIDI_META_EVENT_TEMPO;
             uint32_t bpmIndex = mtrk_find_event_index(track, 0, cmd, message_meta);
             if (bpmIndex != -1)
