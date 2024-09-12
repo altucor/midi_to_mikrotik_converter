@@ -3,41 +3,44 @@
 #include "mtrk.h"
 
 #include "ChannelAnalyzer.hpp"
+#include "Config.hpp"
 
 #include "boost/log/trivial.hpp"
 
 #include <array>
 #include <vector>
 
-class TrackMetaTextInfo
-{
-public:
-    std::string text;
-    std::string copyright;
-    std::string track;
-    std::string instrument;
-    std::string lyric;
-    std::string marker;
-    std::string cue;
-};
-
 class TrackAnalyzer
 {
 public:
-    TrackAnalyzer(Config &config, mtrk_t *track, const float pps) : m_config(config), m_track(track), m_pps(pps)
+    TrackAnalyzer(Config &config) : m_config(config)
     {
         for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
         {
-            m_channels[i] = ChannelAnalyzer(m_config, i, m_pps);
+            m_channels[i] = ChannelAnalyzer(m_config, i);
         }
     }
-    void analyze()
+    std::vector<MikrotikTrack> getTracks()
     {
-        uint32_t eventsCount = mtrk_get_events_count(m_track);
+        std::vector<MikrotikTrack> outTracks;
+        std::for_each(m_channels.begin(), m_channels.end(), [&](ChannelAnalyzer &ch) {
+            auto tracks = ch.getTracks();
+            outTracks.insert(outTracks.end(), tracks.begin(), tracks.end());
+        });
+
+        return outTracks;
+    }
+    void analyze(mtrk_t *track)
+    {
+        if (track == nullptr)
+        {
+            return;
+        }
+        uint32_t eventsCount = mtrk_get_events_count(track);
         BOOST_LOG_TRIVIAL(info) << "[TrackAnalyzer] available midi events: " << std::to_string(eventsCount);
         for (uint32_t i = 0; i < eventsCount; i++)
         {
-            midi_event_smf_t *event = mtrk_get_event(m_track, i);
+            midi_event_smf_t *event = mtrk_get_event(track, i);
             m_trackDuration += event->predelay.val;
             if (event->message.status == MIDI_STATUS_NOTE_OFF || event->message.status == MIDI_STATUS_NOTE_ON)
             {
@@ -90,6 +93,10 @@ public:
                 }
             }
         }
+        for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
+        {
+            m_channels.at(i).setTrackInfo(m_metaTextInfo);
+        }
     }
     ChannelAnalyzer &getChannel(const uint8_t channel)
     {
@@ -102,7 +109,6 @@ public:
 
 private:
     Config m_config;
-    mtrk_t *m_track = nullptr;
     const float m_pps = 0.0f;
     uint64_t m_trackDuration = 0;
     std::array<ChannelAnalyzer, MIDI_CHANNELS_MAX_COUNT> m_channels;

@@ -37,14 +37,6 @@ static std::string getTimeAsText(const double time)
     return out.str();
 }
 
-static std::string getTrackTimeLength(const double time)
-{
-    std::stringstream out;
-    out << getTimeAsText(time);
-    out << " HH:MM:SS:MS";
-    return out.str();
-}
-
 static std::string getDelayLine(const float duration)
 {
     /*

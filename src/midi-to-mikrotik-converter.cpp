@@ -1,18 +1,17 @@
 
 /*
- +   1) detect note on
- +   2) detect note off
- +   3) detect delay in ms beetwen notes
- +   4) detect tempo
- +   5) detect ppqn
- +   6) add octave shift
- +   7) add note shift
- +   8) add multitrack decoding
- +   9) add BPM change
- +  10) auto detect note channel
- +  11) add flag -c for writing note comments in file
- +  12) detect more note length bytes before 0x90 or 0x80
-+/- 13) detect first/intro delay bytes (works but some times not so good)
+ +   1) detect note on/off
+ +   2) detect delay in ms beetwen notes
+ +   3) detect tempo
+ +   4) detect ppqn
+ +   5) add octave/note/fine shift
+ +   6) add multitrack decoding
+ +   7) add BPM change
+ +   8) add flag -c for writing note comments in file
+ +   9) detect full VLV delays
+ +  10) detect first/pre delay
+ +  11) add logging levels
+ -  12) add boost filesystem processing for files
 */
 
 #include "file.h"
@@ -58,12 +57,8 @@ static void init_log()
 #endif
 }
 
-int main(int argc, char *argv[])
+static int32_t parseArguments(int argc, char *argv[], Config &config)
 {
-    init_log();
-
-    Config config = {0};
-
     po::options_description desc("Application arguments");
     desc.add_options()                                                                                  //
         ("help,h", "Print this help message")                                                           //
@@ -122,6 +117,20 @@ int main(int argc, char *argv[])
         config.outFileName = config.inFileName;
     }
 
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    init_log();
+
+    Config config = {0};
+    int32_t ret = parseArguments(argc, argv, config);
+    if (ret < 0)
+    {
+        return ret;
+    }
+
     std::ifstream midiStream{config.inFileName, midiStream.binary | midiStream.in};
     if (!midiStream.is_open())
     {
@@ -149,7 +158,7 @@ int main(int argc, char *argv[])
     const uint16_t trackCount = midi_file_get_tracks_count(midiFile);
     BOOST_LOG_TRIVIAL(info) << "[mtmc] track count: " << std::to_string(trackCount);
 
-    // If new not set by user input find in one of tracks
+    // If new BPM not set by user input find in one of tracks
     if (config.bpm == 0)
     {
         BOOST_LOG_TRIVIAL(info) << "[mtmc] searching bpm event...";
@@ -171,27 +180,24 @@ int main(int argc, char *argv[])
 
     BOOST_LOG_TRIVIAL(info) << "[mtmc] bpm set to: " << std::to_string(config.bpm);
 
-    std::vector<TrackAnalyzer> trackAnalyzers;
+    std::vector<MikrotikTrack> mikrotikTracks;
+    TrackAnalyzer trackAnalyzer(config);
 
     for (uint16_t i = 0; i < trackCount; i++)
     {
         mtrk_t *track = midi_file_get_track(midiFile, i);
         BOOST_LOG_TRIVIAL(info) << "[mtmc] analyzing track: " << std::to_string(i);
-        trackAnalyzers.push_back(TrackAnalyzer(config, track, pulses_per_second(config.ppqn, config.bpm)));
-        trackAnalyzers.at(i).analyze();
+        trackAnalyzer.analyze(track);
+        auto tracks = trackAnalyzer.getTracks();
+        mikrotikTracks.insert(mikrotikTracks.end(), tracks.begin(), tracks.end());
         BOOST_LOG_TRIVIAL(info) << "[mtmc] analyzing track: " << std::to_string(i) << " done";
     }
 
     midi_file_free(midiFile);
 
-    for (std::size_t i = 0; i < trackAnalyzers.size(); i++)
+    for (std::size_t i = 0; i < mikrotikTracks.size(); i++)
     {
-        for (std::size_t j = 0; j < MIDI_CHANNELS_MAX_COUNT; j++)
-        {
-            auto channel = trackAnalyzers.at(i).getChannel(j);
-            auto mikrotikTrack = MikrotikTrack(config, channel, trackAnalyzers.at(i).getTrackInfo());
-            mikrotikTrack.exportScript();
-        }
+        mikrotikTracks[i].exportScript();
     }
 
     return 0;

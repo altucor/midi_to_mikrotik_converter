@@ -13,7 +13,7 @@
 class MikrotikNote
 {
 public:
-    MikrotikNote(Config &config, const uint8_t pitch, const uint32_t duration, const uint32_t predelay, const uint32_t timeMarker)
+    MikrotikNote(PitchShift &config, const uint8_t pitch, const uint32_t duration, const uint32_t predelay, const uint32_t timeMarker)
         : m_config(config), m_pitch(pitch), m_duration(duration), m_predelay(predelay), m_timeMarker(timeMarker)
     {
     }
@@ -28,51 +28,34 @@ public:
          * :delay 1000ms;
          */
 
-        uint8_t shiftedPitch = m_config.pitchShift.process(m_pitch);
-        float freq = pitch_to_freq(shiftedPitch) + m_config.pitchShift.fine;
+        uint8_t shiftedPitch = m_config.process(m_pitch);
+        float freq = pitch_to_freq(shiftedPitch) + m_config.fine;
 
         std::stringstream ss;
         ss << ":beep frequency=" << std::to_string(freq);
         ss << " length=" << m_duration << "ms;";
 
-        if (m_config.comments)
-        {
-            ss << " # " << std::string(pitch_to_name(shiftedPitch));
-            if (m_config.pitchShift.fine != 0.0f)
-            {
-                ss << std::string(" ");
-                ss << ((m_config.pitchShift.fine < 0.0f) ? "-" : "+");
-                ss << m_config.pitchShift.fine;
-                ss << std::string(" Hz");
-            }
-            ss << " @ " << Utils::getTimeAsText(m_timeMarker);
-        }
-        ss << "\n";
-
         return ss.str();
     }
-    std::string toStringWithDelay() const
+    uint8_t pitch() const
     {
-        std::string out;
-        if (m_predelay != 0)
-        {
-            out += Utils::getDelayLine(m_predelay);
-        }
-        out += toString();
-        out += Utils::getDelayLine(m_duration) + "\n";
-        return out;
+        return m_pitch;
     }
-    void toStringWithDelay(std::ofstream &out)
+    uint8_t pitchShifted() const
     {
-        out << toStringWithDelay();
+        return m_config.process(m_pitch);
     }
     uint32_t duration() const
     {
         return m_duration;
     }
+    uint32_t preDelay() const
+    {
+        return m_predelay;
+    }
 
 private:
-    Config m_config;
+    PitchShift m_config;
     uint8_t m_pitch = 0;
     uint32_t m_duration = 0;
     uint32_t m_predelay = 0;

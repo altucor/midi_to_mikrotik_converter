@@ -1,10 +1,7 @@
 #pragma once
 
-#include "mtrk.h"
-
-#include "ChannelAnalyzer.hpp"
 #include "Config.hpp"
-#include "TrackAnalyzer.hpp"
+#include "MikrotikNote.hpp"
 #include "Utils.hpp"
 
 #include "boost/log/trivial.hpp"
@@ -14,12 +11,64 @@
 #include <sstream>
 #include <vector>
 
+class TrackMetaTextInfo
+{
+public:
+    std::string text;
+    std::string copyright;
+    std::string track;
+    std::string instrument;
+    std::string lyric;
+    std::string marker;
+    std::string cue;
+};
+
+static std::string getTrackTimeLength(const double time)
+{
+    std::stringstream out;
+    out << Utils::getTimeAsText(time);
+    out << " HH:MM:SS:MS";
+    return out.str();
+}
+
 class MikrotikTrack
 {
 public:
-    MikrotikTrack(Config &config, ChannelAnalyzer &analyzer, const TrackMetaTextInfo &metaTextInfo)
-        : m_config(config), m_analyzer(analyzer), m_metaTextInfo(metaTextInfo)
+    MikrotikTrack(Config &config) : m_config(config)
     {
+    }
+    const std::size_t notesCount()
+    {
+        return m_notes.size();
+    }
+    void append(const MikrotikNote &note)
+    {
+        m_notes.push_back(note);
+    }
+    void setTrackInfo(TrackMetaTextInfo &info)
+    {
+        m_metaTextInfo = info;
+    }
+    float duration()
+    {
+        float duration = 0.0f;
+        std::for_each(m_notes.begin(), m_notes.end(), [&](MikrotikNote &note) {
+            duration += note.preDelay();
+            duration += note.duration();
+        });
+        return duration;
+    }
+    void noteComment(const MikrotikNote &note, std::ofstream &out)
+    {
+        out << " # " << std::string(pitch_to_name(note.pitchShifted()));
+        if (m_config.pitchShift.fine != 0.0f)
+        {
+            out << std::string(" ");
+            out << ((m_config.pitchShift.fine < 0.0f) ? "-" : "+");
+            out << m_config.pitchShift.fine;
+            out << std::string(" Hz");
+        }
+        // out << " @ " << Utils::getTimeAsText(m_timeMarker);
     }
     void getScriptHeader(std::ofstream &out)
     {
@@ -31,9 +80,9 @@ public:
         out << "\n";
         out << "# Original midi file name/path: " << m_config.inFileName << "\n";
         out << "# Track BPM: " << std::to_string(m_config.bpm) << "\n";
-        out << "# MIDI Channel: " << std::to_string(m_analyzer.channel()) << "\n";
-        out << "# Number of notes: " << m_analyzer.notesCount() << "\n";
-        out << "# Track length: " << Utils::getTrackTimeLength(m_analyzer.duration()) << "\n";
+        // out << "# MIDI Channel: " << std::to_string(m_analyzer.channel()) << "\n";
+        out << "# Number of notes: " << notesCount() << "\n";
+        out << "# Track length: " << getTrackTimeLength(duration()) << "\n";
         out << "# Track name: " << m_metaTextInfo.track << "\n";
         out << "# Instrument name: " << m_metaTextInfo.instrument << "\n";
         out << "# Track text: " << m_metaTextInfo.text << "\n";
@@ -51,18 +100,18 @@ public:
          * later_bitches-3xOsc-1-0.txt
          */
 
-        if (m_analyzer.notesCount() == 0)
+        if (notesCount() == 0)
         {
             return 0;
         }
 
         std::string outFileName(m_config.outFileName);
         outFileName += "-";
-        // outFileName += m_track.getName();
+        outFileName += m_metaTextInfo.track;
         outFileName += "-";
         // outFileName += std::to_string(track_index);
         outFileName += "-";
-        outFileName += std::to_string(m_analyzer.channel());
+        // outFileName += std::to_string(m_analyzer.channel());
         outFileName += ".txt";
 
         std::ofstream outputFile;
@@ -75,14 +124,28 @@ public:
 
         // BOOST_LOG_TRIVIAL(info) << "[MikrotikTrack] export started for track: " << m_index << " channel: " << (uint32_t)channel;
         getScriptHeader(outputFile);
-        m_analyzer.toScript(outputFile);
+        // m_analyzer.toScript(outputFile);
+
+        std::for_each(m_notes.begin(), m_notes.end(), [&](MikrotikNote &note) {
+            if (note.preDelay() != 0)
+            {
+                outputFile << Utils::getDelayLine(note.preDelay());
+            }
+            outputFile << note.toString();
+            if (m_config.comments)
+            {
+                noteComment(note, outputFile);
+            }
+            outputFile << "\n";
+            outputFile << Utils::getDelayLine(note.duration());
+        });
 
         BOOST_LOG_TRIVIAL(info) << "[MikrotikTrack] export finished";
         return 0;
     }
 
 private:
-    Config &m_config;
-    ChannelAnalyzer m_analyzer;
+    Config m_config;
     TrackMetaTextInfo m_metaTextInfo;
+    std::vector<MikrotikNote> m_notes;
 };
