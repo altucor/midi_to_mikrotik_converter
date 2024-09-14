@@ -50,18 +50,32 @@ public:
         auto it = std::find_if(begin(m_pitch), end(m_pitch), [&](const SequenceEvent &event) { return event == SequenceEvent::NOTE_ON; });
         return it != std::end(m_pitch);
     }
+    bool hasEvents() const
+    {
+        auto it = std::find_if(begin(m_pitch), end(m_pitch), [&](const SequenceEvent &event) { return event != SequenceEvent::NONE; });
+        return it != std::end(m_pitch);
+    }
     uint32_t getTimeDifferenceFromBigger(const TimeMarker &other) const
     {
         return other.time() - time();
     }
-    bool overlapsWith(const TimeMarker &other) const
+    bool noteOnOverlapsWith(const TimeMarker &other) const
     {
         return hasNoteOn() && other.hasNoteOn();
+    }
+    bool overlapsWith(const TimeMarker &other) const
+    {
+        return hasEvents() && other.hasEvents();
     }
     void updateState(const TimeMarker &other)
     {
         for (uint8_t i = 0; i < kPitchMax; i++)
         {
+            if (m_pitch.at(i) == SequenceEvent::NOTE_OFF)
+            {
+                m_pitch.at(i) = SequenceEvent::NONE;
+            }
+
             if (other.m_pitch.at(i) != SequenceEvent::NONE)
             {
                 // if (m_pitch.at(i) == SequenceEvent::NONE)
@@ -71,9 +85,9 @@ public:
             }
         }
     }
-    bool hasMultipleEvents() const
+    uint32_t eventsCount() const
     {
-        uint8_t count = 0;
+        uint32_t count = 0;
         std::for_each(m_pitch.begin(), m_pitch.end(), [&](const SequenceEvent &event) {
             if (event == SequenceEvent::NOTE_ON || event == SequenceEvent::NOTE_OFF)
             {
@@ -135,11 +149,14 @@ public:
         BOOST_LOG_TRIVIAL(info) << "[Sequence ch#" << std::to_string(m_channel) << "] analysis started";
         TimeMarker currentTimeMarker(0);
         std::for_each(m_timeMarkers.begin(), m_timeMarkers.end(), [&](TimeMarker &marker) {
-            if (currentTimeMarker.overlapsWith(marker))
+            // if (currentTimeMarker.noteOnOverlapsWith(marker))
+            // if (currentTimeMarker.overlapsWith(marker))
+            currentTimeMarker.updateState(marker);
+            if (currentTimeMarker.eventsCount() > 1)
             {
                 BOOST_LOG_TRIVIAL(info) << "[Sequence ch#" << std::to_string(m_channel) << "] found overlapped notes at: " << std::to_string(marker.time());
             }
-            currentTimeMarker.updateState(marker);
+
             // currentTimeMarker.dumpEvents();
         });
     }
