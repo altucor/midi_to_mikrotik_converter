@@ -60,11 +60,9 @@ static void init_log()
 static int32_t parseArguments(int argc, char *argv[], Config &config)
 {
     po::options_description desc("Application arguments");
-    desc.add_options()                                                                                  //
-        ("help,h", "Print this help message")                                                           //
-        ("file,f", po::value<std::string>(&config.inFileName), "Select input standart midi file (SMF)") //
-        ("output-file,g", po::value<std::string>(&config.outFileName),
-         "Specify output file name. If not set than output will be saved in file with same name as input but with additional suffix")   //
+    desc.add_options()                                                                                                                  //
+        ("help,h", "Print this help message")                                                                                           //
+        ("file,f", po::value<std::string>(&config.inFileName), "Select input standart midi file (SMF)")                                 //
         ("octave-shift,o", po::value<int8_t>(&config.pitchShift.octave), "Sets the octave shift relative to the original (-10 to +10)") //
         ("note-shift,n", po::value<int8_t>(&config.pitchShift.note), "Sets the note shift relative to the original")                    //
         ("fine-tuning,t", po::value<float>(&config.pitchShift.fine),
@@ -110,11 +108,6 @@ static int32_t parseArguments(int argc, char *argv[], Config &config)
         BOOST_LOG_TRIVIAL(error) << "[mtmc] no input (SMF) file specified";
         std::cout << desc << std::endl;
         return -1;
-    }
-
-    if (config.outFileName == "")
-    {
-        config.outFileName = config.inFileName;
     }
 
     return 0;
@@ -181,10 +174,10 @@ int main(int argc, char *argv[])
     BOOST_LOG_TRIVIAL(info) << "[mtmc] bpm set to: " << std::to_string(config.bpm);
 
     std::vector<MikrotikTrack> mikrotikTracks;
-    TrackAnalyzer trackAnalyzer(config);
 
     for (uint16_t i = 0; i < trackCount; i++)
     {
+        TrackAnalyzer trackAnalyzer(config, i);
         mtrk_t *track = midi_file_get_track(midiFile, i);
         BOOST_LOG_TRIVIAL(info) << "[mtmc] analyzing track: " << std::to_string(i);
         trackAnalyzer.analyze(track);

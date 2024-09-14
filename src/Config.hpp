@@ -1,5 +1,7 @@
 #pragma once
 
+#include "util.h"
+
 #include "boost/log/trivial.hpp"
 
 #include <fstream>
@@ -14,6 +16,10 @@ public:
     uint8_t process(const uint8_t pitch) const
     {
         return pitch + (octave * MIDI_NOTES_IN_OCTAVE) + note;
+    }
+    float freq(const uint8_t pitch) const
+    {
+        return pitch_to_freq(pitch + (octave * MIDI_NOTES_IN_OCTAVE) + note) + fine;
     }
     void toStream(std::ofstream &out)
     {
@@ -33,5 +39,4 @@ public:
     uint64_t track_index = 0;
     PitchShift pitchShift = {0};
     std::string inFileName = "";
-    std::string outFileName = "";
 };

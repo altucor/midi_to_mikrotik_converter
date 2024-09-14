@@ -17,13 +17,28 @@ public:
     ChannelAnalyzer()
     {
     }
-    ChannelAnalyzer(Config &config, const uint8_t channel) : m_config(config), m_channel(channel)
+    ChannelAnalyzer(Config &config, const std::size_t trackIndex, const uint8_t channel) : m_config(config), m_trackIndex(trackIndex), m_channel(channel)
     {
         m_pps = pulses_per_second(config.ppqn, config.bpm);
+        m_tracks.push_back(MikrotikTrack(config, m_channel));
     }
     void setTrackInfo(TrackMetaTextInfo &info)
     {
-        std::for_each(m_tracks.begin(), m_tracks.end(), [&](MikrotikTrack &track) { track.setTrackInfo(info); });
+        /*
+         * later_bitches.mid
+         * later_bitches-3xOsc-1-0.txt
+         */
+        std::string fileName = m_config.inFileName + "-" + info.track + "-" + std::to_string(m_trackIndex) + "-" + std::to_string(m_channel);
+        for (std::size_t i = 0; i < m_tracks.size(); i++)
+        {
+            m_tracks.at(i).setTrackInfo(info);
+            if (i > 0)
+            {
+                // overlaped notes track
+                fileName += "-overlaped-" + std::to_string(i);
+            }
+            m_tracks.at(i).setFileName(fileName + ".txt");
+        }
     }
     std::vector<MikrotikTrack> getTracks()
     {
@@ -33,18 +48,6 @@ public:
     {
         return m_channel;
     }
-    // const std::size_t notesCount() const
-    // {
-    //     return m_notes.size();
-    // }
-    // const uint64_t duration() const
-    // {
-    //     return duration_to_ms(m_channelDuration, m_pps);
-    // }
-    // void toScript(std::ofstream &out)
-    // {
-    //     std::for_each(m_notes.begin(), m_notes.end(), [&](MikrotikNote &note) { note.toStringWithDelay(out); });
-    // }
     void addEvent(midi_event_smf_t event)
     {
         BOOST_LOG_TRIVIAL(debug) << "[ChannelAnalyzer #" << std::to_string(m_channel) << " ] " << "got SMF event: status: " << std::to_string(event.message.status)
@@ -77,6 +80,7 @@ public:
         {
             if (m_noteOn.pitch != 0)
             {
+                // m_currentTrackIndex++;
                 BOOST_LOG_TRIVIAL(debug) << "[ChannelAnalyzer #" << std::to_string(m_channel) << " ] " << "ignore event overlay, double on";
                 return;
             }
@@ -96,7 +100,7 @@ public:
             float preDelay = duration_to_ms(m_currentPredelay, m_pps);
             BOOST_LOG_TRIVIAL(info) << "[ChannelAnalyzer #" << std::to_string(m_channel) << " ] " << "found note: pitch: " << std::to_string(m_noteOn.pitch)
                                     << " duration: " << std::to_string(noteDuration);
-            m_tracks[0].append(MikrotikNote(m_config.pitchShift, m_noteOn.pitch, noteDuration, preDelay, duration_to_ms(m_channelDuration, m_pps)));
+            m_tracks[m_currentTrackIndex].append(MikrotikNote(m_noteOn.pitch, noteDuration, preDelay));
             m_durationAccumulator = 0;
             m_currentPredelay = 0;
             m_noteOn = {0};
@@ -106,12 +110,14 @@ public:
 
 private:
     Config m_config;
-    float m_pps = 0.0f;
+    std::size_t m_trackIndex = 0;
     uint8_t m_channel = 0;
+    float m_pps = 0.0f;
     bool m_firstEventSkipDelay = false;
     uint64_t m_currentPredelay = 0;
     uint64_t m_durationAccumulator = 0;
     uint64_t m_channelDuration = 0;
     midi_note_t m_noteOn = {0};
+    std::size_t m_currentTrackIndex = 0;
     std::vector<MikrotikTrack> m_tracks;
 };

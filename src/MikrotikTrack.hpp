@@ -34,33 +34,38 @@ static std::string getTrackTimeLength(const double time)
 class MikrotikTrack
 {
 public:
-    MikrotikTrack(Config &config) : m_config(config)
+    MikrotikTrack(Config &config, const std::size_t midiChannel) : m_config(config), m_midiChannel(midiChannel)
     {
     }
-    const std::size_t notesCount()
-    {
-        return m_notes.size();
-    }
+
     void append(const MikrotikNote &note)
     {
         m_notes.push_back(note);
     }
+
+    void setFileName(const std::string name)
+    {
+        m_outFileName = name;
+    }
+
     void setTrackInfo(TrackMetaTextInfo &info)
     {
         m_metaTextInfo = info;
     }
-    float duration()
+
+    float duration() const
     {
         float duration = 0.0f;
-        std::for_each(m_notes.begin(), m_notes.end(), [&](MikrotikNote &note) {
+        std::for_each(m_notes.begin(), m_notes.end(), [&](const MikrotikNote &note) {
             duration += note.preDelay();
             duration += note.duration();
         });
         return duration;
     }
+
     void noteComment(const MikrotikNote &note, std::ofstream &out)
     {
-        out << " # " << std::string(pitch_to_name(note.pitchShifted()));
+        out << " # " << std::string(pitch_to_name(m_config.pitchShift.process(note.pitch())));
         if (m_config.pitchShift.fine != 0.0f)
         {
             out << std::string(" ");
@@ -68,8 +73,9 @@ public:
             out << m_config.pitchShift.fine;
             out << std::string(" Hz");
         }
-        // out << " @ " << Utils::getTimeAsText(m_timeMarker);
+        out << " @ " << Utils::getTimeAsText(m_timeElapsed);
     }
+
     void getScriptHeader(std::ofstream &out)
     {
         out << "#----------------File Description-----------------#\n";
@@ -80,8 +86,8 @@ public:
         out << "\n";
         out << "# Original midi file name/path: " << m_config.inFileName << "\n";
         out << "# Track BPM: " << std::to_string(m_config.bpm) << "\n";
-        // out << "# MIDI Channel: " << std::to_string(m_analyzer.channel()) << "\n";
-        out << "# Number of notes: " << notesCount() << "\n";
+        out << "# MIDI Channel: " << std::to_string(m_midiChannel) << "\n";
+        out << "# Number of notes: " << m_notes.size() << "\n";
         out << "# Track length: " << getTrackTimeLength(duration()) << "\n";
         out << "# Track name: " << m_metaTextInfo.track << "\n";
         out << "# Instrument name: " << m_metaTextInfo.instrument << "\n";
@@ -95,49 +101,37 @@ public:
 
     int exportScript()
     {
-        /*
-         * later_bitches.mid
-         * later_bitches-3xOsc-1-0.txt
-         */
-
-        if (notesCount() == 0)
+        if (m_notes.size() == 0)
         {
             return 0;
         }
 
-        std::string outFileName(m_config.outFileName);
-        outFileName += "-";
-        outFileName += m_metaTextInfo.track;
-        outFileName += "-";
-        // outFileName += std::to_string(track_index);
-        outFileName += "-";
-        // outFileName += std::to_string(m_analyzer.channel());
-        outFileName += ".txt";
-
         std::ofstream outputFile;
-        outputFile.open(outFileName);
+        outputFile.open(m_outFileName);
         if (!outputFile.is_open())
         {
-            BOOST_LOG_TRIVIAL(info) << "[MikrotikTrack] export failed cannot create output file: " << outFileName;
+            BOOST_LOG_TRIVIAL(info) << "[MikrotikTrack] export failed cannot create output file: " << m_outFileName;
             return -1;
         }
 
-        // BOOST_LOG_TRIVIAL(info) << "[MikrotikTrack] export started for track: " << m_index << " channel: " << (uint32_t)channel;
+        BOOST_LOG_TRIVIAL(info) << "[MikrotikTrack] export started for track: " << m_outFileName;
         getScriptHeader(outputFile);
-        // m_analyzer.toScript(outputFile);
 
         std::for_each(m_notes.begin(), m_notes.end(), [&](MikrotikNote &note) {
             if (note.preDelay() != 0)
             {
-                outputFile << Utils::getDelayLine(note.preDelay());
+                m_timeElapsed += note.preDelay();
+                outputFile << note.preDelayLine();
             }
-            outputFile << note.toString();
+            outputFile << note.beepLine(m_config.pitchShift);
             if (m_config.comments)
             {
                 noteComment(note, outputFile);
             }
             outputFile << "\n";
-            outputFile << Utils::getDelayLine(note.duration());
+            outputFile << note.delayLine();
+            outputFile << "\n";
+            m_timeElapsed += note.duration();
         });
 
         BOOST_LOG_TRIVIAL(info) << "[MikrotikTrack] export finished";
@@ -146,6 +140,9 @@ public:
 
 private:
     Config m_config;
+    std::size_t m_midiChannel = 0;
+    std::string m_outFileName = "";
     TrackMetaTextInfo m_metaTextInfo;
     std::vector<MikrotikNote> m_notes;
+    std::size_t m_timeElapsed = 0;
 };

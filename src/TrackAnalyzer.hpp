@@ -13,11 +13,11 @@
 class TrackAnalyzer
 {
 public:
-    TrackAnalyzer(Config &config) : m_config(config)
+    TrackAnalyzer(Config &config, const std::size_t trackIndex) : m_config(config), m_trackIndex(trackIndex)
     {
         for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
         {
-            m_channels[i] = ChannelAnalyzer(m_config, i);
+            m_channels[i] = ChannelAnalyzer(m_config, m_trackIndex, i);
         }
     }
     std::vector<MikrotikTrack> getTracks()
@@ -109,6 +109,7 @@ public:
 
 private:
     Config m_config;
+    std::size_t m_trackIndex = 0;
     const float m_pps = 0.0f;
     uint64_t m_trackDuration = 0;
     std::array<ChannelAnalyzer, MIDI_CHANNELS_MAX_COUNT> m_channels;
