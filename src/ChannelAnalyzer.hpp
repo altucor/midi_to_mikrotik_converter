@@ -4,6 +4,7 @@
 
 #include "Config.hpp"
 #include "MikrotikTrack.hpp"
+#include "Sequence.hpp"
 
 #include "boost/log/trivial.hpp"
 
@@ -21,9 +22,11 @@ public:
     {
         m_pps = pulses_per_second(config.ppqn, config.bpm);
         m_tracks.push_back(MikrotikTrack(config, m_channel));
+        m_sequence = Sequence(m_channel);
     }
     void setTrackInfo(TrackMetaTextInfo &info)
     {
+        m_sequence.analyze();
         /*
          * later_bitches.mid
          * later_bitches-3xOsc-1-0.txt
@@ -76,6 +79,8 @@ public:
             return;
         }
 
+        m_sequence.appenMidiNoteEvent(event.event.note.on, event.event.note.pitch, m_channelDuration);
+
         if (event.event.note.on)
         {
             if (m_noteOn.pitch != 0)
@@ -98,8 +103,8 @@ public:
 
             float noteDuration = duration_to_ms(m_durationAccumulator, m_pps);
             float preDelay = duration_to_ms(m_currentPredelay, m_pps);
-            BOOST_LOG_TRIVIAL(info) << "[ChannelAnalyzer #" << std::to_string(m_channel) << " ] " << "found note: pitch: " << std::to_string(m_noteOn.pitch)
-                                    << " duration: " << std::to_string(noteDuration);
+            // BOOST_LOG_TRIVIAL(info) << "[ChannelAnalyzer #" << std::to_string(m_channel) << " ] " << "found note: pitch: " << std::to_string(m_noteOn.pitch)
+            //                         << " duration: " << std::to_string(noteDuration);
             m_tracks[m_currentTrackIndex].append(MikrotikNote(m_noteOn.pitch, noteDuration, preDelay));
             m_durationAccumulator = 0;
             m_currentPredelay = 0;
@@ -120,4 +125,5 @@ private:
     midi_note_t m_noteOn = {0};
     std::size_t m_currentTrackIndex = 0;
     std::vector<MikrotikTrack> m_tracks;
+    Sequence m_sequence = {};
 };

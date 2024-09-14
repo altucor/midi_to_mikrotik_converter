@@ -90,6 +90,12 @@ public:
                 else
                 {
                     BOOST_LOG_TRIVIAL(info) << "[TrackAnalyzer] found system event: " << Utils::toHex(event->message_meta, 1);
+                    switch (event->message_meta)
+                    {
+                    case MIDI_META_EVENT_TRACK_END:
+                        BOOST_LOG_TRIVIAL(info) << "[TrackAnalyzer] system event END OF TRACK";
+                        break;
+                    }
                 }
             }
         }

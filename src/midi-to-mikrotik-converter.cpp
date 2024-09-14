@@ -188,10 +188,10 @@ int main(int argc, char *argv[])
 
     midi_file_free(midiFile);
 
-    for (std::size_t i = 0; i < mikrotikTracks.size(); i++)
-    {
-        mikrotikTracks[i].exportScript();
-    }
+    // for (std::size_t i = 0; i < mikrotikTracks.size(); i++)
+    // {
+    //     mikrotikTracks[i].exportScript();
+    // }
 
     return 0;
 }
