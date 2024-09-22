@@ -2,7 +2,8 @@
 
 #include "mtrk.h"
 
-#include "ChannelAnalyzer.hpp"
+#include "Sequence.hpp"
+// #include "ChannelAnalyzer.hpp"
 #include "Config.hpp"
 
 #include "boost/log/trivial.hpp"
@@ -17,16 +18,16 @@ public:
     {
         for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
         {
-            m_channels[i] = ChannelAnalyzer(m_config, m_trackIndex, i);
+            m_sequences[i] = Sequence(i);
         }
     }
     std::vector<MikrotikTrack> getTracks()
     {
         std::vector<MikrotikTrack> outTracks;
-        std::for_each(m_channels.begin(), m_channels.end(), [&](ChannelAnalyzer &ch) {
-            auto tracks = ch.getTracks();
-            outTracks.insert(outTracks.end(), tracks.begin(), tracks.end());
-        });
+        // std::for_each(m_channels.begin(), m_channels.end(), [&](ChannelAnalyzer &ch) {
+        //     auto tracks = ch.getTracks();
+        //     outTracks.insert(outTracks.end(), tracks.begin(), tracks.end());
+        // });
 
         return outTracks;
     }
@@ -44,10 +45,8 @@ public:
             m_trackDuration += event->predelay.val;
             if (event->message.status == MIDI_STATUS_NOTE_OFF || event->message.status == MIDI_STATUS_NOTE_ON)
             {
-                for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
-                {
-                    m_channels.at(i).addEvent(*event);
-                }
+                midi_note_t note = event->event.note;
+                m_sequences.at(note.channel).appenMidiNoteEvent(note.on, note.pitch, m_trackDuration);
             }
             else if (event->message.status == MIDI_STATUS_SYSTEM)
             {
@@ -101,16 +100,9 @@ public:
         }
         for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
         {
-            m_channels.at(i).setTrackInfo(m_metaTextInfo);
+            // m_sequences.at(i).setTrackInfo(m_metaTextInfo);
+            m_sequences.at(i).analyze();
         }
-    }
-    ChannelAnalyzer &getChannel(const uint8_t channel)
-    {
-        return m_channels.at(channel);
-    }
-    const TrackMetaTextInfo &getTrackInfo()
-    {
-        return m_metaTextInfo;
     }
 
 private:
@@ -118,6 +110,6 @@ private:
     std::size_t m_trackIndex = 0;
     const float m_pps = 0.0f;
     uint64_t m_trackDuration = 0;
-    std::array<ChannelAnalyzer, MIDI_CHANNELS_MAX_COUNT> m_channels;
+    std::array<Sequence, MIDI_CHANNELS_MAX_COUNT> m_sequences;
     TrackMetaTextInfo m_metaTextInfo;
 };

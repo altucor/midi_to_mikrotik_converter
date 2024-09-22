@@ -28,6 +28,10 @@ public:
     {
         return m_timeMarker;
     }
+    SequenceEvent pitch(const uint8_t pitch) const
+    {
+        return m_pitch.at(pitch);
+    }
     void dumpEvents() const
     {
         std::stringstream ss;
@@ -40,10 +44,6 @@ public:
             }
         }
         BOOST_LOG_TRIVIAL(info) << "[TimeMarker] enabled events: " << ss.str();
-    }
-    bool hasNoteOffAt(const uint8_t pitch) const
-    {
-        return m_pitch.at(pitch) == SequenceEvent::NOTE_OFF;
     }
     bool hasNoteOn() const
     {
@@ -59,35 +59,9 @@ public:
     {
         return other.time() - time();
     }
-    bool noteOnOverlapsWith(const TimeMarker &other) const
+    std::size_t eventsCount() const
     {
-        return hasNoteOn() && other.hasNoteOn();
-    }
-    bool overlapsWith(const TimeMarker &other) const
-    {
-        return hasEvents() && other.hasEvents();
-    }
-    void updateState(const TimeMarker &other)
-    {
-        for (uint8_t i = 0; i < kPitchMax; i++)
-        {
-            if (m_pitch.at(i) == SequenceEvent::NOTE_OFF)
-            {
-                m_pitch.at(i) = SequenceEvent::NONE;
-            }
-
-            if (other.m_pitch.at(i) != SequenceEvent::NONE)
-            {
-                // if (m_pitch.at(i) == SequenceEvent::NONE)
-                // {
-                m_pitch.at(i) = other.m_pitch.at(i);
-                // }
-            }
-        }
-    }
-    uint32_t eventsCount() const
-    {
-        uint32_t count = 0;
+        std::size_t count = 0;
         std::for_each(m_pitch.begin(), m_pitch.end(), [&](const SequenceEvent &event) {
             if (event == SequenceEvent::NOTE_ON || event == SequenceEvent::NOTE_OFF)
             {
@@ -110,6 +84,45 @@ private:
     uint32_t m_timeMarker = 0;
 };
 
+enum class PitchStateValue
+{
+    NOTE_DISABLED,
+    NOTE_ENABLED
+};
+
+class PitchState
+{
+public:
+    void updateState(TimeMarker &marker)
+    {
+        for (uint8_t i = 0; i < kPitchMax; i++)
+        {
+            if (marker.pitch(i) == SequenceEvent::NOTE_ON)
+            {
+                m_pitch.at(i) = PitchStateValue::NOTE_ENABLED;
+            }
+            else if (marker.pitch(i) == SequenceEvent::NOTE_OFF)
+            {
+                m_pitch.at(i) = PitchStateValue::NOTE_DISABLED;
+            }
+        }
+    }
+    std::size_t enabledNotes()
+    {
+        std::size_t count = 0;
+        std::for_each(m_pitch.begin(), m_pitch.end(), [&](const PitchStateValue &val) {
+            if (val == PitchStateValue::NOTE_ENABLED)
+            {
+                count++;
+            }
+        });
+        return count;
+    }
+
+private:
+    std::array<PitchStateValue, kPitchMax> m_pitch = {PitchStateValue::NOTE_DISABLED};
+};
+
 class Sequence
 {
 public:
@@ -119,10 +132,13 @@ public:
     Sequence(const uint8_t channel) : m_channel(channel)
     {
     }
+    const std::string prefix() const
+    {
+        return "[Sequence ch#" + std::to_string(m_channel) + "] ";
+    }
     void appenMidiNoteEvent(const bool on, const uint8_t pitch, const uint32_t time)
     {
-        BOOST_LOG_TRIVIAL(info) << "[Sequence ch#" << std::to_string(m_channel) << "] event add: " << (on ? " ON" : "OFF") << " pitch: " << std::to_string(pitch)
-                                << " time: " << std::to_string(time);
+        BOOST_LOG_TRIVIAL(debug) << prefix() << "event add: " << (on ? " ON" : "OFF") << " pitch: " << std::to_string(pitch) << " time: " << std::to_string(time);
         if (auto it = std::find_if(begin(m_timeMarkers), end(m_timeMarkers), [&](TimeMarker &marker) { return marker.timeEquals(time); });
             it != std::end(m_timeMarkers))
         {
@@ -134,31 +150,41 @@ public:
             m_timeMarkers.back().setNote(on, pitch);
         }
     }
-    uint32_t findNoteOffEventFor(const uint8_t pitch, const uint32_t startTime = 0) const
-    {
-        if (auto it = std::find_if(begin(m_timeMarkers), end(m_timeMarkers),
-                                   [&](const TimeMarker &marker) { return marker.time() >= startTime && marker.hasNoteOffAt(pitch); });
-            it != std::end(m_timeMarkers))
-        {
-            return it->time();
-        }
-        return 0;
-    }
     void analyze()
     {
-        BOOST_LOG_TRIVIAL(info) << "[Sequence ch#" << std::to_string(m_channel) << "] analysis started";
-        TimeMarker currentTimeMarker(0);
+        std::vector<MikrotikTrack> mikrotikTracks;
+        mikrotikTracks.push_back(MikrotikTrack());
+        BOOST_LOG_TRIVIAL(info) << prefix() << "analysis started, total time markers: " << std::to_string(m_timeMarkers.size());
+        PitchState currentPitchState;
         std::for_each(m_timeMarkers.begin(), m_timeMarkers.end(), [&](TimeMarker &marker) {
-            // if (currentTimeMarker.noteOnOverlapsWith(marker))
-            // if (currentTimeMarker.overlapsWith(marker))
-            currentTimeMarker.updateState(marker);
-            if (currentTimeMarker.eventsCount() > 1)
+            /*
+             * In general there can be cases like this:
+             * 1) TimeMarker have more than 1 event
+             * 2) PitchState before update can have already several notes enabled
+             * 3) PitchState after update can have several notes enabled
+             */
+            if (marker.eventsCount() > 1)
             {
-                BOOST_LOG_TRIVIAL(info) << "[Sequence ch#" << std::to_string(m_channel) << "] found overlapped notes at: " << std::to_string(marker.time());
+                // also do something
+            }
+            currentPitchState.updateState(marker);
+            if (currentPitchState.enabledNotes() > mikrotikTracks.size())
+            {
+                std::size_t diff = currentPitchState.enabledNotes() - mikrotikTracks.size();
+                BOOST_LOG_TRIVIAL(info) << prefix() << "found overlapped notes at: " << std::to_string(marker.time()) << " requires " << std::to_string(diff)
+                                        << " additional tracks";
+                for (std::size_t i = 0; i < diff; i++)
+                {
+                    mikrotikTracks.push_back(MikrotikTrack());
+                }
             }
 
             // currentTimeMarker.dumpEvents();
         });
+        if (mikrotikTracks.size() > 0 && m_timeMarkers.size() > 0)
+        {
+            BOOST_LOG_TRIVIAL(info) << prefix() << "total tracks used: " << std::to_string(mikrotikTracks.size());
+        }
     }
 
 private:

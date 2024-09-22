@@ -34,6 +34,10 @@ static std::string getTrackTimeLength(const double time)
 class MikrotikTrack
 {
 public:
+    MikrotikTrack()
+    {
+    }
+
     MikrotikTrack(Config &config, const std::size_t midiChannel) : m_config(config), m_midiChannel(midiChannel)
     {
     }
