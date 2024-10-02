@@ -180,8 +180,7 @@ int main(int argc, char *argv[])
         TrackAnalyzer trackAnalyzer(config, i);
         mtrk_t *track = midi_file_get_track(midiFile, i);
         BOOST_LOG_TRIVIAL(info) << "[mtmc] analyzing track: " << std::to_string(i);
-        trackAnalyzer.analyze(track);
-        auto tracks = trackAnalyzer.getTracks();
+        auto tracks = trackAnalyzer.analyze(track);
         mikrotikTracks.insert(mikrotikTracks.end(), tracks.begin(), tracks.end());
         BOOST_LOG_TRIVIAL(info) << "[mtmc] analyzing track: " << std::to_string(i) << " done";
     }
@@ -192,6 +191,9 @@ int main(int argc, char *argv[])
     // {
     //     mikrotikTracks[i].exportScript();
     // }
+
+    BOOST_LOG_TRIVIAL(info) << "[mtmc] FILE name in: " << config.inFileName;
+    std::for_each(mikrotikTracks.begin(), mikrotikTracks.end(), [&](MikrotikTrack &track) { track.exportScript(config); });
 
     return 0;
 }

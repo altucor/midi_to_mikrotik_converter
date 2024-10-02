@@ -18,24 +18,14 @@ public:
     {
         for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
         {
-            m_sequences[i] = Sequence(i);
+            m_sequences[i] = Sequence(m_trackIndex, i);
         }
     }
-    std::vector<MikrotikTrack> getTracks()
-    {
-        std::vector<MikrotikTrack> outTracks;
-        // std::for_each(m_channels.begin(), m_channels.end(), [&](ChannelAnalyzer &ch) {
-        //     auto tracks = ch.getTracks();
-        //     outTracks.insert(outTracks.end(), tracks.begin(), tracks.end());
-        // });
-
-        return outTracks;
-    }
-    void analyze(mtrk_t *track)
+    std::vector<MikrotikTrack> analyze(mtrk_t *track)
     {
         if (track == nullptr)
         {
-            return;
+            return std::vector<MikrotikTrack>();
         }
         uint32_t eventsCount = mtrk_get_events_count(track);
         BOOST_LOG_TRIVIAL(info) << "[TrackAnalyzer] available midi events: " << std::to_string(eventsCount);
@@ -98,11 +88,19 @@ public:
                 }
             }
         }
-        for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
-        {
-            // m_sequences.at(i).setTrackInfo(m_metaTextInfo);
-            m_sequences.at(i).analyze();
-        }
+        // for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
+        // {
+        //     // m_sequences.at(i).setTrackInfo(m_metaTextInfo);
+        //     m_sequences.at(i).analyze();
+        // }
+
+        std::vector<MikrotikTrack> outTracks;
+        std::for_each(m_sequences.begin(), m_sequences.end(), [&](Sequence &seq) {
+            auto tracks = seq.analyze();
+            outTracks.insert(outTracks.end(), tracks.begin(), tracks.end());
+        });
+
+        return outTracks;
     }
 
 private:

@@ -21,7 +21,7 @@ public:
     {
         return pitch_to_freq(pitch + (octave * MIDI_NOTES_IN_OCTAVE) + note) + fine;
     }
-    void toStream(std::ofstream &out)
+    void toStream(std::ofstream &out) const
     {
         out << "octave: " << (octave >= 0 ? "+" : "-") << std::to_string(octave);
         out << " note: " << (note >= 0 ? "+" : "-") << std::to_string(note);
@@ -36,7 +36,6 @@ public:
     boost::log::trivial::severity_level logLevel = boost::log::trivial::severity_level::info;
     uint16_t ppqn = 0;
     int32_t bpm = 0;
-    uint64_t track_index = 0;
     PitchShift pitchShift = {0};
     std::string inFileName = "";
 };

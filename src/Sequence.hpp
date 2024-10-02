@@ -2,6 +2,8 @@
 
 #include "events/note.h"
 
+#include "MikrotikNote.hpp"
+
 #include <boost/log/trivial.hpp>
 
 #include <algorithm>
@@ -9,20 +11,35 @@
 #include <sstream>
 #include <vector>
 
-constexpr uint8_t kPitchMax = 128;
+const uint8_t kPitchMax = 128;
 
 enum class SequenceEvent
 {
     NONE = 0,
     NOTE_ON,
     NOTE_OFF,
+    NOTE_OFF_ON,
 };
 
 class TimeMarker
 {
 public:
-    TimeMarker(const uint32_t time) : m_timeMarker(time)
+    TimeMarker(const uint32_t time, const bool on, const uint8_t pitch) : m_timeMarker(time)
     {
+        setNote(on, pitch);
+    }
+    void setNote(const bool on, const uint8_t pitch)
+    {
+        if (m_pitch.at(pitch) == SequenceEvent::NOTE_OFF && on)
+        {
+            m_pitch.at(pitch) = SequenceEvent::NOTE_OFF_ON;
+            return;
+        }
+        m_pitch.at(pitch) = on ? SequenceEvent::NOTE_ON : SequenceEvent::NOTE_OFF;
+    }
+    const std::string prefix() const
+    {
+        return "[TimeMarker @ " + std::to_string(m_timeMarker) + "] ";
     }
     uint32_t time() const
     {
@@ -43,84 +60,20 @@ public:
                 ss << std::to_string(static_cast<uint8_t>(m_pitch.at(i))) << " ";
             }
         }
-        BOOST_LOG_TRIVIAL(info) << "[TimeMarker] enabled events: " << ss.str();
+        BOOST_LOG_TRIVIAL(info) << prefix() << "enabled events: " << ss.str();
     }
-    bool hasNoteOn() const
+    bool hasNoteOffAtPitch(const uint32_t pitch) const
     {
-        auto it = std::find_if(begin(m_pitch), end(m_pitch), [&](const SequenceEvent &event) { return event == SequenceEvent::NOTE_ON; });
-        return it != std::end(m_pitch);
-    }
-    bool hasEvents() const
-    {
-        auto it = std::find_if(begin(m_pitch), end(m_pitch), [&](const SequenceEvent &event) { return event != SequenceEvent::NONE; });
-        return it != std::end(m_pitch);
-    }
-    uint32_t getTimeDifferenceFromBigger(const TimeMarker &other) const
-    {
-        return other.time() - time();
-    }
-    std::size_t eventsCount() const
-    {
-        std::size_t count = 0;
-        std::for_each(m_pitch.begin(), m_pitch.end(), [&](const SequenceEvent &event) {
-            if (event == SequenceEvent::NOTE_ON || event == SequenceEvent::NOTE_OFF)
-            {
-                count++;
-            }
-        });
-        return count;
+        return m_pitch.at(pitch) == SequenceEvent::NOTE_OFF || m_pitch.at(pitch) == SequenceEvent::NOTE_OFF_ON;
     }
     bool timeEquals(const uint32_t otherTime) const
     {
         return otherTime == m_timeMarker;
     }
-    void setNote(const bool on, const uint8_t pitch)
-    {
-        m_pitch.at(pitch) = on ? SequenceEvent::NOTE_ON : SequenceEvent::NOTE_OFF;
-    }
 
 private:
     std::array<SequenceEvent, kPitchMax> m_pitch = {SequenceEvent::NONE};
     uint32_t m_timeMarker = 0;
-};
-
-enum class PitchStateValue
-{
-    NOTE_DISABLED,
-    NOTE_ENABLED
-};
-
-class PitchState
-{
-public:
-    void updateState(TimeMarker &marker)
-    {
-        for (uint8_t i = 0; i < kPitchMax; i++)
-        {
-            if (marker.pitch(i) == SequenceEvent::NOTE_ON)
-            {
-                m_pitch.at(i) = PitchStateValue::NOTE_ENABLED;
-            }
-            else if (marker.pitch(i) == SequenceEvent::NOTE_OFF)
-            {
-                m_pitch.at(i) = PitchStateValue::NOTE_DISABLED;
-            }
-        }
-    }
-    std::size_t enabledNotes()
-    {
-        std::size_t count = 0;
-        std::for_each(m_pitch.begin(), m_pitch.end(), [&](const PitchStateValue &val) {
-            if (val == PitchStateValue::NOTE_ENABLED)
-            {
-                count++;
-            }
-        });
-        return count;
-    }
-
-private:
-    std::array<PitchStateValue, kPitchMax> m_pitch = {PitchStateValue::NOTE_DISABLED};
 };
 
 class Sequence
@@ -129,12 +82,12 @@ public:
     Sequence()
     {
     }
-    Sequence(const uint8_t channel) : m_channel(channel)
+    Sequence(const std::size_t trackIndex, const uint8_t channel) : m_trackIndex(trackIndex), m_channel(channel)
     {
     }
     const std::string prefix() const
     {
-        return "[Sequence ch#" + std::to_string(m_channel) + "] ";
+        return "[Sequence ch# " + std::to_string(m_channel) + "] ";
     }
     void appenMidiNoteEvent(const bool on, const uint8_t pitch, const uint32_t time)
     {
@@ -146,48 +99,68 @@ public:
         }
         else
         {
-            m_timeMarkers.push_back(TimeMarker(time));
-            m_timeMarkers.back().setNote(on, pitch);
+            m_timeMarkers.push_back(TimeMarker(time, on, pitch));
         }
     }
-    void analyze()
+    MikrotikNote getNote(const uint32_t startTime, const uint8_t pitch) const
     {
+        MikrotikNote note;
+
+        auto it = std::find_if(begin(m_timeMarkers), end(m_timeMarkers),
+                               [&](const TimeMarker &marker) { return marker.time() > startTime && marker.hasNoteOffAtPitch(pitch); });
+
+        if (it == std::end(m_timeMarkers))
+        {
+            BOOST_LOG_TRIVIAL(info) << " --- SEARCH FAILED";
+            return note;
+        }
+
+        note = MikrotikNote(pitch, startTime, it->time());
+        return note;
+    }
+    std::vector<MikrotikTrack> analyze()
+    {
+        std::size_t trackSequenceIndex = 0;
         std::vector<MikrotikTrack> mikrotikTracks;
-        mikrotikTracks.push_back(MikrotikTrack());
+        mikrotikTracks.push_back(MikrotikTrack(m_trackIndex, m_channel, trackSequenceIndex++));
+        if (m_timeMarkers.size() == 0)
+        {
+            return mikrotikTracks;
+        }
         BOOST_LOG_TRIVIAL(info) << prefix() << "analysis started, total time markers: " << std::to_string(m_timeMarkers.size());
-        PitchState currentPitchState;
         std::for_each(m_timeMarkers.begin(), m_timeMarkers.end(), [&](TimeMarker &marker) {
-            /*
-             * In general there can be cases like this:
-             * 1) TimeMarker have more than 1 event
-             * 2) PitchState before update can have already several notes enabled
-             * 3) PitchState after update can have several notes enabled
-             */
-            if (marker.eventsCount() > 1)
+            if (marker.time() > 2400 && marker.time() < 2700)
             {
-                // also do something
-            }
-            currentPitchState.updateState(marker);
-            if (currentPitchState.enabledNotes() > mikrotikTracks.size())
-            {
-                std::size_t diff = currentPitchState.enabledNotes() - mikrotikTracks.size();
-                BOOST_LOG_TRIVIAL(info) << prefix() << "found overlapped notes at: " << std::to_string(marker.time()) << " requires " << std::to_string(diff)
-                                        << " additional tracks";
-                for (std::size_t i = 0; i < diff; i++)
-                {
-                    mikrotikTracks.push_back(MikrotikTrack());
-                }
+                marker.dumpEvents();
             }
 
-            // currentTimeMarker.dumpEvents();
+            for (uint8_t i = 0; i < kPitchMax; i++)
+            {
+                if (marker.pitch(i) == SequenceEvent::NOTE_OFF || marker.pitch(i) == SequenceEvent::NONE)
+                {
+                    continue;
+                }
+                auto note = getNote(marker.time(), i);
+                note.log();
+
+                if (std::ranges::none_of(mikrotikTracks, [&](MikrotikTrack &track) { return track.tryAppend(note); }))
+                {
+                    BOOST_LOG_TRIVIAL(info) << prefix() << "No free Track, creating new and adding to it";
+                    mikrotikTracks.push_back(MikrotikTrack(m_trackIndex, m_channel, trackSequenceIndex++));
+                    mikrotikTracks.back().tryAppend(note);
+                }
+            }
         });
         if (mikrotikTracks.size() > 0 && m_timeMarkers.size() > 0)
         {
             BOOST_LOG_TRIVIAL(info) << prefix() << "total tracks used: " << std::to_string(mikrotikTracks.size());
         }
+
+        return mikrotikTracks;
     }
 
 private:
+    std::size_t m_trackIndex = 0;
     uint8_t m_channel = 0;
     std::vector<TimeMarker> m_timeMarkers;
 };

@@ -19,6 +19,7 @@ set(REQUIRED_BOOST_VERSION 1.86.0)
 
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
   message("Debug build.")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
   message("Release build.")
 ELSE()
