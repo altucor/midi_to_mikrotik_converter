@@ -2,9 +2,9 @@ name: CMake
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -18,40 +18,73 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, windows-2019, macos-10.15]
+        os: [ubuntu-latest, windows-2019, macos-latest]
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: Install Conan
-      id: conan
-      uses: turtlebrowser/get-conan@main
-    - name: Conan version
-      run: echo "${{ steps.conan.outputs.version }}"
+      - name: Install boost Linux
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update 
+          sudo apt-get install -y libboost-all-dev
+          echo "BOOST_ROOT=$(dpkg -L libboost-all-dev | grep '/usr/include/boost')" >> $GITHUB_ENV
 
-    - name: Configure CMake
+      - name: Install Conan Linux
+        if: runner.os == 'Linux'
+        run: pip install conan --break-system-packages
+
+      - name: Conan version Linux
+        if: runner.os == 'Linux'
+        run: echo "${{ steps.conan.outputs.version }}"
+
+      - name: Install Conan macOS
+        if: runner.os == 'macOS'
+        run: brew install conan
+
+      - name: Conan version macOS
+        if: runner.os == 'macOS'
+        run: echo "${{ steps.conan.outputs.version }}"
+
+      - name: Install boost Windows
+        if: runner.os == 'Windows'
+        run: choco install -y boost-msvc-14.2 --version 1.86.0
+
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      - name: Configure CMake Windows
+        if: runner.os == 'Windows'
+        run: cmake -B ${{github.workspace}}/build -S . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_GENERATOR_TOOLSET=v142
+        env:
+          BOOST_ROOT: "C:\\local\\boost_1_86_0\\"
 
-    - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      - name: Configure CMake Linux
+        if: runner.os == 'Linux'
+        run: cmake -B ${{github.workspace}}/build -S . -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=${{github.workspace}}/conan_provider.cmake -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
+      - name: Configure CMake macOS
+        if: runner.os == 'macOS'
+        run: cmake -B ${{github.workspace}}/build -S . -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=${{github.workspace}}/conan_provider.cmake -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      with:
-        generate_release_notes: true
-        tag_name: 2.0
-        files: |
-          README.md
-          LICENSE
-          ${{github.workspace}}/build/Release/midi-to-mikrotik-converter-win.exe
-          ${{github.workspace}}/build/midi-to-mikrotik-converter-osx
-          ${{github.workspace}}/build/midi-to-mikrotik-converter-linux
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        # Execute tests defined by the CMake configuration.
+        # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+        run: ctest -C ${{env.BUILD_TYPE}}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          tag_name: 3.0
+          files: |
+            README.md
+            LICENSE
+            ${{github.workspace}}\build\Release\midi-to-mikrotik-converter-win.exe
+            ${{github.workspace}}/build/midi-to-mikrotik-converter-osx
+            ${{github.workspace}}/build/midi-to-mikrotik-converter-linux

@@ -17,6 +17,8 @@ ENDIF()
 
 set(REQUIRED_BOOST_VERSION 1.86.0)
 
+set(BOOST_MIN_VERSION 1.86.0)
+
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
   message("Debug build.")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
@@ -30,11 +32,20 @@ message("CMAKEFLAGS DUMP: ${CMAKE_CXX_FLAGS}")
 
 add_subdirectory(libmidi)
 
+set(Boost_DEBUG 1)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_NO_SYSTEM_PATHS TRUE)
-find_package(Boost COMPONENTS program_options log REQUIRED)
+
+IF(MSVC)
+  set(Boost_USE_STATIC_RUNTIME ON)
+ENDIF()
+
+IF(MSVC)
+  find_package(Boost ${BOOST_MIN_VERSION} COMPONENTS program_options log_setup log REQUIRED)
+ELSE()
+  find_package(Boost CONFIG ${BOOST_MIN_VERSION} COMPONENTS program_options log_setup log REQUIRED)
+ENDIF()
 
 include_directories("./libmidi/src")
 include_directories(${Boost_INCLUDE_DIRS})
@@ -45,13 +56,11 @@ file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES "src/**.cpp" "src/**.hpp")
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
 
 IF(MSVC)
-  set_property(
-    TARGET
-    ${PROJECT_NAME}
-    PROPERTY
-    MSVC_RUNTIME_LIBRARY
-    "MultiThreaded$<$<CONFIG:>:>"
-  )
-ENDIF(MSVC)
+  set_property(TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:>:>")
+ENDIF()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE boost::boost midi)
+IF(MSVC)
+  target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES} midi)
+ELSE()
+  target_link_libraries(${PROJECT_NAME} PRIVATE boost_log_setup boost_log ${Boost_LIBRARIES} midi)
+ENDIF()
