@@ -45,9 +45,7 @@ public:
         ss << std::to_string(m_trackIndex);
         ss << "-" << std::to_string(m_midiChannel);
         ss << "-" << std::to_string(m_sequenceIndex);
-        ss << ".txt";
         m_nameSuffix = ss.str();
-        // BOOST_LOG_TRIVIAL(info) << "--- LOL --- " << m_nameSuffix;
     }
 
     const std::string prefix() const
@@ -119,13 +117,13 @@ public:
             return 0;
         }
 
-        std::string outFileName = config.inFileName + "-" + m_nameSuffix;
+        std::string outFileName = config.inFileName + "-" + m_nameSuffix + ".txt";
         std::ofstream outputFile;
 
         outputFile.open(outFileName);
         if (!outputFile.is_open())
         {
-            BOOST_LOG_TRIVIAL(info) << prefix() << "export failed cannot create output file: " << outFileName;
+            BOOST_LOG_TRIVIAL(fatal) << prefix() << "export failed cannot create output file: " << outFileName;
             return -1;
         }
 

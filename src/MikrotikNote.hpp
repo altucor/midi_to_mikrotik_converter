@@ -62,33 +62,17 @@ public:
          *
          */
 
-        // if (m_timeStart == other.m_timeStart || m_timeEnd == other.m_timeEnd)
-        if (m_timeStart == other.m_timeStart)
+        if (m_timeStart == other.m_timeStart || m_timeEnd == other.m_timeEnd)
         {
-            BOOST_LOG_TRIVIAL(debug) << prefix() << " case 1.1";
-            return true;
-        }
-
-        if (m_timeEnd == other.m_timeEnd)
-        {
-            BOOST_LOG_TRIVIAL(debug) << " ------------------------ ";
-            BOOST_LOG_TRIVIAL(debug) << prefix() << " case 1.2";
-            BOOST_LOG_TRIVIAL(debug) << " Original note:";
-            log();
-            BOOST_LOG_TRIVIAL(debug) << " Other note:";
-            other.log();
-            BOOST_LOG_TRIVIAL(debug) << " ------------------------ ";
             return true;
         }
 
         if (m_timeStart < other.m_timeStart && isInRange(m_timeEnd, other.m_timeStart, m_timeEnd))
         {
-            BOOST_LOG_TRIVIAL(debug) << prefix() << " case 2";
             return true;
         }
         else if (other.m_timeStart < m_timeStart && isInRange(other.m_timeEnd, m_timeStart, m_timeEnd))
         {
-            BOOST_LOG_TRIVIAL(debug) << prefix() << " case 3";
             return true;
         }
 

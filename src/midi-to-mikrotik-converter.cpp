@@ -187,12 +187,6 @@ int main(int argc, char *argv[])
 
     midi_file_free(midiFile);
 
-    // for (std::size_t i = 0; i < mikrotikTracks.size(); i++)
-    // {
-    //     mikrotikTracks[i].exportScript();
-    // }
-
-    BOOST_LOG_TRIVIAL(info) << "[mtmc] FILE name in: " << config.inFileName;
     std::for_each(mikrotikTracks.begin(), mikrotikTracks.end(), [&](MikrotikTrack &track) { track.exportScript(config); });
 
     return 0;

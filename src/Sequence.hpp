@@ -89,6 +89,10 @@ public:
     {
         return "[Sequence ch# " + std::to_string(m_channel) + "] ";
     }
+    void setTrackInfo(TrackMetaTextInfo &info)
+    {
+        m_metaTextInfo = info;
+    }
     void appenMidiNoteEvent(const bool on, const uint8_t pitch, const uint32_t time)
     {
         BOOST_LOG_TRIVIAL(debug) << prefix() << "event add: " << (on ? " ON" : "OFF") << " pitch: " << std::to_string(pitch) << " time: " << std::to_string(time);
@@ -111,7 +115,6 @@ public:
 
         if (it == std::end(m_timeMarkers))
         {
-            BOOST_LOG_TRIVIAL(info) << " --- SEARCH FAILED";
             return note;
         }
 
@@ -123,17 +126,13 @@ public:
         std::size_t trackSequenceIndex = 0;
         std::vector<MikrotikTrack> mikrotikTracks;
         mikrotikTracks.push_back(MikrotikTrack(m_trackIndex, m_channel, trackSequenceIndex++));
+        mikrotikTracks.back().setTrackInfo(m_metaTextInfo);
         if (m_timeMarkers.size() == 0)
         {
             return mikrotikTracks;
         }
         BOOST_LOG_TRIVIAL(info) << prefix() << "analysis started, total time markers: " << std::to_string(m_timeMarkers.size());
         std::for_each(m_timeMarkers.begin(), m_timeMarkers.end(), [&](TimeMarker &marker) {
-            if (marker.time() > 2400 && marker.time() < 2700)
-            {
-                marker.dumpEvents();
-            }
-
             for (uint8_t i = 0; i < kPitchMax; i++)
             {
                 if (marker.pitch(i) == SequenceEvent::NOTE_OFF || marker.pitch(i) == SequenceEvent::NONE)
@@ -147,6 +146,7 @@ public:
                 {
                     BOOST_LOG_TRIVIAL(info) << prefix() << "No free Track, creating new and adding to it";
                     mikrotikTracks.push_back(MikrotikTrack(m_trackIndex, m_channel, trackSequenceIndex++));
+                    mikrotikTracks.back().setTrackInfo(m_metaTextInfo);
                     mikrotikTracks.back().tryAppend(note);
                 }
             }
@@ -162,5 +162,6 @@ public:
 private:
     std::size_t m_trackIndex = 0;
     uint8_t m_channel = 0;
+    TrackMetaTextInfo m_metaTextInfo;
     std::vector<TimeMarker> m_timeMarkers;
 };

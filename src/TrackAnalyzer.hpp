@@ -2,9 +2,8 @@
 
 #include "mtrk.h"
 
-#include "Sequence.hpp"
-// #include "ChannelAnalyzer.hpp"
 #include "Config.hpp"
+#include "Sequence.hpp"
 
 #include "boost/log/trivial.hpp"
 
@@ -88,14 +87,10 @@ public:
                 }
             }
         }
-        // for (uint8_t i = 0; i < MIDI_CHANNELS_MAX_COUNT; i++)
-        // {
-        //     // m_sequences.at(i).setTrackInfo(m_metaTextInfo);
-        //     m_sequences.at(i).analyze();
-        // }
 
         std::vector<MikrotikTrack> outTracks;
         std::for_each(m_sequences.begin(), m_sequences.end(), [&](Sequence &seq) {
+            seq.setTrackInfo(m_metaTextInfo);
             auto tracks = seq.analyze();
             outTracks.insert(outTracks.end(), tracks.begin(), tracks.end());
         });
@@ -106,7 +101,6 @@ public:
 private:
     Config m_config;
     std::size_t m_trackIndex = 0;
-    const float m_pps = 0.0f;
     uint64_t m_trackDuration = 0;
     std::array<Sequence, MIDI_CHANNELS_MAX_COUNT> m_sequences;
     TrackMetaTextInfo m_metaTextInfo;
