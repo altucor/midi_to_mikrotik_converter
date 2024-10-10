@@ -1,4 +1,6 @@
 .vs
 .vscode
+.DS_Store
 build
 test-files
+CMakeLists.txt.user

@@ -1,0 +1,19 @@
+BasedOnStyle: Microsoft
+UseTab: false
+IndentWidth: 4
+# BreakBeforeBraces: Allman
+BreakBeforeBraces: Custom
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: false
+IndentAccessModifiers: false
+AccessModifierOffset: -4
+ColumnLimit: 164
+IndentExternBlock: NoIndent
+BraceWrapping:
+  AfterExternBlock: false # <-- And this
+
+# BraceWrapping:
+#   AfterExternBlock: true
+#   AfterFunction: true
+# AlignAfterOpenBracket: DontAlign
+# SortIncludes: false
